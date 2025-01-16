@@ -63,7 +63,7 @@ local OrionLib = {
         Themes = {
                 Default = {
                         Main = Color3.fromRGB(249, 144, 239),--黑色主要区域
-                        Second = Color3.fromRGB(249, 144, 239),--红色选项栏和功能
+                        Second = Color3.fromRGB(255, 149, 239),--红色选项栏和功能
                         Stroke = Color3.fromRGB(249, 146, 239),--绿色周围边框
                         Divider = Color3.fromRGB(255, 255, 255),--玩家蓝色圈圈颜色
                         Text = Color3.fromRGB(255, 255, 255),--字颜色
@@ -1957,7 +1957,7 @@ function OrionLib:MakeNotifi(Configs)
 end
 
 function OrionLib:Destroy()
-        Orion:Destroy() --可以删除
+        Orion:Destroy() --可以删除,删了没事没事的
 end
 
 return OrionLib
