@@ -465,12 +465,12 @@ function OrionLib:MakeWindow(WindowConfig)
         if WindowConfig.IntroEnabled == nil then
                 WindowConfig.IntroEnabled = true
         end
-        WindowConfig.IntroToggleIcon = WindowConfig.IntroToggleIcon or "rbxassetid://17140853847"
+        WindowConfig.IntroToggleIcon = WindowConfig.IntroToggleIcon or "rbxassetid://14373395239"
         WindowConfig.IntroText = WindowConfig.IntroText or "OVO"
         WindowConfig.CloseCallback = WindowConfig.CloseCallback or function() end
         WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
-        WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://17140853847"
-        WindowConfig.IntroIcon = WindowConfig.IntroIcon or "rbxassetid://17140853847"
+        WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://14373395239"
+        WindowConfig.IntroIcon = WindowConfig.IntroIcon or "rbxassetid://14373395239"
         OrionLib.Folder = WindowConfig.ConfigFolder
         OrionLib.SaveCfg = WindowConfig.SaveConfig
 
@@ -637,7 +637,7 @@ MakeDraggable(DragPoint, MainWindow)
                 BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Main,
                 Visible = false
         }), {
-                AddThemeObject(SetProps(MakeElement("Image", WindowConfig.IntroToggleIcon or "http://www.roblox.com/asset/?id=17140853847"), {
+                AddThemeObject(SetProps(MakeElement("Image", WindowConfig.IntroToggleIcon or "http://www.roblox.com/asset/?id=14373395239"), {
                         AnchorPoint = Vector2.new(0.5, 0.5),
                         Position = UDim2.new(0.5, 0, 0.5, 0),
                         Size = UDim2.new(1, 0, 1, 0),
