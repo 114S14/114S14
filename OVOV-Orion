@@ -627,53 +627,34 @@ function OrionLib:MakeWindow(WindowConfig)
         end        
 
         MakeDraggable(DragPoint, MainWindow)
-function MakeDraggable(DragPoint, Main)
-    pcall(function()
-        local Dragging, DragInput, MousePos, FramePos = false
-        AddConnection(DragPoint.InputBegan, function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
-                Dragging = true
-                MousePos = Input.Position
-                FramePos = Main.Position
+MakeDraggable(DragPoint, MainWindow)
 
-                Input.Changed:Connect(function()
-                    if Input.UserInputState == Enum.UserInputState.End then
-                        Dragging = false
-                    end
-                end)
-            end
-        end)
+    local MobileReopenButton = SetChildren(SetProps(MakeElement("Button"), {
+                Parent = Orion,
+                Size = UDim2.new(0, 50, 0, 50),
+                Position = UDim2.new(0.5, -20, 0, 20),
+                BackgroundTransparency = 1,
+                BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Main,
+                Visible = false
+        }), {
+                AddThemeObject(SetProps(MakeElement("Image", WindowConfig.IntroToggleIcon or "http://www.roblox.com/asset/?id=17140853847"), {
+                        AnchorPoint = Vector2.new(0.5, 0.5),
+                        Position = UDim2.new(0.5, 0, 0.5, 0),
+                        Size = UDim2.new(1, 0, 1, 0),
+                }), "Text"),
+                MakeElement("Corner", 1)
+        })
 
-        AddConnection(DragPoint.InputChanged, function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
-                DragInput = Input
-            end
-        end)
-
-        AddConnection(UserInputService.InputChanged, function(Input)
-            if Input == DragInput and Dragging then
-                local Delta = Input.Position - MousePos
-                TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-                    Position = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
-                }):Play()
-                Main.Position = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
-            end
-        end)
-    end)
-end
-
-
-MobileReopenButton.InputBegan:Connect(startDrag)
-UserInputService.InputChanged:Connect(updatePosition)
-AddConnection(CloseBtn.MouseButton1Up, function()
-    MainWindow.Visible = false
-    MobileReopenButton.Visible = true
-    UIHidden = true
+        AddConnection(CloseBtn.MouseButton1Up, function()
+                MainWindow.Visible = false
+                MobileReopenButton.Visible = true
+                UIHidden = true
     local sound = Instance.new("Sound", workspace)
-    sound.SoundId = "rbxassetid://4590662766"
-    sound:Play()
-    WindowConfig.CloseCallback()
-end)
+sound.SoundId = "rbxassetid://4590662766"
+sound:Play()
+
+                WindowConfig.CloseCallback()
+        end)
 
 
         AddConnection(UserInputService.InputBegan, function(Input)
