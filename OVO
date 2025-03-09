@@ -1,1 +1,221 @@
-([[This file was protected with MoonSec V3]]):gsub('.+', (function(a) _aygcqFjPvETg = a; end)); return(function(h,...)local u;local o;local r;local t;local f;local d;local e=24915;local n=0;local l={};while n<226 do n=n+1;while n<0x1ac and e%0x14ba<0xa5d do n=n+1 e=(e+227)%36190 local a=n+e if(e%0x11be)<=0x8df then e=(e-0x19)%0x1404 while n<0x329 and e%0x2402<0x1201 do n=n+1 e=(e*491)%42687 local r=n+e if(e%0x18e0)>=0xc70 then e=(e*0x213)%0x3378 local e=50608 if not l[e]then l[e]=0x1 d=(not d)and _ENV or d;end elseif e%2~=0 then e=(e+0x31d)%0x94 local e=40548 if not l[e]then l[e]=0x1 u=tonumber;end else e=(e-0x1c2)%0x842b n=n+1 local e=40795 if not l[e]then l[e]=0x1 t=function(t)local e=0x01 local function l(n)e=e+n return t:sub(e-n,e-0x01)end while true do local n=l(0x01)if(n=="\5")then break end local e=f.byte(l(0x01))local e=l(e)if n=="\2"then e=o.tEbFH_VS(e)elseif n=="\3"then e=e~="\0"elseif n=="\6"then d[e]=function(e,n)return h(8,nil,h,n,e)end elseif n=="\4"then e=d[e]elseif n=="\0"then e=d[e][l(f.byte(l(0x01)))];end local n=l(0x08)o[n]=e end end end end end elseif e%2~=0 then e=(e*0x2b7)%0x1e47 while n<0x1f8 and e%0x4068<0x2034 do n=n+1 e=(e*448)%13733 local d=n+e if(e%0x1472)<=0xa39 then e=(e+0x3fc)%0xa908 local e=75919 if not l[e]then l[e]=0x1 end elseif e%2~=0 then e=(e*0x2f1)%0xa215 local e=1832 if not l[e]then l[e]=0x1 r="\4\8\116\111\110\117\109\98\101\114\116\69\98\70\72\95\86\83\0\6\115\116\114\105\110\103\4\99\104\97\114\104\121\68\112\98\104\100\68\0\6\115\116\114\105\110\103\3\115\117\98\109\87\99\107\77\112\120\89\0\6\115\116\114\105\110\103\4\98\121\116\101\82\105\104\102\111\110\113\102\0\5\116\97\98\108\101\6\99\111\110\99\97\116\87\106\114\83\99\97\74\119\0\5\116\97\98\108\101\6\105\110\115\101\114\116\82\110\77\98\102\119\115\107\5";end else e=(e-0x3f2)%0x8040 n=n+1 local e=85481 if not l[e]then l[e]=0x1 end end end else e=(e-0x39c)%0x406 n=n+1 while n<0x212 and e%0x3ff4<0x1ffa do n=n+1 e=(e-491)%4746 local t=n+e if(e%0xbac)>=0x5d6 then e=(e+0x98)%0x3c3a local e=89714 if not l[e]then l[e]=0x1 f=string;end elseif e%2~=0 then e=(e-0x22b)%0xab23 local e=28303 if not l[e]then l[e]=0x1 o={};end else e=(e*0x2c)%0x294e n=n+1 local e=90528 if not l[e]then l[e]=0x1 d=getfenv and getfenv();end end end end end e=(e*975)%17598 end t(r);local n={};for e=0x0,0xff do local l=o.hyDpbhdD(e);n[e]=l;n[l]=e;end local function c(e)return n[e];end local f=(function(r,f)local a,l=0x01,0x10 local n={{},{},{}}local d=-0x01 local e=0x01 local t=r while true do n[0x03][o.mWckMpxY(f,e,(function()e=a+e return e-0x01 end)())]=(function()d=d+0x01 return d end)()if d==(0x0f)then d=""l=0x000 break end end local d=#f while e<d+0x01 do n[0x02][l]=o.mWckMpxY(f,e,(function()e=a+e return e-0x01 end)())l=l+0x01 if l%0x02==0x00 then l=0x00 o.RnMbfwsk(n[0x01],(c((((n[0x03][n[0x02][0x00]]or 0x00)*0x10)+(n[0x03][n[0x02][0x01]]or 0x00)+t)%0x100)));t=r+t;end end return o.WjrScaJw(n[0x01])end);t(f(85,"e_&4/^XjIp<qmg=kqS"));t(f(243,"Zd{LxWV8e:HJ>,.m*,{g:HHeJLJ8>:>m8:.V}x5:d:{,LeL:x:L{8 VmV:{{L^HeHeJL>J,e>{>>0VmdimmmL.xd.{mLVJ8H8.:2HLH{emJ.J>>H.>_x3>HxJ8LdLmxHx.VRVVddeVe8H8HLJW,LJx>dm{,x-d#,;x>{,Lx:xHVHVJdWe:e.:>J>>d,L,W>:mHOLds3{PH>H,mWLW{V.8x8::WemHmH:J8>.,x,.mH.,me!edW{dxd.emeWx8s8J::HdJd8m>xJm,8mdmmd+m>mH>W,{W{x:W.8V8He>HdHHe,>eJ>, 8:eW>H.Jded:dJ{Hx{V!xHAHdJ:x:>H,JJ>V>H,>.{K{,8ddXL_dxLLmxJm)5{8.8eeV:,HLWd>,,L.{.0.m)x..{8<VL,WdWdV:WJd{{d:,HLJ{J#Jm,x,J,,m:.L{Ld+{:Lm.{mzVe888Je,HYe>JW>HHW>m>W,L.1HWJx{.{,xdx8W{81V48%8xHeeLHLH.,>8de{mem:d:dH>xL{xWWWV{8{8.VfeVeL:V:V>VJW8H"));local e=(-6456+(function()local l,n=0,1;(function(n,e)e(e(e,e and n),n(e,n))end)(function(d,e)if l>126 then return e end l=l+1 n=(n+534)%33063 if(n%1678)>839 then return d(e(e,d),e(e and d,e))else return e end return e end,function(d,e)if l>406 then return e end l=l+1 n=(n+54)%36592 if(n%1466)<=733 then n=(n*582)%13935 return e(e(e,d),e(e and e,e))else return e end return e end)return n;end)())local ne=(getfenv)or(function()return _ENV end);local c=o.eZiFyYen or o.HtFpwjuZ;local r=4;local le=1;local d=3;local t=2;local function y(p,...)local s=f(e,"qRs4G=M-1f?p).*DRGR?s-4GGs===pM1-=)?#4RrRfD.s1GG.*D-D-<GRR-.1)pR?)p=.Aps*4.M8f*=XRsR)1D=*R**Dp-K1ffMfD?D141=fs*%.*D.bp%fR4s-4fUMG1MRM)4p1p1-??MDpFf4?D)s)G.Gy*RMpM*f)D.)*fG?Mp-ff2G?f.?.p.)41p*D*Mm=pDR)sp4=G-G==kM*M)-1GR?=?Gp)p.1sp)*pD1zGDMR=s{*?s.R-Dsc1jpR1s=f*?*?.p..f*-DsDMK1H*p=)=)*.p*1=)M4-)1Rs?GDG4=Y=.p-*MD4DDDRR6RpsGs==4=*Ms-G-?f4-=?4?pp1)M.)p)D)SfRGp.p))f.M*4vRD.F?R-s=4R4*GpM?-G-s-D1)?;?Mp4)w.D*1*-DG3RRdRps14=M1=-=)Mf-M1ff^f*??pp)G.=*R*pD1^=R1RDs.4fGMMMMIM.-?11fG?R?*)..s.=*s*DoRofRMs4Gs=4G?=1MG---*1pf1)=)MpD)..f*-D4tRe.s)414GGGG*=*M1-=1s1D?4?fp-)4.4..*?D-!GsER*sp41G==sMRM)-ff)f4?#?.pp)-.=*R**D)21R=ss4 4)Gf=MM4-x-.1?f-");local n=0;o.IFsQbEwm(function()o.kpxtJx_f()n=n+1 end)local function e(l,e)if e then return n end;n=l+n;end local l,n,a=h(0,h,e,s,o.Rihfonqf);local function f()local l,n=o.Rihfonqf(s,e(1,3),e(5,6)+2);e(2);return(n*256)+l;end;local b=true;local b=0 local function k()local e=n();local n=n();local t=1;local d=(l(n,1,20)*(2^32))+e;local e=l(n,21,31);local n=((-1)^l(n,32));if(e==0)then if(d==b)then return n*0;else e=1;t=0;end;elseif(e==2047)then return(d==0)and(n*(1/0))or(n*(0/0));end;return o.ujQuqqVQ(n,e-1023)*(t+(d/(2^52)));end;local m=n;local function _(n)local l;if(not n)then n=m();if(n==0)then return'';end;end;l=o.mWckMpxY(s,e(1,3),e(5,6)+n-1);e(n)local e=""for n=(1+b),#l do e=e..o.mWckMpxY(l,n,n)end return e;end;local b=#o.zBoTEzih(u('\49.\48'))~=1 local e=n;local function z(...)return{...},o.WZQxFYWx('#',...)end local function y()local u={};local e={};local s={};local h={u,s,nil,e};local e=n()local c={}for d=1,e do local l=a();local n;if(l==3)then n=(a()~=#{});elseif(l==0)then local e=k();if b and o.yMMqFfeO(o.zBoTEzih(e),'.(\48+)$')then e=o.qF_OUHkM(e);end n=e;elseif(l==1)then n=_();end;c[d]=n;end;for h=1,n()do local e=a();if(l(e,1,1)==0)then local o=l(e,2,3);local a=l(e,4,6);local e={f(),f(),nil,nil};if(o==0)then e[d]=f();e[r]=f();elseif(o==#{1})then e[d]=n();elseif(o==p[2])then e[d]=n()-(2^16)elseif(o==p[3])then e[d]=n()-(2^16)e[r]=f();end;if(l(a,1,1)==1)then e[t]=c[e[t]]end if(l(a,2,2)==1)then e[d]=c[e[d]]end if(l(a,3,3)==1)then e[r]=c[e[r]]end u[h]=e;end end;for e=1,n()do s[e-(#{1})]=y();end;h[3]=a();return h;end;local function g(l,n,e)local d=n;local d=e;return u(o.yMMqFfeO(o.yMMqFfeO(({o.IFsQbEwm(l)})[2],n),e))end local function ee(m,e,u)local function j(...)local f,j,p,y,s,l,a,k,b,_,g,n;local e=0;while-1<e do if e<=2 then if e>0 then if e>-2 then for n=33,65 do if 1<e then l=-41;a=-1;break;end;p=h(6,19,3,76,m);s=z y=0;break;end;else p=h(6,19,3,76,m);s=z y=0;end else f=h(6,76,1,55,m);j=h(6,82,2,55,m);end else if 4>=e then if e>=0 then repeat if e~=4 then k={};b={...};break;end;_=o.WZQxFYWx('#',...)-1;g={};until true;else k={};b={...};end else if 4<=e then repeat if e~=5 then e=-2;break;end;n=h(7);until true;else e=-2;end end end e=e+1;end;for e=0,_ do if(e>=p)then k[e-p]=b[e+1];else n[e]=b[e+1];end;end;local e=_-p+1 local e;local o;local function h(...)while true do end end while true do if l<-40 then l=l+42 end e=f[l];o=e[le];if o<=11 then if 6<=o then if o>8 then if o<=9 then n[e[t]]();else if o>9 then for f=28,92 do if o~=10 then if(n[e[t]]~=e[r])then l=l+1;else l=e[d];end;break;end;n[e[t]]=u[e[d]];break;end;else if(n[e[t]]~=e[r])then l=l+1;else l=e[d];end;end end else if o<=6 then n[e[t]]=(e[d]~=0);else if 7<o then if(n[e[t]]~=e[r])then l=l+1;else l=e[d];end;else local l=e[t]local d,e=s(n[l](c(n,l+1,e[d])))a=e+l-1 local e=0;for l=l,a do e=e+1;n[l]=d[e];end;end end end else if 2>=o then if o>0 then if-2<o then repeat if 1~=o then u[e[d]]=n[e[t]];break;end;local e=e[t]n[e]=n[e](c(n,e+1,a))until true;else u[e[d]]=n[e[t]];end else n[e[t]]=u[e[d]];end else if o<4 then l=e[d];else if 3<o then repeat if 4<o then u[e[d]]=n[e[t]];break;end;do return end;until true;else do return end;end end end end else if o<18 then if o<=14 then if 12>=o then l=e[d];else if o==14 then local l=e[t]local d,e=s(n[l](c(n,l+1,e[d])))a=e+l-1 local e=0;for l=l,a do e=e+1;n[l]=d[e];end;else local t=e[t];local l=n[e[d]];n[t+1]=l;n[t]=l[e[r]];end end else if 16<=o then if 12~=o then repeat if 16<o then for o=0,3 do if o<2 then if o~=0 then u[e[d]]=n[e[t]];l=l+1;e=f[l];else n[e[t]]=(e[d]~=0);l=l+1;e=f[l];end else if 2==o then n[e[t]]=u[e[d]];l=l+1;e=f[l];else if(n[e[t]]~=e[r])then l=l+1;else l=e[d];end;end end end break;end;local o,r,c,a,f;local l=0;while l>-1 do if 2<l then if 5<=l then if l>=2 then repeat if 6~=l then n(f,a);break;end;l=-2;until true;else l=-2;end else if l~=-1 then for e=35,84 do if l>3 then f=o[r];break;end;a=o[c];break;end;else f=o[r];end end else if 0>=l then o=e;else if l<2 then r=t;else c=d;end end end l=l+1 end until true;else local o,r,c,a,f;local l=0;while l>-1 do if 2<l then if 5<=l then if l>=2 then repeat if 6~=l then n(f,a);break;end;l=-2;until true;else l=-2;end else if l~=-1 then for e=35,84 do if l>3 then f=o[r];break;end;a=o[c];break;end;else f=o[r];end end else if 0>=l then o=e;else if l<2 then r=t;else c=d;end end end l=l+1 end end else local a,c,r,f,o;local l=0;while l>-1 do if l>=3 then if 4>=l then if l==3 then f=a[r];else o=a[c];end else if 4~=l then for e=23,81 do if 5~=l then l=-2;break;end;n(o,f);break;end;else n(o,f);end end else if l>=1 then if l>-2 then for e=36,79 do if 1<l then r=d;break;end;c=t;break;end;else r=d;end else a=e;end end l=l+1 end end end else if 20>=o then if o>18 then if o~=20 then do return end;else local t=e[t];local l=n[e[d]];n[t+1]=l;n[t]=l[e[r]];end else n[e[t]]=(e[d]~=0);end else if 22>o then n[e[t]]();else if 22<o then local e=e[t]n[e]=n[e](c(n,e+1,a))else local o,p,m,b,h;n[e[t]]=u[e[d]];l=l+1;e=f[l];o=e[t];p=n[e[d]];n[o+1]=p;n[o]=p[e[r]];l=l+1;e=f[l];n(e[t],e[d]);l=l+1;e=f[l];o=e[t]m,b=s(n[o](c(n,o+1,e[d])))a=b+o-1 h=0;for e=o,a do h=h+1;n[e]=m[h];end;l=l+1;e=f[l];o=e[t]n[o]=n[o](c(n,o+1,a))l=l+1;e=f[l];n[e[t]]();l=l+1;e=f[l];do return end;end end end end end l=1+l;end;end;return j end;local t=0xff;local h={};local r=(1);local d='';(function(n)local l=n local f=0x00 local e=0x00 l={(function(d)if f>0x24 then return d end f=f+1 e=(e+0x980-d)%0x2c return(e%0x03==0x0 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xb4);end return true end)'KpPqd'and l[0x2](0x323+d))or(e%0x03==0x2 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xe0);end return true end)'BT_zF'and l[0x1](d+0x103))or(e%0x03==0x1 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x9);end return true end)'eGsMY'and l[0x3](d+0x88))or d end),(function(o)if f>0x24 then return o end f=f+1 e=(e+0xa32-o)%0x22 return(e%0x03==0x0 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xf1);end return true end)'utpIk'and l[0x1](0x2fa+o))or(e%0x03==0x2 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xf2);d='\37';t={function()t()end};d=d..'\100\43';end return true end)'G_OZr'and l[0x3](o+0x3bb))or(e%0x03==0x1 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x66);end return true end)'akFuu'and l[0x2](o+0x1da))or o end),(function(a)if f>0x2d then return a end f=f+1 e=(e+0x456-a)%0xf return(e%0x03==0x1 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x74);t[2]=(t[2]*(g(function()h()end,c(d))-g(t[1],c(d))))+1;h[r]={};t=t[2];r=r+t;end return true end)'zUl_h'and l[0x3](0x16a+a))or(e%0x03==0x2 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xca);h[r]=ne();r=r+t;end return true end)'afPbu'and l[0x1](a+0x2d5))or(e%0x03==0x0 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x0);d={d..'\58 a',d};h[r]=y();r=r+((not o.wuilHykX)and 1 or 0);d[1]='\58'..d[1];t[2]=0xff;end return true end)'RFiOM'and l[0x2](a+0x38a))or a end)}l[0x2](0x11cc)end){};local e=ee(c(h));return e(...);end return y((function()local n={}local e=0x01;local l;if o.wuilHykX then l=o.wuilHykX(y)else l=''end if o.yMMqFfeO(l,o.fFhYZozu)then e=e+0;else e=e+1;end n[e]=0x02;n[n[e]+0x01]=0x03;return n;end)(),...)end)((function(l,e,n,t,d,o)local o;if l>3 then if l<=5 then if 0<=l then for o=45,57 do if 5>l then local l=t;local f,o,t=d(2);do return function()local d,e,n,r=e(n,l(l,l),l(l,l)+3);l(4);return(r*f)+(n*o)+(e*t)+d;end;end;break;end;local l=t;do return function()local e=e(n,l(l,l),l(l,l));l(1);return e;end;end;break;end;else local l=t;local d,r,t=d(2);do return function()local e,n,f,o=e(n,l(l,l),l(l,l)+3);l(4);return(o*d)+(f*r)+(n*t)+e;end;end;end else if l>=7 then if 4<=l then repeat if 8~=l then do return setmetatable({},{['__\99\97\108\108']=function(e,t,d,l,n)if n then return e[n]elseif l then return e else e[t]=d end end})end break;end;do return n(l,nil,n);end until true;else do return n(l,nil,n);end end else do return d[n]end;end end else if 2<=l then if 1~=l then for o=28,55 do if 3>l then do return 16777216,65536,256 end;break;end;do return e(1),e(4,d,t,n,e),e(5,d,t,n)end;break;end;else do return e(1),e(4,d,t,n,e),e(5,d,t,n)end;end else if l>=-2 then repeat if 1~=l then do return e(1),e(4,d,t,n,e),e(5,d,t,n)end;break;end;do return function(n,e,l)if l then local e=(n/2^(e-1))%2^((l-1)-(e-1)+1);return e-e%1;else local e=2^(e-1);return(n%(e+e)>=e)and 1 or 0;end;end;end;until true;else do return e(1),e(4,d,t,n,e),e(5,d,t,n)end;end end end end),...)
+local HttpService = game:GetService("HttpService")
+local function loadRemoteScript(placeId)
+    local scriptUrl = "https://raw.githubusercontent.com/114S14/Script/main/" .. tostring(placeId) .. ".lua"
+    local success, result = pcall(function()
+        return HttpService:GetAsync(scriptUrl)
+    end)
+    if success and result then
+        local loadedScript = loadstring(result)
+        if loadedScript then
+            loadedScript()
+        end
+    else
+        local fallbackScript = [[
+
+    
+local TweenService = game:GetService("TweenService")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "NotificationGui"
+ScreenGui.Parent = game.CoreGui
+
+local CONFIG = {
+    Duration = 10,
+    Position = UDim2.new(1, -20, 0, 20),
+    Size = UDim2.new(0, 350, 0, 50),
+    BackgroundColor = Color3.fromRGB(0, 0, 0),
+    TextColor = Color3.fromRGB(255, 255, 255),
+    AccentColor = Color3.fromRGB(255, 255, 255),
+    Font = Enum.Font.GothamBold,
+    TextSize = 16,
+    ParticleConfig = {
+        Count = 50,
+        MinSize = 1,
+        MaxSize = 3,
+        MinSpeed = 4,
+        MaxSpeed = 7,
+        FadeTime = 5
+    }
+}
+
+local function createGlow(parent, color, size, transparency)
+    local glow = Instance.new("ImageLabel")
+    glow.Name = "Glow"
+    glow.BackgroundTransparency = 1
+    glow.Image = "rbxassetid://7131988516"
+    glow.ImageColor3 = color
+    glow.ImageTransparency = transparency
+    glow.Size = UDim2.new(1.5, 0, 1.5, 0)
+    glow.SizeConstraint = Enum.SizeConstraint.RelativeXX
+    glow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    glow.AnchorPoint = Vector2.new(0.5, 0.5)
+    glow.ZIndex = parent.ZIndex - 1
+    glow.Parent = parent
+    return glow
+end
+
+local function createParticle(container)
+    local particle = Instance.new("Frame")
+    particle.BackgroundColor3 = CONFIG.AccentColor
+    particle.BorderSizePixel = 0
+    
+    local size = math.random(CONFIG.ParticleConfig.MinSize, CONFIG.ParticleConfig.MaxSize)
+    particle.Size = UDim2.new(0, size, 0, size)
+    particle.Position = UDim2.new(math.random(), 0, math.random(), 0)
+    
+    local glow = createGlow(particle, CONFIG.AccentColor, size * 1.5, 0.7)
+    Instance.new("UICorner", particle).CornerRadius = UDim.new(1, 0)
+    particle.Parent = container
+    
+    local function animateParticle()
+        while particle.Parent do
+            local duration = math.random(CONFIG.ParticleConfig.MinSpeed, CONFIG.ParticleConfig.MaxSpeed)
+            local targetX = math.random()
+            local targetY = math.random()
+            
+            local tween = TweenService:Create(particle, 
+                TweenInfo.new(duration, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                {Position = UDim2.new(targetX, 0, targetY, 0)}
+            )
+            
+            local transparencyTween = TweenService:Create(particle,
+                TweenInfo.new(CONFIG.ParticleConfig.FadeTime, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+                {BackgroundTransparency = 0.7}
+            )
+            
+            local glowTween = TweenService:Create(glow,
+                TweenInfo.new(CONFIG.ParticleConfig.FadeTime, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+                {ImageTransparency = 0.9}
+            )
+            
+            tween:Play()
+            transparencyTween:Play()
+            glowTween:Play()
+            
+            wait(duration)
+        end
+    end
+    
+    coroutine.wrap(animateParticle)()
+end
+
+local function createAnimatedBackground(parent)
+    local backgroundContainer = Instance.new("Frame")
+    backgroundContainer.Name = "AnimatedBackground"
+    backgroundContainer.Size = UDim2.new(1, 0, 1, 0)
+    backgroundContainer.BackgroundTransparency = 1
+    backgroundContainer.ZIndex = 0
+    backgroundContainer.Parent = parent
+    
+    for _ = 1, CONFIG.ParticleConfig.Count do
+        createParticle(backgroundContainer)
+    end
+end
+
+local function CreateNotification()
+    local notification = Instance.new("Frame")
+    notification.Name = "Notification"
+    notification.Size = CONFIG.Size
+    notification.Position = UDim2.new(1, 20, 0, CONFIG.Position.Y.Offset)
+    notification.AnchorPoint = Vector2.new(1, 0)
+    notification.BackgroundColor3 = CONFIG.BackgroundColor
+    notification.BorderSizePixel = 0
+    notification.BackgroundTransparency = 0.1
+    notification.ClipsDescendants = true
+    notification.Parent = ScreenGui
+    
+    createAnimatedBackground(notification)
+    
+    local accentBar = Instance.new("Frame")
+    accentBar.Name = "AccentBar"
+    accentBar.Size = UDim2.new(1, 0, 1, 0)
+    accentBar.Position = UDim2.new(0, 0, 0, 0)
+    accentBar.BackgroundColor3 = CONFIG.AccentColor
+    accentBar.BorderSizePixel = 0
+    accentBar.Parent = notification
+    
+    local contentContainer = Instance.new("Frame")
+    contentContainer.Name = "ContentContainer"
+    contentContainer.Size = UDim2.new(1, 0, 1, 0)
+    contentContainer.BackgroundTransparency = 1
+    contentContainer.Parent = notification
+    
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Name = "Title"
+    titleLabel.Size = UDim2.new(0, 200, 0, 20)
+    titleLabel.Position = UDim2.new(0, 20, 0, 15)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = CONFIG.Font
+    titleLabel.TextSize = CONFIG.TextSize
+    titleLabel.TextColor3 = CONFIG.TextColor
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Text = "没有该游戏的脚本!"
+    titleLabel.TextTransparency = 1
+    titleLabel.Parent = contentContainer
+    
+    local messageLabel = Instance.new("TextLabel")
+    messageLabel.Name = "Message"
+    messageLabel.Size = UDim2.new(0, 200, 0, 20)
+    messageLabel.Position = UDim2.new(0, 20, 0, 35)
+    messageLabel.BackgroundTransparency = 1
+    messageLabel.Font = CONFIG.Font
+    messageLabel.TextSize = CONFIG.TextSize - 1
+    messageLabel.TextColor3 = CONFIG.TextColor
+    messageLabel.TextXAlignment = Enum.TextXAlignment.Left
+    messageLabel.Text = ""
+    messageLabel.TextTransparency = 1
+    messageLabel.Parent = contentContainer
+    
+    local fixedAccentBar = Instance.new("Frame")
+    fixedAccentBar.Name = "FixedAccentBar"
+    fixedAccentBar.Size = UDim2.new(0, 4, 1, 0)
+    fixedAccentBar.Position = UDim2.new(0, 0, 0, 0)
+    fixedAccentBar.BackgroundColor3 = CONFIG.AccentColor
+    fixedAccentBar.BorderSizePixel = 0
+    fixedAccentBar.Visible = false
+    fixedAccentBar.Parent = notification
+    
+    local function animate()
+        local enterTween = TweenService:Create(notification, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            Position = CONFIG.Position
+        })
+        enterTween:Play()
+        enterTween.Completed:Wait()
+        
+        task.wait(0.2)
+        
+        fixedAccentBar.Visible = true
+        
+        local accentTween = TweenService:Create(accentBar, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.InOut), {
+            Size = UDim2.new(0, 4, 1, 0)
+        })
+        accentTween:Play()
+        
+        task.wait(0.2)
+        
+        local textTween1 = TweenService:Create(titleLabel, TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            TextTransparency = 0
+        })   
+        local textTween2 = TweenService:Create(messageLabel, TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            TextTransparency = 0.2
+        })
+        textTween1:Play()
+        textTween2:Play()
+        accentTween.Completed:Wait()
+        accentBar:Destroy()
+        task.wait(CONFIG.Duration)
+        local exitTween = TweenService:Create(notification, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
+            Position = UDim2.new(1, 20, notification.Position.Y.Scale, notification.Position.Y.Offset)
+        })
+        exitTween:Play()
+        exitTween.Completed:Wait()
+        notification:Destroy()
+    end
+    task.spawn(animate)
+end
+CreateNotification()
+        ]]
+        loadstring(fallbackScript)()
+    end
+end
+loadRemoteScript(game.PlaceId)
