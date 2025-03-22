@@ -269,7 +269,7 @@ DropdownFrame.Parent = Main
 DropdownFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 DropdownFrame.BorderSizePixel = 0
 DropdownFrame.Position = UDim2.new(0.73, 0, 0.15, 0)
-DropdownFrame.Size = UDim2.new(0.25, 0, 0, 0) -- 默认收起
+DropdownFrame.Size = UDim2.new(0.25, 0, 0, 0)
 DropdownFrame.ZIndex = 2
 DropdownFrame.Image = "http://www.roblox.com/asset/?id=6374072464"
 DropdownFrame.ImageTransparency = 0.800
@@ -382,8 +382,9 @@ Tabs.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Tabs.BackgroundTransparency = 0.500
 Tabs.BorderSizePixel = 0
 Tabs.ClipsDescendants = true
-Tabs.Position = UDim2.new(0.25, 0, 0, 44)
-Tabs.Size = UDim2.new(0.48, 0, 1, -56)
+Tabs.Position = UDim2.new(0.25, 10, 0, 44) -- 调整位置，确保可见
+Tabs.Size = UDim2.new(0.48, -10, 1, -56)
+Tabs.Visible = true -- 确保默认可见
 
 tabsample.Name = "tabsample"
 tabsample.Parent = Tabs
@@ -392,7 +393,7 @@ tabsample.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 tabsample.BackgroundTransparency = 1.000
 tabsample.BorderSizePixel = 0
 tabsample.Size = UDim2.new(1, 0, 1, 0)
-tabsample.Visible = false
+tabsample.Visible = false -- 子选项卡默认隐藏
 tabsample.ScrollBarThickness = 0
 tabsample.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
@@ -766,13 +767,11 @@ G.TextColor3 = Color3.fromRGB(255, 255, 255)
 G.TextSize = 20.000
 
 -- Fixes
-tabsample.Visible = false
 dropdownsample.Visible = false
 local titel = Instance.new('TextLabel')
 Monke.Enabled = true
-tabsample.CanvasSize = UDim2.new(0, 0, 100, 0)
-Dropdownoptions.CanvasSize = UDim2.new(0, 0, 100, 0)
-Tabslist.CanvasSize = UDim2.new(0, 0, 100, 0)
+Tabslist.CanvasSize = UDim2.new(0, 0, 0, 0) -- 动态调整
+Dropdownoptions.CanvasSize = UDim2.new(0, 0, 0, 0)
 
 -- Vars
 local plr = game.Players.LocalPlayer
@@ -1175,15 +1174,16 @@ library.newTab = function(name)
     newb.Visible = true
     local newt = tabsample:Clone()
     newt.Parent = Tabs
+    newt.Name = name -- 为调试方便命名
     library[name] = newt.positioning
     newb.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             for i, v in next, Tabs:GetChildren() do
                 if v:IsA('ScrollingFrame') then
-                    v.Visible = false
+                    v.Visible = false -- 隐藏所有选项卡
                 end
             end
-            newt.Visible = true
+            newt.Visible = true -- 显示当前选项卡
         end
     end)
     newb.MouseEnter:Connect(function()
@@ -1192,6 +1192,10 @@ library.newTab = function(name)
     newb.MouseLeave:Connect(function()
         tw(newb, {BackgroundTransparency = 1}, 'Quint', 'Out', .3)
     end)
+    -- 默认显示第一个选项卡
+    if #Tabs:GetChildren() == 1 then
+        newt.Visible = true
+    end
 end
 
 library.newHeader = function(parent, text)
