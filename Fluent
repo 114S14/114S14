@@ -1,5 +1,4 @@
 -- Instances:
-
 local Monke = Instance.new("ScreenGui")
 local Main = Instance.new("ImageLabel")
 local close = Instance.new("ImageButton")
@@ -69,8 +68,7 @@ local R = Instance.new("TextBox")
 local B = Instance.new("TextBox")
 local G = Instance.new("TextBox")
 
--- Properties:
-
+--Properties:
 Monke.Name = "Monke"
 Monke.Parent = game.CoreGui
 Monke.DisplayOrder = 59666
@@ -172,7 +170,7 @@ Tabslist.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Tabslist.BackgroundTransparency = 0.500
 Tabslist.BorderSizePixel = 0
 Tabslist.Position = UDim2.new(0, 10, 0, 44)
-Tabslist.Size = UDim2.new(0.25, 0, 1, -56)
+Tabslist.Size = UDim2.new(0, 100, 1, -56)
 Tabslist.ScrollBarThickness = 0
 Tabslist.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
@@ -268,9 +266,9 @@ DropdownFrame.Name = "DropdownFrame"
 DropdownFrame.Parent = Main
 DropdownFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 DropdownFrame.BorderSizePixel = 0
-DropdownFrame.Position = UDim2.new(0.73, 0, 0.15, 0)
-DropdownFrame.Size = UDim2.new(0.25, 0, 0, 0)
-DropdownFrame.ZIndex = 2
+DropdownFrame.Position = UDim2.new(1, 30, 0, 0)
+DropdownFrame.Size = UDim2.new(0, 150, 1, 0)
+DropdownFrame.ZIndex = -2
 DropdownFrame.Image = "http://www.roblox.com/asset/?id=6374072464"
 DropdownFrame.ImageTransparency = 0.800
 DropdownFrame.ScaleType = Enum.ScaleType.Crop
@@ -327,7 +325,7 @@ Dropdownclose.Name = "Dropdownclose"
 Dropdownclose.Parent = DropdownFrame
 Dropdownclose.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Dropdownclose.BorderSizePixel = 0
-Dropdownclose.Position = UDim2.new(1, -44, 0, 0)
+Dropdownclose.Position = UDim2.new(1, -44, -0, 0)
 Dropdownclose.Size = UDim2.new(0, 44, 0, 28)
 Dropdownclose.ZIndex = 0
 Dropdownclose.AutoButtonColor = false
@@ -346,7 +344,7 @@ Dropdownsearch.PlaceholderText = "Search"
 Dropdownsearch.Text = ""
 Dropdownsearch.TextColor3 = Color3.fromRGB(255, 255, 255)
 Dropdownsearch.TextSize = 20.000
-Dropdownsearch.TextScaled = true
+Dropdownsearch.TextWrapped = true
 
 Dropdownoptions.Name = "Dropdownoptions"
 Dropdownoptions.Parent = DropdownFrame
@@ -369,12 +367,12 @@ dropdownsample.Parent = Dropdownoptions
 dropdownsample.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 dropdownsample.BackgroundTransparency = 1.000
 dropdownsample.BorderSizePixel = 0
-dropdownsample.Size = UDim2.new(1, 0, 0, 40)
+dropdownsample.Size = UDim2.new(1, 0, 0, 28)
 dropdownsample.ZIndex = 0
 dropdownsample.Font = Enum.Font.SourceSans
 dropdownsample.Text = "example tonky"
 dropdownsample.TextColor3 = Color3.fromRGB(255, 255, 255)
-dropdownsample.TextSize = 18.000
+dropdownsample.TextSize = 20.000
 
 Tabs.Name = "Tabs"
 Tabs.Parent = Main
@@ -382,9 +380,8 @@ Tabs.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Tabs.BackgroundTransparency = 0.500
 Tabs.BorderSizePixel = 0
 Tabs.ClipsDescendants = true
-Tabs.Position = UDim2.new(0.25, 10, 0, 44) -- 调整位置，确保可见
-Tabs.Size = UDim2.new(0.48, -10, 1, -56)
-Tabs.Visible = true -- 确保默认可见
+Tabs.Position = UDim2.new(0, 120, 0, 44)
+Tabs.Size = UDim2.new(1, -130, 1, -56)
 
 tabsample.Name = "tabsample"
 tabsample.Parent = Tabs
@@ -393,7 +390,7 @@ tabsample.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 tabsample.BackgroundTransparency = 1.000
 tabsample.BorderSizePixel = 0
 tabsample.Size = UDim2.new(1, 0, 1, 0)
-tabsample.Visible = false -- 子选项卡默认隐藏
+tabsample.Visible = false
 tabsample.ScrollBarThickness = 0
 tabsample.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
@@ -638,7 +635,7 @@ ColorpickerFrame.Name = "ColorpickerFrame"
 ColorpickerFrame.Parent = Main
 ColorpickerFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 ColorpickerFrame.BorderSizePixel = 0
-ColorpickerFrame.Position = UDim2.new(0, 20, 0, 10)
+ColorpickerFrame.Position = UDim2.new(0, -230, 0, 0)
 ColorpickerFrame.Size = UDim2.new(0, 200, 0, 235)
 ColorpickerFrame.ZIndex = -2
 ColorpickerFrame.Image = "http://www.roblox.com/asset/?id=6374072464"
@@ -766,14 +763,19 @@ G.Text = "0"
 G.TextColor3 = Color3.fromRGB(255, 255, 255)
 G.TextSize = 20.000
 
--- Fixes
-dropdownsample.Visible = false
+--// Fixes
+DropdownFrame.Position=UDim2.new(1,-150,0,10)
+DropdownFrame.Size=UDim2.new(0,130,1,-20)
+tabsample.Visible=false
+dropdownsample.Visible=false
+ColorpickerFrame.Position=UDim2.new(0, 20,0,10)
 local titel = Instance.new('TextLabel')
 Monke.Enabled = true
-Tabslist.CanvasSize = UDim2.new(0, 0, 0, 0) -- 动态调整
-Dropdownoptions.CanvasSize = UDim2.new(0, 0, 0, 0)
+tabsample.CanvasSize = UDim2.new(0,0,100,0)
+Dropdownoptions.CanvasSize = UDim2.new(0,0,100,0)
+Tabslist.CanvasSize = UDim2.new(0,0,100,0)
 
--- Vars
+--// Vars
 local plr = game.Players.LocalPlayer
 local ms = plr:GetMouse()
 local uis = game:GetService("UserInputService")
@@ -785,167 +787,226 @@ local huepicking = false
 local satpicking = false
 local colorpickerfocus = nil
 local colorpickercallback = nil
-local dragX, dragY = 0, 0
-local h, s, v = 0, 1, 1
+local dragX,dragY = 0,0
+local h,s,v = 0,1,1
+local minimizedButton = nil
 
--- Functions
-local function tw(target, changes, style, dir, tim)
-    game:GetService('TweenService'):Create(target, TweenInfo.new(tim, Enum.EasingStyle[style], Enum.EasingDirection[dir]), changes):Play()
+--// Functions
+local function tw(target,changes,style,dir,tim)
+    game:GetService('TweenService'):Create(target,TweenInfo.new(tim,Enum.EasingStyle[style],Enum.EasingDirection[dir]),changes):Play()
 end
 
-local function colorHover(target, hoverColor, colorType)
+local function colorHover(target,hoverColor,colorType)
     local oldColor = target[colorType]
     target.MouseEnter:Connect(function()
-        tw(target, {[colorType] = hoverColor}, "Quint", "Out", .3)
+        tw(target,{[colorType] = hoverColor},"Quint","Out",.3)
     end)
     target.MouseLeave:Connect(function()
-        tw(target, {[colorType] = oldColor}, "Quint", "Out", .3)
+        tw(target,{[colorType] = oldColor},"Quint","Out",.3)
     end)
 end
 
-local anime = Instance.new("ImageLabel")
-anime.Name = "anim"
-anime.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-anime.BackgroundTransparency = 1
-anime.Image = "http://www.roblox.com/asset/?id=2091181653"
-anime.ImageTransparency = .8
-local ts = game:GetService("TweenService")
-local ti = TweenInfo.new(1, Enum.EasingStyle.Quint)
-local size
-function ButtonAnim(UIPart)
-    UIPart.ClipsDescendants = true
-    UIPart.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            local anim = anime:Clone()
-            anim.Parent = UIPart
-            local mathx = (ms.X - UIPart.AbsolutePosition.X)
-            local mathy = (ms.Y - UIPart.AbsolutePosition.Y)
-            anim.Position = UDim2.new(0, mathx - (anim.AbsoluteSize.X / 2), 0, mathy - (anim.AbsoluteSize.Y / 2))
-            size = (UIPart.AbsoluteSize.X + UIPart.AbsoluteSize.Y)
-            local tw = ts:Create(anim, ti, {Size = UDim2.new(0, size, 0, size), ImageTransparency = 1, Position = UDim2.new(0, mathx - (size / 2), 0, mathy - (size / 2))})
-            tw:Play()
-            repeat wait() until anim.ImageTransparency == 1
-            anim:Destroy()
+local function createMinimizedButton()
+    if minimizedButton then minimizedButton:Destroy() end
+    
+    minimizedButton = Instance.new("ImageButton")
+    minimizedButton.Name = "MinimizedButton"
+    minimizedButton.Parent = game.CoreGui
+    minimizedButton.BackgroundTransparency = 1
+    minimizedButton.Size = UDim2.new(0, 60, 0, 60)
+    minimizedButton.Position = UDim2.new(0.5, -30, 0.5, -30)
+    minimizedButton.Image = "rbxassetid://2091181653"
+    minimizedButton.ZIndex = 59666
+    
+    local buttonGlow = Instance.new("ImageLabel")
+    buttonGlow.Name = "Glow"
+    buttonGlow.Parent = minimizedButton
+    buttonGlow.BackgroundTransparency = 1
+    buttonGlow.Position = UDim2.new(0, -15, 0, -15)
+    buttonGlow.Size = UDim2.new(1, 30, 1, 30)
+    buttonGlow.Image = "rbxassetid://5028857084"
+    buttonGlow.ScaleType = Enum.ScaleType.Slice
+    buttonGlow.SliceCenter = Rect.new(24, 24, 276, 276)
+    
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)),
+        ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 0, 153)),
+        ColorSequenceKeypoint.new(0.20, Color3.fromRGB(204, 0, 255)),
+        ColorSequenceKeypoint.new(0.30, Color3.fromRGB(51, 0, 255)),
+        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 106, 255)),
+        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
+        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 255, 102)),
+        ColorSequenceKeypoint.new(0.70, Color3.fromRGB(51, 255, 0)),
+        ColorSequenceKeypoint.new(0.80, Color3.fromRGB(204, 255, 0)),
+        ColorSequenceKeypoint.new(0.90, Color3.fromRGB(228, 137, 0)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))
+    }
+    gradient.Rotation = 45
+    gradient.Parent = buttonGlow
+    
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(1, 0)
+    UICorner.Parent = minimizedButton
+    
+    -- 渐变动画
+    coroutine.resume(coroutine.create(function()
+        while minimizedButton and minimizedButton.Parent do
+            tw(gradient, {Rotation = gradient.Rotation + 360}, "Linear", "In", 6)
+            wait(6)
+        end
+    end))
+    
+    -- 拖动功能
+    local draggingButton = false
+    local buttonDragX, buttonDragY = 0, 0
+    
+    minimizedButton.InputBegan:Connect(function(k)
+        if k.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingButton = true
+            buttonDragX = ms.X - minimizedButton.AbsolutePosition.X
+            buttonDragY = ms.Y - minimizedButton.AbsolutePosition.Y
         end
     end)
+    
+    minimizedButton.InputEnded:Connect(function(k)
+        if k.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingButton = false
+        end
+    end)
+    
+    uis.InputChanged:Connect(function()
+        if draggingButton then
+            local msX, msY = ms.X - buttonDragX, ms.Y - buttonDragY
+            minimizedButton.Position = UDim2.new(0, msX, 0, msY)
+        end
+    end)
+    
+    -- 点击打开UI
+    minimizedButton.MouseButton1Click:Connect(function()
+        Monke.Enabled = true
+        minimizedButton:Destroy()
+        minimizedButton = nil
+    end)
 end
+
+local anime=Instance.new("ImageLabel")anime.Name="anim";anime.BackgroundColor3=Color3.fromRGB(255, 255, 255) anime.BackgroundTransparency=1;anime.Image="http://www.roblox.com/asset/?id=2091181653";anime.ImageTransparency=.8; local ms=game.Players.LocalPlayer:GetMouse() local ts = game:GetService("TweenService") local ti = TweenInfo.new(1,Enum.EasingStyle.Quint) local size; function ButtonAnim(UIPart) UIPart.ClipsDescendants=true; UIPart.MouseButton1Click:Connect(function() local anim = anime:Clone() anim.Parent=UIPart; local mathx = (ms.X-UIPart.AbsolutePosition.X) local mathy = (ms.Y-UIPart.AbsolutePosition.Y) anim.Position=UDim2.new(0,mathx-(anim.AbsoluteSize.X/2),0,mathy-(anim.AbsoluteSize.Y/2)) size = (UIPart.AbsoluteSize.X+UIPart.AbsoluteSize.Y) local tw = ts:Create(anim, ti, { Size = UDim2.new(0,size,0,size), ImageTransparency = 1, Position = UDim2.new(0,mathx-(size/2),0,mathy-(size/2)) }) tw:Play() repeat wait()until anim.ImageTransparency==1 anim:Destroy() end) end
 
 coroutine.resume(coroutine.create(function()
     while true do
-        tw(UIGradient, {Rotation = UIGradient.Rotation + 360}, "Linear", "In", 6)
-        tw(Dropdownglow.UIGradient, {Rotation = UIGradient.Rotation + 360}, "Linear", "In", 6)
-        tw(ColorpickerFrame.Dropdownglow.UIGradient, {Rotation = UIGradient.Rotation + 360}, "Linear", "In", 6)
+        tw(UIGradient,{Rotation=UIGradient.Rotation+360},"Linear","In",6)
+        tw(Dropdownglow.UIGradient,{Rotation=UIGradient.Rotation+360},"Linear","In",6)
+        tw(ColorpickerFrame.Dropdownglow.UIGradient,{Rotation=UIGradient.Rotation+360},"Linear","In",6)
         wait(6)
     end
 end))
 
--- Other UI Stuff
+--// Other UI Stuff
+minimize.MouseButton1Click:Connect(function()
+    Monke.Enabled = false
+    createMinimizedButton()
+end)
+
 uis.InputBegan:Connect(function(k)
-    if k.KeyCode == Enum.KeyCode.LeftAlt then
-        Monke.Enabled = not Monke.Enabled
+    if k.KeyCode==Enum.KeyCode.LeftAlt then
+        Monke.Enabled=not Monke.Enabled
     end
 end)
 
-close.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        Monke:Destroy()
-    end
+close.MouseButton1Click:Connect(function()
+    Monke:Destroy()
 end)
 
--- Resizing + Dragging
+--// Resizing + Dragging
 resize.InputBegan:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         resizing = true
     end
 end)
 resize.InputEnded:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         resizing = false
     end
 end)
 topbar.InputBegan:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         dragging = true
-        dragX, dragY = ms.X - topbar.AbsolutePosition.X, ms.Y - topbar.AbsolutePosition.Y
+        dragX,dragY = ms.X-topbar.AbsolutePosition.X,ms.Y-topbar.AbsolutePosition.Y
     end
 end)
 topbar.InputEnded:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         dragging = false
     end
 end)
-uis.InputChanged:Connect(function(input)
+uis.InputChanged:Connect(function()
     if resizing then
-        local msX, msY = ms.X - Main.AbsolutePosition.X, ms.Y - Main.AbsolutePosition.Y
-        if msX < 300 then msX = 300 end
-        if msY < 250 then msY = 250 end
-        Main.Size = UDim2.new(0, msX, 0, msY)
+        local msX,msY = ms.X-Main.AbsolutePosition.X,ms.Y-Main.AbsolutePosition.Y
+        if msX<300 then msX=300 end
+        if msY<250 then msY=250 end
+        Main.Size = UDim2.new(0,msX,0,msY)
     end
     if dragging then
-        local msX, msY = ms.X - dragX, ms.Y - dragY
-        Main.Position = UDim2.new(0, msX, 0, msY)
+        local msX,msY = ms.X-dragX,ms.Y-dragY
+        Main.Position = UDim2.new(0,msX,0,msY)
     end
 end)
 
--- Button Coloring
-colorHover(close, Color3.fromRGB(150, 35, 35), 'BackgroundColor3')
-colorHover(minimize, Color3.fromRGB(55, 55, 55), 'BackgroundColor3')
-colorHover(setting, Color3.fromRGB(55, 55, 55), 'BackgroundColor3')
-colorHover(rainbowtheme, Color3.fromRGB(55, 55, 55), 'BackgroundColor3')
-colorHover(monketheme, Color3.fromRGB(55, 55, 55), 'BackgroundColor3')
-colorHover(blacktheme, Color3.fromRGB(55, 55, 55), 'BackgroundColor3')
-colorHover(fireicetheme, Color3.fromRGB(55, 55, 55), 'BackgroundColor3')
-colorHover(Dropdownclose, Color3.fromRGB(150, 35, 35), 'BackgroundColor3')
-colorHover(Colorpickerclose, Color3.fromRGB(150, 35, 35), 'BackgroundColor3')
+--// Button Coloring
+colorHover(close,Color3.fromRGB(150,35,35),'BackgroundColor3')
+colorHover(minimize,Color3.fromRGB(55,55,55),'BackgroundColor3')
+colorHover(setting,Color3.fromRGB(55,55,55),'BackgroundColor3')
+colorHover(rainbowtheme,Color3.fromRGB(55,55,55),'BackgroundColor3')
+colorHover(monketheme,Color3.fromRGB(55,55,55),'BackgroundColor3')
+colorHover(blacktheme,Color3.fromRGB(55,55,55),'BackgroundColor3')
+colorHover(fireicetheme,Color3.fromRGB(55,55,55),'BackgroundColor3')
+colorHover(Dropdownclose,Color3.fromRGB(150,35,35),'BackgroundColor3')
+colorHover(Colorpickerclose,Color3.fromRGB(150,35,35),'BackgroundColor3')
 
--- Settings Tab
-settingstab.Size = UDim2.new(1, 0, 0, 28)
+--// Settings Tab
+settingstab.Size = UDim2.new(1,0,0,28)
 setting.MouseButton1Click:Connect(function()
-    if setting.Active then
-        setting.Active = false
-        tw(settingstab, {Size = UDim2.new(1, 0, 0, 28)}, "Quint", "Out", .4)
-    else
-        setting.Active = true
-        tw(settingstab, {Size = UDim2.new(1, 0, 1, 0)}, "Quint", "Out", .4)
+    if setting.Active then setting.Active = false
+        tw(settingstab,{Size=UDim2.new(1,0,0,28)},"Quint","Out",.4)
+    else setting.Active = true
+        tw(settingstab,{Size=UDim2.new(1,0,1,0)},"Quint","Out",.4)
     end
 end)
 rainbowtheme.MouseButton1Click:Connect(function()
     UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)), ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(0.20, Color3.fromRGB(204, 0, 255)), ColorSequenceKeypoint.new(0.30, Color3.fromRGB(51, 0, 255)), ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 106, 255)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 255, 102)), ColorSequenceKeypoint.new(0.70, Color3.fromRGB(51, 255, 0)), ColorSequenceKeypoint.new(0.80, Color3.fromRGB(204, 255, 0)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(228, 137, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
-    Dropdownglow.UIGradient.Color = UIGradient.Color
-    ColorpickerFrame.Dropdownglow.UIGradient.Color = UIGradient.Color
+    Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)), ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(0.20, Color3.fromRGB(204, 0, 255)), ColorSequenceKeypoint.new(0.30, Color3.fromRGB(51, 0, 255)), ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 106, 255)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 255, 102)), ColorSequenceKeypoint.new(0.70, Color3.fromRGB(51, 255, 0)), ColorSequenceKeypoint.new(0.80, Color3.fromRGB(204, 255, 0)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(228, 137, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
+    ColorpickerFrame.Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)), ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(0.20, Color3.fromRGB(204, 0, 255)), ColorSequenceKeypoint.new(0.30, Color3.fromRGB(51, 0, 255)), ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 106, 255)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 255, 102)), ColorSequenceKeypoint.new(0.70, Color3.fromRGB(51, 255, 0)), ColorSequenceKeypoint.new(0.80, Color3.fromRGB(204, 255, 0)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(228, 137, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
 end)
 blacktheme.MouseButton1Click:Connect(function()
     UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
-    Dropdownglow.UIGradient.Color = UIGradient.Color
-    ColorpickerFrame.Dropdownglow.UIGradient.Color = UIGradient.Color
+    Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
+    ColorpickerFrame.Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
 end)
 monketheme.MouseButton1Click:Connect(function()
     UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
-    Dropdownglow.UIGradient.Color = UIGradient.Color
-    ColorpickerFrame.Dropdownglow.UIGradient.Color = UIGradient.Color
+    Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
+    ColorpickerFrame.Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
 end)
 fireicetheme.MouseButton1Click:Connect(function()
     UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))}
-    Dropdownglow.UIGradient.Color = UIGradient.Color
-    ColorpickerFrame.Dropdownglow.UIGradient.Color = UIGradient.Color
+    Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))}
+    ColorpickerFrame.Dropdownglow.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))}
 end)
 
--- Dropdown Functions
+--// Dropdown Functions
 local function dropdownVisible(open)
     if open then
-        tw(DropdownFrame, {Size = UDim2.new(0.25, 0, 0.8, 0)}, "Quint", "Out", 0.8)
-        DropdownFrame.ZIndex = 10
+        tw(DropdownFrame,{Position=UDim2.new(1,30,0,0),Size=UDim2.new(0,150,1,0)},'Quint','Out',.8)
     else
-        Dropdownsearch.Text = ""
-        tw(DropdownFrame, {Size = UDim2.new(0.25, 0, 0, 0)}, "Quint", "Out", 0.8)
-        DropdownFrame.ZIndex = 2
+        Dropdownsearch.Text = ''
+        tw(DropdownFrame,{Position=UDim2.new(1,-150,0,10),Size=UDim2.new(0,130,1,-20)},'Quint','Out',.8)
     end
     current = open
 end
 
-local function updateDropdown(content, target, callback)
-    for i, v in next, Dropdownoptions:GetChildren() do
-        if v:IsA("TextButton") and v.Name ~= "dropdownsample" then
+local function updateDropdown(content,target,callback)
+    for i,v in next,Dropdownoptions:GetChildren()do
+        if v:IsA'TextButton' and v.Name~='dropdownsample'then
             v:Destroy()
         end
     end
@@ -955,210 +1016,103 @@ local function updateDropdown(content, target, callback)
         new.Name = content[i]
         new.Parent = Dropdownoptions
         new.Text = content[i]
-        new.Size = UDim2.new(1, 0, 0, 40)
-        new.TextSize = 18
         new.MouseEnter:Connect(function()
-            tw(new, {BackgroundTransparency = 0.9}, "Quint", "Out", 0.3)
+            tw(new,{BackgroundTransparency=.9},'Quint','Out',.3)
         end)
         new.MouseLeave:Connect(function()
-            tw(new, {BackgroundTransparency = 1}, "Quint", "Out", 0.3)
+            tw(new,{BackgroundTransparency=1},'Quint','Out',.3)
         end)
-        new.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                target.Text = "[ " .. content[i] .. " ]"
-                callback(content[i])
-                dropdownVisible(false)
-            end
+        new.MouseButton1Click:Connect(function()
+            target.Text = '[ '..content[i]..' ]'
+            callback(content[i])
+            dropdownVisible(false)
         end)
     end
-    Dropdownoptions.CanvasSize = UDim2.new(0, 0, 0, #content * 46)
 end
 
-Dropdownsearch:GetPropertyChangedSignal("Text"):Connect(function()
-    local searchText = Dropdownsearch.Text:lower()
-    for i, v in next, Dropdownoptions:GetChildren() do
-        if v:IsA("TextButton") and v.Name ~= "dropdownsample" then
-            v.Visible = searchText == "" or v.Text:lower():find(searchText) ~= nil
+Dropdownsearch:GetPropertyChangedSignal('Text'):Connect(function()
+    if Dropdownsearch.Text=='' then
+        for i,v in next,Dropdownoptions:GetChildren()do
+            if v:IsA'TextButton'and v.Name~='dropdownsample'then
+                v.Visible=true
+            end
+        end
+    else
+        for i,v in next,Dropdownoptions:GetChildren()do
+            if v:IsA'TextButton'and v.Name~='dropdownsample'then
+                if string.find(tostring(v),Dropdownsearch.Text)then
+                    v.Visible=true
+                else
+                    v.Visible=false
+                end
+            end
         end
     end
 end)
 
-Dropdownclose.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dropdownVisible(false)
-    end
-end)
+Dropdownclose.MouseButton1Click:Connect(dropdownVisible)
 
--- Colorpicker Functions
+--// Colorpicker Functions
 local function colorpickerVisible(open)
     if open then
-        tw(ColorpickerFrame, {Position = UDim2.new(0, -230, 0, 0)}, "Quint", "Out", .8)
+        tw(ColorpickerFrame,{Position=UDim2.new(0,-230,0,0)},'Quint','Out',.8)
     else
-        tw(ColorpickerFrame, {Position = UDim2.new(0, 20, 0, 10)}, "Quint", "Out", .8)
+        tw(ColorpickerFrame,{Position=UDim2.new(0, 20,0,10)},'Quint','Out',.8)
     end
     current2 = open
 end
 
 pickerimg.InputBegan:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         satpicking = true
     end
 end)
 pickerimg.InputEnded:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         satpicking = false
     end
 end)
 pickersmall.InputBegan:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         huepicking = true
     end
 end)
 pickersmall.InputEnded:Connect(function(k)
-    if k.UserInputType == Enum.UserInputType.MouseButton1 or k.UserInputType == Enum.UserInputType.Touch then
+    if k.UserInputType==Enum.UserInputType.MouseButton1 then
         huepicking = false
     end
 end)
 
-uis.InputChanged:Connect(function(input)
+uis.InputChanged:Connect(function()
     if huepicking then
-        local msY = (ms.Y - pickersmall.AbsolutePosition.Y) / pickersmall.AbsoluteSize.Y
-        if msY < 0 then msY = 0 end
-        if msY > 1 then msY = 1 end
-        h = 1 - msY
+        local msY = (ms.Y-pickersmall.AbsolutePosition.Y)/pickersmall.AbsoluteSize.Y
+        if msY<0 then msY=0 end
+        if msY>1 then msY=1 end
+        h=1-msY
     end
     if satpicking then
-        local msX, msY = (ms.X - pickerimg.AbsolutePosition.X) / pickerimg.AbsoluteSize.X, (ms.Y - pickerimg.AbsolutePosition.Y) / pickerimg.AbsoluteSize.Y
-        if msY < 0 then msY = 0 end
-        if msY > 1 then msY = 1 end
-        if msX < 0 then msX = 0 end
-        if msX > 1 then msX = 1 end
-        v = 1 - msY
-        s = msX
+        local msX,msY = (ms.X-pickerimg.AbsolutePosition.X)/pickerimg.AbsoluteSize.X,(ms.Y-pickerimg.AbsolutePosition.Y)/pickerimg.AbsoluteSize.Y
+        if msY<0 then msY=0 end
+        if msY>1 then msY=1 end
+        if msX<0 then msX=0 end
+        if msX>1 then msX=1 end
+        v=1-msY
+        s=msX
     end
     if huepicking or satpicking then
-        colorpickerfocus.BackgroundColor3 = Color3.fromHSV(h, s, v)
-        colorpickercallback(Color3.fromHSV(h, s, v))
-        local r, g, b = colorpickerfocus.BackgroundColor3.R, colorpickerfocus.BackgroundColor3.G, colorpickerfocus.BackgroundColor3.B
-        R.Text = tostring(math.floor(r * 255)) R.BackgroundColor3 = Color3.new(r, 0, 0)
-        G.Text = tostring(math.floor(g * 255)) G.BackgroundColor3 = Color3.new(0, g, 0)
-        B.Text = tostring(math.floor(b * 255)) B.BackgroundColor3 = Color3.new(0, 0, b)
-        pickerimg.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
+        colorpickerfocus.BackgroundColor3=Color3.fromHSV(h,s,v)
+        colorpickercallback(Color3.fromHSV(h,s,v))
+        local r,g,b=colorpickerfocus.BackgroundColor3.R,colorpickerfocus.BackgroundColor3.G,colorpickerfocus.BackgroundColor3.B
+        R.Text = tostring(math.floor(r*255))R.BackgroundColor3 = Color3.new(r,0,0)
+        G.Text = tostring(math.floor(g*255))G.BackgroundColor3 = Color3.new(0,g,0)
+        B.Text = tostring(math.floor(b*255))B.BackgroundColor3 = Color3.new(0,0,b)
+        pickerimg.BackgroundColor3=Color3.fromHSV(h,1,1)
     end
 end)
 
 Colorpickerclose.MouseButton1Click:Connect(colorpickerVisible)
 
--- Circle Button
-local circleButton = Instance.new("ImageButton")
-circleButton.Name = "CircleButton"
-circleButton.Parent = Monke
-circleButton.BackgroundTransparency = 1
-circleButton.Size = UDim2.new(0, 60, 0, 60)
-circleButton.Position = UDim2.new(0.5, -30, 0.5, -30)
-circleButton.Image = "rbxassetid://5028857084"
-circleButton.Visible = false
-circleButton.ZIndex = 5
-
-local UICornerCircle = Instance.new("UICorner")
-UICornerCircle.CornerRadius = UDim.new(1, 0)
-UICornerCircle.Parent = circleButton
-
-local glowFrame = Instance.new("ImageLabel")
-glowFrame.Name = "GlowFrame"
-glowFrame.Parent = circleButton
-glowFrame.BackgroundTransparency = 1
-glowFrame.Size = UDim2.new(1, 30, 1, 30)
-glowFrame.Position = UDim2.new(0, -15, 0, -15)
-glowFrame.Image = "rbxassetid://5028857084"
-glowFrame.ScaleType = Enum.ScaleType.Slice
-glowFrame.SliceCenter = Rect.new(24, 24, 276, 276)
-glowFrame.ZIndex = 4
-
-local UIGradientCircle = Instance.new("UIGradient")
-UIGradientCircle.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 4)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 4))
-}
-UIGradientCircle.Rotation = 45
-UIGradientCircle.Parent = glowFrame
-
-coroutine.resume(coroutine.create(function()
-    while true do
-        tw(UIGradientCircle, {Rotation = UIGradientCircle.Rotation + 360}, "Linear", "In", 6)
-        wait(6)
-    end
-end))
-
-local isMinimize = false
-minimize.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        isMinimize = not isMinimize
-        Monke.Enabled = not isMinimize
-        circleButton.Visible = isMinimize
-    end
-end)
-
-local draggingCircle = false
-local dragOffsetX, dragOffsetY = 0, 0
-circleButton.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        draggingCircle = true
-        local pos = input.UserInputType == Enum.UserInputType.Touch and input.Position or Vector2.new(ms.X, ms.Y)
-        dragOffsetX = pos.X - circleButton.AbsolutePosition.X
-        dragOffsetY = pos.Y - circleButton.AbsolutePosition.Y
-    end
-end)
-
-circleButton.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        draggingCircle = false
-    end
-end)
-
-uis.InputChanged:Connect(function(input)
-    if draggingCircle then
-        local posX = (input.UserInputType == Enum.UserInputType.Touch and input.Position.X or ms.X) - dragOffsetX
-        local posY = (input.UserInputType == Enum.UserInputType.Touch and input.Position.Y or ms.Y) - dragOffsetY
-        circleButton.Position = UDim2.new(0, posX, 0, posY)
-    end
-end)
-
-circleButton.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        if not draggingCircle then
-            isMinimize = false
-            Monke.Enabled = true
-            circleButton.Visible = false
-        end
-    end
-end)
-
--- Mobile Adjustments
-local function adjustForMobile()
-    local screenSize = uis:GetScreenSize()
-    if screenSize.X < 600 then
-        Main.Size = UDim2.new(0.9, 0, 0, screenSize.Y * 0.6)
-        Main.Position = UDim2.new(0.5, -0.45 * Main.Size.X.Offset, 0.5, -0.5 * Main.Size.Y.Offset)
-        Tabslist.Size = UDim2.new(0.3, 0, 1, -56)
-        Tabs.Size = UDim2.new(0.4, 0, 1, -56)
-        DropdownFrame.Position = UDim2.new(0.7, 0, 0.15, 0)
-        DropdownFrame.Size = UDim2.new(0.25, 0, 0, 0)
-        circleButton.Size = UDim2.new(0, 50, 0, 50)
-        glowFrame.Size = UDim2.new(1, 20, 1, 20)
-        glowFrame.Position = UDim2.new(0, -10, 0, -10)
-        for _, v in pairs(Main:GetDescendants()) do
-            if v:IsA("TextLabel") or v:IsA("TextButton") or v:IsA("TextBox") then
-                v.TextSize = math.max(14, v.TextSize - 4)
-            end
-        end
-    end
-end
-adjustForMobile()
-
--- Library
-
+--// Library
 local library = {
     Title = titel
 }
@@ -1174,194 +1128,167 @@ library.newTab = function(name)
     newb.Visible = true
     local newt = tabsample:Clone()
     newt.Parent = Tabs
-    newt.Name = name -- 为调试方便命名
     library[name] = newt.positioning
-    newb.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            for i, v in next, Tabs:GetChildren() do
-                if v:IsA('ScrollingFrame') then
-                    v.Visible = false -- 隐藏所有选项卡
-                end
+    newb.MouseButton1Click:Connect(function()
+        for i,v in next,Tabs:GetChildren()do
+            if v:IsA'ScrollingFrame'then
+                v.Visible = false
             end
-            newt.Visible = true -- 显示当前选项卡
         end
+        newt.Visible=true
     end)
     newb.MouseEnter:Connect(function()
-        tw(newb, {BackgroundTransparency = .9}, 'Quint', 'Out', .3)
+        tw(newb,{BackgroundTransparency=.9},'Quint','Out',.3)
     end)
     newb.MouseLeave:Connect(function()
-        tw(newb, {BackgroundTransparency = 1}, 'Quint', 'Out', .3)
+        tw(newb,{BackgroundTransparency=1},'Quint','Out',.3)
     end)
-    -- 默认显示第一个选项卡
-    if #Tabs:GetChildren() == 1 then
-        newt.Visible = true
-    end
 end
 
-library.newHeader = function(parent, text)
+library.newHeader = function(parent,text)
     local new = sampleheader:Clone()
     new.Visible = true
     new.Parent = parent
-    new.Text = ' ' .. text
+    new.Text = ' '..text
 end
 
-library.newLabel = function(parent, text)
+library.newLabel = function(parent,text)
     local new = samplelabel:Clone()
     new.Visible = true
     new.Parent = parent
-    new.Text = '  ' .. text
+    new.Text = '  '..text
 end
 
-library.newButton = function(parent, text, callback)
+library.newButton = function(parent,text,callback)
     local new = samplebutton:Clone()
     new.Visible = true
     new.Parent = parent
-    new.Text = '  ' .. text
+    new.Text = '  '..text
     new.MouseEnter:Connect(function()
-        tw(new, {BackgroundTransparency = .7}, 'Quint', 'Out', .3)
+        tw(new,{BackgroundTransparency=.7},'Quint','Out',.3)
     end)
     new.MouseLeave:Connect(function()
-        tw(new, {BackgroundTransparency = .8}, 'Quint', 'Out', .3)
+        tw(new,{BackgroundTransparency=.8},'Quint','Out',.3)
     end)
     ButtonAnim(new)
-    new.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            callback()
-        end
-    end)
+    new.MouseButton1Click:Connect(callback)
 end
 
-library.newCheckBox = function(parent, text, callback)
+library.newCheckBox = function(parent,text,callback)
     local new = samplecheckbox:Clone()
     new.Visible = true
     new.Parent = parent
     new.Active = false
-    new.Text = '  ' .. text
+    new.Text = '  '..text
     new.MouseEnter:Connect(function()
-        tw(new, {BackgroundTransparency = .7}, 'Quint', 'Out', .3)
+        tw(new,{BackgroundTransparency=.7},'Quint','Out',.3)
     end)
     new.MouseLeave:Connect(function()
-        tw(new, {BackgroundTransparency = .8}, 'Quint', 'Out', .3)
+        tw(new,{BackgroundTransparency=.8},'Quint','Out',.3)
     end)
-    new.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            if not new.Active then
-                new.Active = true
-                tw(new.checkbox.checkboxbar, {Position = UDim2.new(1, -20, 0, 0)}, "Quint", "Out", .3)
-                tw(new.checkbox, {BackgroundColor3 = Color3.fromRGB(35, 255, 35)}, "Quint", "Out", .3)
-            else
-                new.Active = false
-                tw(new.checkbox.checkboxbar, {Position = UDim2.new(0, 0, 0, 0)}, "Quint", "Out", .3)
-                tw(new.checkbox, {BackgroundColor3 = Color3.fromRGB(255, 35, 35)}, "Quint", "Out", .3)
-            end
-            callback(new.Active)
+    new.MouseButton1Click:Connect(function()
+        if not new.Active then new.Active = true
+            tw(new.checkbox.checkboxbar,{Position=UDim2.new(1,-20,0,0)},"Quint","Out",.3)
+            tw(new.checkbox,{BackgroundColor3=Color3.fromRGB(35,255,35)},"Quint","Out",.3)
+        else new.Active = false
+            tw(new.checkbox.checkboxbar,{Position=UDim2.new(0,0,0,0)},"Quint","Out",.3)
+            tw(new.checkbox,{BackgroundColor3=Color3.fromRGB(255,35,35)},"Quint","Out",.3)
         end
+        callback(new.Active)
     end)
 end
 
-library.newTextBox = function(parent, text, emptytext, callback)
+library.newTextBox = function(parent,text,emptytext,callback)
     local new = sampletextbox:Clone()
     new.Visible = true
     new.Parent = parent
-    new.Text = '  ' .. text
+    new.Text = '  '..text
     new.textholder.PlaceholderText = emptytext
     new.textholder:GetPropertyChangedSignal('Text'):Connect(function()
         callback(new.textholder.Text)
     end)
 end
 
-library.newDropDown = function(parent, text, content, callback)
+library.newDropDown = function(parent,text,content,callback)
     local new = sampledropdown:Clone()
     new.Visible = true
     new.Parent = parent
-    new.Text = '  ' .. text
-    new.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dropdownVisible(true)
-            updateDropdown(content, new.dropdownselect, callback)
-        end
+    new.Text = '  '..text
+    new.MouseButton1Click:Connect(function()
+        dropdownVisible(true)
+        updateDropdown(content,new.dropdownselect,callback)
     end)
     new.dropdownselect.MouseEnter:Connect(function()
-        tw(new.dropdownselect, {BackgroundTransparency = .7}, 'Quint', 'Out', .3)
+        tw(new.dropdownselect,{BackgroundTransparency=.7},'Quint','Out',.3)
     end)
     new.dropdownselect.MouseLeave:Connect(function()
-        tw(new.dropdownselect, {BackgroundTransparency = .8}, 'Quint', 'Out', .3)
+        tw(new.dropdownselect,{BackgroundTransparency=.8},'Quint','Out',.3)
     end)
-    new.dropdownselect.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dropdownVisible(true)
-            updateDropdown(content, new.dropdownselect, callback)
-        end
+    new.dropdownselect.MouseButton1Click:Connect(function()
+        dropdownVisible(true)
+        updateDropdown(content,new.dropdownselect,callback)
     end)
 end
 
-library.newColorPicker = function(parent, text, callback)
+library.newColorPicker = function(parent,text,callback)
     local new = samplecolorpicker:Clone()
     new.Visible = true
     new.Parent = parent
-    new.Text = '  ' .. text
+    new.Text = '  '..text
     new.MouseEnter:Connect(function()
-        tw(new, {BackgroundTransparency = .7}, 'Quint', 'Out', .3)
+        tw(new,{BackgroundTransparency=.7},'Quint','Out',.3)
     end)
     new.MouseLeave:Connect(function()
-        tw(new, {BackgroundTransparency = .8}, 'Quint', 'Out', .3)
+        tw(new,{BackgroundTransparency=.8},'Quint','Out',.3)
     end)
-    new.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            colorpickerVisible(true)
-            colorpickerfocus = new.checkbox
-            colorpickercallback = callback
-        end
+    new.MouseButton1Click:Connect(function()
+        colorpickerVisible(true)
+        colorpickerfocus = new.checkbox
+        colorpickercallback = callback
     end)
 end
 
-library.newSlider = function(parent, text, startValue, endValue, callback)
+library.newSlider = function(parent,text,startValue,endValue,callback)
     local new = sampleslider:Clone()
     new.Visible = true
     new.Parent = parent
-    new.Text = "  " .. text
-    new.TextScaled = true
-    new.slidervalue.Text = tostring(startValue) .. " / " .. tostring(endValue) .. "  "
-    new.slidervalue.TextScaled = true
-
+    new.Text = '  '..text
+    new.slidervalue.Text = tostring(startValue)..' / '..tostring(endValue)..'  '
+    
     local currentValue = startValue
     local sliding = false
-
-    local function startSliding(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            sliding = true
+    new.sliderfull.InputBegan:Connect(function(k)
+        if k.UserInputType==Enum.UserInputType.MouseButton1 then
+            sliding=true
         end
-    end
-    local function endSliding(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            sliding = false
+    end)
+    new.sliderfull.InputEnded:Connect(function(k)
+        if k.UserInputType==Enum.UserInputType.MouseButton1 then
+            sliding=false
         end
-    end
-
-    new.sliderfull.InputBegan:Connect(startSliding)
-    new.sliderfull.InputEnded:Connect(endSliding)
-    new.sliderfull.sliderpart.InputBegan:Connect(startSliding)
-    new.sliderfull.sliderpart.InputEnded:Connect(endSliding)
-
-    uis.InputChanged:Connect(function(input)
+    end)
+    new.sliderfull.sliderpart.InputBegan:Connect(function(k)
+        if k.UserInputType==Enum.UserInputType.MouseButton1 then
+            sliding=true
+        end
+    end)
+    new.sliderfull.sliderpart.InputEnded:Connect(function(k)
+        if k.UserInputType==Enum.UserInputType.MouseButton1 then
+            sliding=false
+        end
+    end)
+    
+    uis.InputChanged:Connect(function()
         if sliding then
-            local sliderPosX = new.sliderfull.AbsolutePosition.X
-            local sliderWidth = new.sliderfull.AbsoluteSize.X
-            local touchX = input.UserInputType == Enum.UserInputType.Touch and input.Position.X or ms.X
-            local msX = (touchX - sliderPosX) / sliderWidth
-            msX = math.clamp(msX, 0, 1)
-            new.sliderfull.sliderpart.Size = UDim2.new(msX, 0, 1, 0)
-            local result = startValue + (endValue - startValue) * msX
-            new.slidervalue.Text = tostring(math.floor(result)) .. " / " .. tostring(endValue) .. "  "
+            local msX = (ms.X-new.sliderfull.AbsolutePosition.X)/new.sliderfull.AbsoluteSize.X
+            if msX<0 then msX=0 end
+            if msX>1 then msX=1 end
+            new.sliderfull.sliderpart.Size=UDim2.new(msX,0,1,0)
+            local result = (endValue*msX) - (startValue*msX) + startValue
+            new.slidervalue.Text = tostring(math.floor(result))..' / '..tostring(endValue)..'  '
             callback(result)
         end
     end)
-
-    local screenSize = uis:GetScreenSize()
-    if screenSize.X < 600 then
-        new.sliderfull.Size = UDim2.new(1, -10, 0, 20)
-        new.sliderfull.sliderpart.Size = UDim2.new((startValue - startValue) / (endValue - startValue), 0, 1, 0)
-    end
 end
 
 return library
