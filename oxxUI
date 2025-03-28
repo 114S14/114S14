@@ -1,29 +1,29 @@
 local UILibrary = {}
 
--- 创建主窗口
-function UILibrary:CreateWindow(title, size)
+function UILibrary:CreateWindow(title)
     local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "UILibraryGui"
     ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     ScreenGui.ResetOnSpawn = false
     
     local MainFrame = Instance.new("Frame")
-    MainFrame.Size = size or UDim2.new(0, 300, 0, 200)
-    MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    MainFrame.Size = UDim2.new(0, 300, 0, 400)
+    MainFrame.Position = UDim2.new(0.5, -150, 0.5, -200)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     MainFrame.BorderSizePixel = 0
     MainFrame.Parent = ScreenGui
     
     local TitleBar = Instance.new("Frame")
     TitleBar.Size = UDim2.new(1, 0, 0, 30)
-    TitleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    TitleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = MainFrame
     
     local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Size = UDim2.new(0.7, 0, 1, 0)
+    TitleLabel.Size = UDim2.new(1, -90, 1, 0)
     TitleLabel.Position = UDim2.new(0, 5, 0, 0)
     TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Text = title or "UI Library"
+    TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.TextSize = 16
     TitleLabel.Font = Enum.Font.SourceSansBold
@@ -31,683 +31,304 @@ function UILibrary:CreateWindow(title, size)
     TitleLabel.Parent = TitleBar
     
     -- 搜索按钮
-    local SearchButton = Instance.new("ImageButton")
-    SearchButton.Size = UDim2.new(0, 25, 0, 25)
-    SearchButton.Position = UDim2.new(0.75, -30, 0, 2)
-    SearchButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    SearchButton.Image = "rbxassetid://10734950009"
+    local SearchButton = Instance.new("TextButton")
+    SearchButton.Size = UDim2.new(0, 30, 0, 30)
+    SearchButton.Position = UDim2.new(1, -90, 0, 0)
+    SearchButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+    SearchButton.Text = "🔍"
+    SearchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SearchButton.TextSize = 14
+    SearchButton.Font = Enum.Font.SourceSans
     SearchButton.Parent = TitleBar
     SearchButton.MouseButton1Click:Connect(function()
-        print("Search button clicked!")
+        print("搜索功能待实现")
     end)
     
     -- 缩小按钮
-    local MinimizeButton = Instance.new("ImageButton")
-    MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
-    MinimizeButton.Position = UDim2.new(0.85, -30, 0, 2)
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    MinimizeButton.Image = "rbxassetid://10709816788"
+    local MinimizeButton = Instance.new("TextButton")
+    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+    MinimizeButton.Position = UDim2.new(1, -60, 0, 0)
+    MinimizeButton.BackgroundColor3 = Color3.fromRGB(200, 200, 50)
+    MinimizeButton.Text = "-"
+    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeButton.TextSize = 14
+    MinimizeButton.Font = Enum.Font.SourceSans
     MinimizeButton.Parent = TitleBar
     
     -- 关闭按钮
-    local CloseButton = Instance.new("ImageButton")
-    CloseButton.Size = UDim2.new(0, 25, 0, 25)
-    CloseButton.Position = UDim2.new(0.95, -30, 0, 2)
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Size = UDim2.new(0, 30, 0, 30)
+    CloseButton.Position = UDim2.new(1, -30, 0, 0)
     CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    CloseButton.Image = "rbxassetid://10709815940"
+    CloseButton.Text = "X"
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextSize = 14
+    CloseButton.Font = Enum.Font.SourceSans
     CloseButton.Parent = TitleBar
     CloseButton.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
     end)
     
-    -- 优化拖拽功能（支持 PC 和手机）
-    local UserInputService = game:GetService("UserInputService")
-    local dragging = false
-    local dragStart, startPos
+    local ContentFrame = Instance.new("Frame")
+    ContentFrame.Size = UDim2.new(1, 0, 1, -30)
+    ContentFrame.Position = UDim2.new(0, 0, 0, 30)
+    ContentFrame.BackgroundTransparency = 1
+    ContentFrame.Parent = MainFrame
     
-    -- PC 拖拽
+    -- 拖动功能
+    local dragging, dragInput, dragStart, startPos
     TitleBar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             dragStart = input.Position
             startPos = MainFrame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
         end
     end)
     
-    TitleBar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-            MainFrame:TweenPosition(MainFrame.Position, "Out", "Quad", 0.1, true)
+    TitleBar.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
         end
     end)
     
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
             local delta = input.Position - dragStart
-            local newPos = UDim2.new(
-                startPos.X.Scale, math.clamp(startPos.X.Offset + delta.X, -MainFrame.Size.X.Offset, game.Workspace.CurrentCamera.ViewportSize.X - MainFrame.Size.X.Offset),
-                startPos.Y.Scale, math.clamp(startPos.Y.Offset + delta.Y, -30, game.Workspace.CurrentCamera.ViewportSize.Y - MainFrame.Size.Y.Offset)
-            )
-            MainFrame:TweenPosition(newPos, "Out", "Quad", 0.05, true)
+            MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
     
-    -- 手机拖拽
-    TitleBar.TouchStarted:Connect(function(touch)
-        dragging = true
-        dragStart = touch.Position
-        startPos = MainFrame.Position
-    end)
-    
-    TitleBar.TouchEnded:Connect(function()
-        dragging = false
-        MainFrame:TweenPosition(MainFrame.Position, "Out", "Quad", 0.1, true)
-    end)
-    
-    TitleBar.TouchMoved:Connect(function(touch)
-        if dragging then
-            local delta = touch.Position - dragStart
-            local newPos = UDim2.new(
-                startPos.X.Scale, math.clamp(startPos.X.Offset + delta.X, -MainFrame.Size.X.Offset, game.Workspace.CurrentCamera.ViewportSize.X - MainFrame.Size.X.Offset),
-                startPos.Y.Scale, math.clamp(startPos.Y.Offset + delta.Y, -30, game.Workspace.CurrentCamera.ViewportSize.Y - MainFrame.Size.Y.Offset)
-            )
-            MainFrame:TweenPosition(newPos, "Out", "Quad", 0.05, true)
-        end
-    end)
-    
-    -- 缩小逻辑和渐变边框
-    local minimized = false
+    -- 缩小功能与渐变边框
+    local isMinimized = false
     MinimizeButton.MouseButton1Click:Connect(function()
-        minimized = not minimized
-        if minimized then
-            MainFrame:TweenSize(UDim2.new(0, 300, 0, 30), "Out", "Quad", 0.3, true)
-            local Gradient = Instance.new("UIGradient")
-            Gradient.Color = ColorSequence.new{
-                ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))
-            }
-            Gradient.Parent = MainFrame
+        isMinimized = not isMinimized
+        if isMinimized then
+            ContentFrame.Visible = false
+            MainFrame.Size = UDim2.new(0, 300, 0, 30)
             MainFrame.BorderSizePixel = 2
+            MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 255) -- 渐变起始颜色
+            -- 简单模拟渐变效果
+            spawn(function()
+                while isMinimized do
+                    for i = 0, 255, 5 do
+                        MainFrame.BorderColor3 = Color3.fromRGB(i, 255 - i, 255)
+                        wait(0.05)
+                    end
+                end
+            end)
         else
-            MainFrame:TweenSize(size or UDim2.new(0, 300, 0, 200), "Out", "Quad", 0.3, true)
-            if MainFrame:FindFirstChild("UIGradient") then
-                MainFrame.UIGradient:Destroy()
-            end
+            ContentFrame.Visible = true
+            MainFrame.Size = UDim2.new(0, 300, 0, 400)
             MainFrame.BorderSizePixel = 0
         end
     end)
     
-    local Window = {Frame = MainFrame}
+    local window = { Frame = MainFrame, Content = ContentFrame, Elements = {} }
     
-    -- 按钮
-    function Window:AddButton(text, callback)
+    -- 添加按钮
+    function window:AddButton(text, callback)
         local Button = Instance.new("TextButton")
-        Button.Size = UDim2.new(0, 100, 0, 25)
-        Button.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
+        Button.Size = UDim2.new(1, -10, 0, 30)
+        Button.Position = UDim2.new(0, 5, 0, #window.Elements * 35 + 5)
         Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        Button.Text = text or "Button"
+        Button.Text = text
         Button.TextColor3 = Color3.fromRGB(255, 255, 255)
         Button.TextSize = 14
         Button.Font = Enum.Font.SourceSans
-        Button.Parent = MainFrame
-        
-        Button.MouseEnter:Connect(function()
-            Button:TweenSize(UDim2.new(0, 105, 0, 25), "Out", "Quad", 0.1, true)
-        end)
-        Button.MouseLeave:Connect(function()
-            Button:TweenSize(UDim2.new(0, 100, 0, 25), "Out", "Quad", 0.1, true)
-        end)
-        
-        Button.MouseButton1Click:Connect(callback or function() print("Button clicked!") end)
-        return Button
+        Button.Parent = ContentFrame
+        Button.MouseButton1Click:Connect(callback)
+        table.insert(window.Elements, Button)
     end
     
-    -- 标签
-    function Window:AddLabel(text)
-        local Label = Instance.new("TextLabel")
-        Label.Size = UDim2.new(0, 200, 0, 25)
-        Label.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        Label.BackgroundTransparency = 1
-        Label.Text = text or "Label"
-        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Label.TextSize = 14
-        Label.Font = Enum.Font.SourceSans
-        Label.TextXAlignment = Enum.TextXAlignment.Left
-        Label.Parent = MainFrame
-        
-        Label.TextTransparency = 1
-        spawn(function()
-            for i = 1, 0, -0.05 do
-                Label.TextTransparency = i
-                wait(0.01)
-            end
-        end)
-        return Label
-    end
-    
-    -- 开关
-    function Window:AddToggle(text, callback)
+    -- 添加开关
+    function window:AddToggle(text, default, callback)
         local ToggleFrame = Instance.new("Frame")
-        ToggleFrame.Size = UDim2.new(0, 100, 0, 25)
-        ToggleFrame.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
+        ToggleFrame.Size = UDim2.new(1, -10, 0, 30)
+        ToggleFrame.Position = UDim2.new(0, 5, 0, #window.Elements * 35 + 5)
         ToggleFrame.BackgroundTransparency = 1
-        ToggleFrame.Parent = MainFrame
+        ToggleFrame.Parent = ContentFrame
         
-        local ToggleButton = Instance.new("Frame")
-        ToggleButton.Size = UDim2.new(0, 40, 0, 20)
-        ToggleButton.Position = UDim2.new(0, 60, 0, 2)
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        local ToggleLabel = Instance.new("TextLabel")
+        ToggleLabel.Size = UDim2.new(1, -40, 1, 0)
+        ToggleLabel.BackgroundTransparency = 1
+        ToggleLabel.Text = text
+        ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ToggleLabel.TextSize = 14
+        ToggleLabel.Font = Enum.Font.SourceSans
+        ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+        ToggleLabel.Parent = ToggleFrame
+        
+        local ToggleButton = Instance.new("TextButton")
+        ToggleButton.Size = UDim2.new(0, 30, 0, 20)
+        ToggleButton.Position = UDim2.new(1, -30, 0, 5)
+        ToggleButton.BackgroundColor3 = default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        ToggleButton.Text = ""
         ToggleButton.Parent = ToggleFrame
         
-        local ToggleCircle = Instance.new("Frame")
-        ToggleCircle.Size = UDim2.new(0, 16, 0, 16)
-        ToggleCircle.Position = UDim2.new(0, 2, 0, 2)
-        ToggleCircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ToggleCircle.Parent = ToggleButton
-        local Corner = Instance.new("UICorner")
-        Corner.CornerRadius = UDim.new(0, 8)
-        Corner.Parent = ToggleCircle
-        Corner:Clone().Parent = ToggleButton
-        
-        local Label = Instance.new("TextLabel")
-        Label.Size = UDim2.new(0, 50, 0, 25)
-        Label.Position = UDim2.new(0, 0, 0, 0)
-        Label.BackgroundTransparency = 1
-        Label.Text = text or "Toggle"
-        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Label.TextSize = 14
-        Label.TextXAlignment = Enum.TextXAlignment.Left
-        Label.Parent = ToggleFrame
-        
-        local state = false
-        ToggleButton.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                state = not state
-                if state then
-                    ToggleButton:TweenSizeAndPosition(
-                        UDim2.new(0, 40, 0, 20), UDim2.new(0, 60, 0, 2),
-                        "Out", "Quad", 0.2, true
-                    )
-                    ToggleCircle:TweenPosition(UDim2.new(0, 22, 0, 2), "Out", "Quad", 0.2, true)
-                    ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-                else
-                    ToggleButton:TweenSizeAndPosition(
-                        UDim2.new(0, 40, 0, 20), UDim2.new(0, 60, 0, 2),
-                        "Out", "Quad", 0.2, true
-                    )
-                    ToggleCircle:TweenPosition(UDim2.new(0, 2, 0, 2), "Out", "Quad", 0.2, true)
-                    ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-                end
-                if callback then callback(state) end
-            end
+        local state = default
+        ToggleButton.MouseButton1Click:Connect(function()
+            state = not state
+            ToggleButton.BackgroundColor3 = state and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+            callback(state)
         end)
-        return ToggleFrame
+        table.insert(window.Elements, ToggleFrame)
     end
     
-    -- 下拉菜单
-    function Window:AddDropdown(options, callback)
+    -- 添加下拉菜单（使用 Roblox 内置资产）
+    function window:AddDropdown(text, options, callback)
         local DropdownFrame = Instance.new("Frame")
-        DropdownFrame.Size = UDim2.new(0, 120, 0, 25)
-        DropdownFrame.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        DropdownFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        DropdownFrame.Parent = MainFrame
+        DropdownFrame.Size = UDim2.new(1, -10, 0, 30)
+        DropdownFrame.Position = UDim2.new(0, 5, 0, #window.Elements * 35 + 5)
+        DropdownFrame.BackgroundTransparency = 1
+        DropdownFrame.Parent = ContentFrame
         
-        local SelectedLabel = Instance.new("TextLabel")
-        SelectedLabel.Size = UDim2.new(1, -25, 1, 0)
-        SelectedLabel.BackgroundTransparency = 1
-        SelectedLabel.Text = options[1] or "Select"
-        SelectedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        SelectedLabel.TextSize = 14
-        SelectedLabel.TextXAlignment = Enum.TextXAlignment.Left
-        SelectedLabel.Parent = DropdownFrame
+        local DropdownButton = Instance.new("TextButton")
+        DropdownButton.Size = UDim2.new(1, 0, 0, 30)
+        DropdownButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        DropdownButton.Text = text .. ": " .. options[1]
+        DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        DropdownButton.TextSize = 14
+        DropdownButton.Font = Enum.Font.SourceSans
+        DropdownButton.Parent = DropdownFrame
         
-        local DropButton = Instance.new("ImageButton")
-        DropButton.Size = UDim2.new(0, 25, 0, 25)
-        DropButton.Position = UDim2.new(1, -25, 0, 0)
-        DropButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-        DropButton.Image = "rbxassetid://10709813243"
-        DropButton.Parent = DropdownFrame
-        
-        local OptionList = Instance.new("Frame")
-        OptionList.Size = UDim2.new(1, 0, 0, 0)
-        OptionList.Position = UDim2.new(0, 0, 1, 0)
-        OptionList.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        OptionList.ClipsDescendants = true
-        OptionList.Visible = true
-        OptionList.Parent = DropdownFrame
+        local DropdownList = Instance.new("ScrollingFrame")
+        DropdownList.Size = UDim2.new(1, 0, 0, 100)
+        DropdownList.Position = UDim2.new(0, 0, 1, 0)
+        DropdownList.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        DropdownList.BorderSizePixel = 0
+        DropdownList.Visible = false
+        DropdownList.CanvasSize = UDim2.new(0, 0, 0, #options * 30)
+        DropdownList.Parent = DropdownFrame
         
         local isOpen = false
-        for i, option in pairs(options) do
+        DropdownButton.MouseButton1Click:Connect(function()
+            isOpen = not isOpen
+            DropdownList.Visible = isOpen
+        end)
+        
+        for i, option in ipairs(options) do
             local OptionButton = Instance.new("TextButton")
-            OptionButton.Size = UDim2.new(1, 0, 0, 25)
-            OptionButton.Position = UDim2.new(0, 0, 0, (i-1) * 25)
+            OptionButton.Size = UDim2.new(1, 0, 0, 30)
+            OptionButton.Position = UDim2.new(0, 0, 0, (i - 1) * 30)
             OptionButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            OptionButton.Text = " " .. option
+            OptionButton.Text = option
             OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             OptionButton.TextSize = 14
-            OptionButton.TextXAlignment = Enum.TextXAlignment.Left
-            OptionButton.Parent = OptionList
+            OptionButton.Font = Enum.Font.SourceSans
+            OptionButton.Parent = DropdownList
             OptionButton.MouseButton1Click:Connect(function()
-                SelectedLabel.Text = option
+                DropdownButton.Text = text .. ": " .. option
+                DropdownList.Visible = false
                 isOpen = false
-                OptionList:TweenSize(UDim2.new(1, 0, 0, 0), "Out", "Quad", 0.2, true)
-                if callback then callback(option) end
-            end)
-            OptionButton.MouseEnter:Connect(function()
-                OptionButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-            end)
-            OptionButton.MouseLeave:Connect(function()
-                OptionButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                callback(option)
             end)
         end
-        
-        DropButton.MouseButton1Click:Connect(function()
-            isOpen = not isOpen
-            if isOpen then
-                OptionList:TweenSize(UDim2.new(1, 0, 0, #options * 25), "Out", "Quad", 0.2, true)
-            else
-                OptionList:TweenSize(UDim2.new(1, 0, 0, 0), "Out", "Quad", 0.2, true)
-            end
-        end)
-        return DropdownFrame
+        table.insert(window.Elements, DropdownFrame)
     end
     
-    -- 颜色选择器
-    function Window:AddColorPicker(callback)
-        local PickerFrame = Instance.new("Frame")
-        PickerFrame.Size = UDim2.new(0, 100, 0, 25)
-        PickerFrame.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        PickerFrame.BackgroundTransparency = 1
-        PickerFrame.Parent = MainFrame
+    -- 添加滑块
+    function window:AddSlider(text, min, max, default, callback)
+        local SliderFrame = Instance.new("Frame")
+        SliderFrame.Size = UDim2.new(1, -10, 0, 30)
+        SliderFrame.Position = UDim2.new(0, 5, 0, #window.Elements * 35 + 5)
+        SliderFrame.BackgroundTransparency = 1
+        SliderFrame.Parent = ContentFrame
         
-        local ColorDisplay = Instance.new("Frame")
-        ColorDisplay.Size = UDim2.new(0, 25, 0, 25)
-        ColorDisplay.Position = UDim2.new(0, 75, 0, 0)
-        ColorDisplay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ColorDisplay.Parent = PickerFrame
-        local Corner = Instance.new("UICorner")
-        Corner.CornerRadius = UDim.new(0, 4)
-        Corner.Parent = ColorDisplay
+        local SliderLabel = Instance.new("TextLabel")
+        SliderLabel.Size = UDim2.new(0, 100, 1, 0)
+        SliderLabel.BackgroundTransparency = 1
+        SliderLabel.Text = text .. ": " .. default
+        SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        SliderLabel.TextSize = 14
+        SliderLabel.Font = Enum.Font.SourceSans
+        SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
+        SliderLabel.Parent = SliderFrame
         
-        local Label = Instance.new("TextLabel")
-        Label.Size = UDim2.new(0, 60, 0, 25)
-        Label.BackgroundTransparency = 1
-        Label.Text = "Color"
-        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Label.TextSize = 14
-        Label.TextXAlignment = Enum.TextXAlignment.Left
-        Label.Parent = PickerFrame
+        local SliderBar = Instance.new("Frame")
+        SliderBar.Size = UDim2.new(0, 150, 0, 10)
+        SliderBar.Position = UDim2.new(1, -150, 0, 10)
+        SliderBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        SliderBar.Parent = SliderFrame
         
-        ColorDisplay.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                local r = math.random(0, 255)
-                local g = math.random(0, 255)
-                local b = math.random(0, 255)
-                local newColor = Color3.fromRGB(r, g, b)
-                ColorDisplay:TweenSizeAndPosition(
-                    UDim2.new(0, 30, 0, 30), UDim2.new(0, 70, 0, -2),
-                    "Out", "Quad", 0.1, true,
-                    function()
-                        ColorDisplay:TweenSizeAndPosition(
-                            UDim2.new(0, 25, 0, 25), UDim2.new(0, 75, 0, 0),
-                            "Out", "Quad", 0.1, true
-                        )
-                    end
-                )
-                ColorDisplay.BackgroundColor3 = newColor
-                if callback then callback(newColor) end
+        local SliderKnob = Instance.new("Frame")
+        SliderKnob.Size = UDim2.new(0, 10, 0, 20)
+        SliderKnob.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+        SliderKnob.Position = UDim2.new((default - min) / (max - min), 0, -0.5, 0)
+        SliderKnob.Parent = SliderBar
+        
+        local draggingSlider
+        SliderKnob.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                draggingSlider = true
             end
         end)
-        return PickerFrame
+        
+        SliderKnob.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                draggingSlider = false
+            end
+        end)
+        
+        game:GetService("UserInputService").InputChanged:Connect(function(input)
+            if draggingSlider and input.UserInputType == Enum.UserInputType.MouseMovement then
+                local relativeX = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
+                SliderKnob.Position = UDim2.new(relativeX, 0, -0.5, 0)
+                local value = math.floor(min + (max - min) * relativeX)
+                SliderLabel.Text = text .. ": " .. value
+                callback(value)
+            end
+        end)
+        table.insert(window.Elements, SliderFrame)
     end
     
-    return Window
+    -- 添加颜色选择器
+    function window:AddColorPicker(text, defaultColor, callback)
+        local ColorFrame = Instance.new("Frame")
+        ColorFrame.Size = UDim2.new(1, -10, 0, 30)
+        ColorFrame.Position = UDim2.new(0, 5, 0, #window.Elements * 35 + 5)
+        ColorFrame.BackgroundTransparency = 1
+        ColorFrame.Parent = ContentFrame
+        
+        local ColorLabel = Instance.new("TextLabel")
+        ColorLabel.Size = UDim2.new(1, -40, 1, 0)
+        ColorLabel.BackgroundTransparency = 1
+        ColorLabel.Text = text
+        ColorLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ColorLabel.TextSize = 14
+        ColorLabel.Font = Enum.Font.SourceSans
+        ColorLabel.TextXAlignment = Enum.TextXAlignment.Left
+        ColorLabel.Parent = ColorFrame
+        
+        local ColorButton = Instance.new("TextButton")
+        ColorButton.Size = UDim2.new(0, 30, 0, 30)
+        ColorButton.Position = UDim2.new(1, -30, 0, 0)
+        ColorButton.BackgroundColor3 = defaultColor
+        ColorButton.Text = ""
+        ColorButton.Parent = ColorFrame
+        
+        ColorButton.MouseButton1Click:Connect(function()
+            -- 简单颜色选择（这里仅模拟，实际需要更复杂的颜色选择器UI）
+            local newColor = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+            ColorButton.BackgroundColor3 = newColor
+            callback(newColor)
+        end)
+        table.insert(window.Elements, ColorFrame)
+    end
+    
+    return window
 end
 
 -- 示例使用
-local MyUI = UILibrary:CreateWindow("My UI Library", UDim2.new(0, 300, 0, 300))
-MyUI:AddLabel("Welcome to the UI Library!")
-MyUI:AddButton("Click Me", function()
-    print("Button clicked!")
-end)
-MyUI:AddToggle("Toggle Me", function(state)
-    print("Toggle state: " .. tostring(state))
-end)
-MyUI:AddDropdown({"Option 1", "Option 2", "Option 3"}, function(selected)
-    print("Selected: " .. selected)
-end)
-MyUI:AddColorPicker(function(color)
-    print("Color picked: " .. tostring(color))
-end)
-
-return UILibrary    SearchButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    SearchButton.Image = "rbxassetid://10734950009"
-    SearchButton.Parent = TitleBar
-    SearchButton.MouseButton1Click:Connect(function()
-        print("Search button clicked!")
-    end)
-    
-    -- 缩小按钮（内置减号图标）
-    local MinimizeButton = Instance.new("ImageButton")
-    MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
-    MinimizeButton.Position = UDim2.new(0.85, -30, 0, 2)
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    MinimizeButton.Image = "rbxassetid://10709816788"
-    MinimizeButton.Parent = TitleBar
-    
-    -- 关闭按钮（内置 X 图标）
-    local CloseButton = Instance.new("ImageButton")
-    CloseButton.Size = UDim2.new(0, 25, 0, 25)
-    CloseButton.Position = UDim2.new(0.95, -30, 0, 2)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    CloseButton.Image = "rbxassetid://10709815940"
-    CloseButton.Parent = TitleBar
-    CloseButton.MouseButton1Click:Connect(function()
-        ScreenGui:Destroy()
-    end)
-    
-    -- 优化后的拖拽功能（支持 PC 和手机）
-    local UserInputService = game:GetService("UserInputService")
-    local dragging = false
-    local dragStart, startPos
-    
-    -- PC 拖拽
-    TitleBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = MainFrame.Position
-        end
-    end)
-    
-    TitleBar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
-    
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local delta = input.Position - dragStart
-            local newPos = UDim2.new(
-                startPos.X.Scale, startPos.X.Offset + delta.X,
-                startPos.Y.Scale, startPos.Y.Offset + delta.Y
-            )
-            -- 平滑移动
-            MainFrame:TweenPosition(newPos, "Out", "Quad", 0.1, true)
-        end
-    end)
-    
-    -- 手机拖拽
-    TitleBar.TouchStarted:Connect(function(touch)
-        dragging = true
-        dragStart = touch.Position
-        startPos = MainFrame.Position
-    end)
-    
-    TitleBar.TouchEnded:Connect(function()
-        dragging = false
-    end)
-    
-    TitleBar.TouchMoved:Connect(function(touch)
-        if dragging then
-            local delta = touch.Position - dragStart
-            local newPos = UDim2.new(
-                startPos.X.Scale, startPos.X.Offset + delta.X,
-                startPos.Y.Scale, startPos.Y.Offset + delta.Y
-            )
-            -- 平滑移动
-            MainFrame:TweenPosition(newPos, "Out", "Quad", 0.1, true)
-        end
-    end)
-    
-    -- 缩小逻辑和渐变边框
-    local minimized = false
-    MinimizeButton.MouseButton1Click:Connect(function()
-        minimized = not minimized
-        if minimized then
-            MainFrame:TweenSize(UDim2.new(0, 300, 0, 30), "Out", "Quad", 0.3, true)
-            local Gradient = Instance.new("UIGradient")
-            Gradient.Color = ColorSequence.new{
-                ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))
-            }
-            Gradient.Parent = MainFrame
-            MainFrame.BorderSizePixel = 2
-        else
-            MainFrame:TweenSize(size or UDim2.new(0, 300, 0, 200), "Out", "Quad", 0.3, true)
-            if MainFrame:FindFirstChild("UIGradient") then
-                MainFrame.UIGradient:Destroy()
-            end
-            MainFrame.BorderSizePixel = 0
-        end
-    end)
-    
-    local Window = {Frame = MainFrame}
-    
-    -- 优化后的按钮
-    function Window:AddButton(text, callback)
-        local Button = Instance.new("TextButton")
-        Button.Size = UDim2.new(0, 100, 0, 25)
-        Button.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        Button.Text = text or "Button"
-        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Button.TextSize = 14
-        Button.Font = Enum.Font.SourceSans
-        Button.Parent = MainFrame
-        
-        Button.MouseEnter:Connect(function()
-            Button:TweenSize(UDim2.new(0, 105, 0, 25), "Out", "Quad", 0.1, true)
-        end)
-        Button.MouseLeave:Connect(function()
-            Button:TweenSize(UDim2.new(0, 100, 0, 25), "Out", "Quad", 0.1, true)
-        end)
-        
-        Button.MouseButton1Click:Connect(callback or function() print("Button clicked!") end)
-        return Button
-    end
-    
-    -- 优化后的标签
-    function Window:AddLabel(text)
-        local Label = Instance.new("TextLabel")
-        Label.Size = UDim2.new(0, 200, 0, 25)
-        Label.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        Label.BackgroundTransparency = 1
-        Label.Text = text or "Label"
-        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Label.TextSize = 14
-        Label.Font = Enum.Font.SourceSans
-        Label.TextXAlignment = Enum.TextXAlignment.Left
-        Label.Parent = MainFrame
-        
-        Label.TextTransparency = 1
-        spawn(function()
-            for i = 1, 0, -0.05 do
-                Label.TextTransparency = i
-                wait(0.01)
-            end
-        end)
-        return Label
-    end
-    
-    -- 优化后的开关
-    function Window:AddToggle(text, callback)
-        local ToggleFrame = Instance.new("Frame")
-        ToggleFrame.Size = UDim2.new(0, 100, 0, 25)
-        ToggleFrame.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        ToggleFrame.BackgroundTransparency = 1
-        ToggleFrame.Parent = MainFrame
-        
-        local ToggleButton = Instance.new("Frame")
-        ToggleButton.Size = UDim2.new(0, 40, 0, 20)
-        ToggleButton.Position = UDim2.new(0, 60, 0, 2)
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-        ToggleButton.Parent = ToggleFrame
-        
-        local ToggleCircle = Instance.new("Frame")
-        ToggleCircle.Size = UDim2.new(0, 16, 0, 16)
-        ToggleCircle.Position = UDim2.new(0, 2, 0, 2)
-        ToggleCircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ToggleCircle.Parent = ToggleButton
-        local Corner = Instance.new("UICorner")
-        Corner.CornerRadius = UDim.new(0, 8)
-        Corner.Parent = ToggleCircle
-        Corner:Clone().Parent = ToggleButton
-        
-        local Label = Instance.new("TextLabel")
-        Label.Size = UDim2.new(0, 50, 0, 25)
-        Label.Position = UDim2.new(0, 0, 0, 0)
-        Label.BackgroundTransparency = 1
-        Label.Text = text or "Toggle"
-        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Label.TextSize = 14
-        Label.TextXAlignment = Enum.TextXAlignment.Left
-        Label.Parent = ToggleFrame
-        
-        local state = false
-        ToggleButton.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                state = not state
-                if state then
-                    ToggleButton:TweenSizeAndPosition(
-                        UDim2.new(0, 40, 0, 20), UDim2.new(0, 60, 0, 2),
-                        "Out", "Quad", 0.2, true
-                    )
-                    ToggleCircle:TweenPosition(UDim2.new(0, 22, 0, 2), "Out", "Quad", 0.2, true)
-                    ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-                else
-                    ToggleButton:TweenSizeAndPosition(
-                        UDim2.new(0, 40, 0, 20), UDim2.new(0, 60, 0, 2),
-                        "Out", "Quad", 0.2, true
-                    )
-                    ToggleCircle:TweenPosition(UDim2.new(0, 2, 0, 2), "Out", "Quad", 0.2, true)
-                    ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-                end
-                if callback then callback(state) end
-            end
-        end)
-        return ToggleFrame
-    end
-    
-    -- 优化后的下拉菜单
-    function Window:AddDropdown(options, callback)
-        local DropdownFrame = Instance.new("Frame")
-        DropdownFrame.Size = UDim2.new(0, 120, 0, 25)
-        DropdownFrame.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        DropdownFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        DropdownFrame.Parent = MainFrame
-        
-        local SelectedLabel = Instance.new("TextLabel")
-        SelectedLabel.Size = UDim2.new(1, -25, 1, 0)
-        SelectedLabel.BackgroundTransparency = 1
-        SelectedLabel.Text = options[1] or "Select"
-        SelectedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        SelectedLabel.TextSize = 14
-        SelectedLabel.TextXAlignment = Enum.TextXAlignment.Left
-        SelectedLabel.Parent = DropdownFrame
-        
-        local DropButton = Instance.new("ImageButton")
-        DropButton.Size = UDim2.new(0, 25, 0, 25)
-        DropButton.Position = UDim2.new(1, -25, 0, 0)
-        DropButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-        DropButton.Image = "rbxassetid://10709813243"
-        DropButton.Parent = DropdownFrame
-        
-        local OptionList = Instance.new("Frame")
-        OptionList.Size = UDim2.new(1, 0, 0, 0)
-        OptionList.Position = UDim2.new(0, 0, 1, 0)
-        OptionList.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        OptionList.ClipsDescendants = true
-        OptionList.Visible = true
-        OptionList.Parent = DropdownFrame
-        
-        local isOpen = false
-        for i, option in pairs(options) do
-            local OptionButton = Instance.new("TextButton")
-            OptionButton.Size = UDim2.new(1, 0, 0, 25)
-            OptionButton.Position = UDim2.new(0, 0, 0, (i-1) * 25)
-            OptionButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            OptionButton.Text = " " .. option
-            OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            OptionButton.TextSize = 14
-            OptionButton.TextXAlignment = Enum.TextXAlignment.Left
-            OptionButton.Parent = OptionList
-            OptionButton.MouseButton1Click:Connect(function()
-                SelectedLabel.Text = option
-                isOpen = false
-                OptionList:TweenSize(UDim2.new(1, 0, 0, 0), "Out", "Quad", 0.2, true)
-                if callback then callback(option) end
-            end)
-            OptionButton.MouseEnter:Connect(function()
-                OptionButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-            end)
-            OptionButton.MouseLeave:Connect(function()
-                OptionButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            end)
-        end
-        
-        DropButton.MouseButton1Click:Connect(function()
-            isOpen = not isOpen
-            if isOpen then
-                OptionList:TweenSize(UDim2.new(1, 0, 0, #options * 25), "Out", "Quad", 0.2, true)
-            else
-                OptionList:TweenSize(UDim2.new(1, 0, 0, 0), "Out", "Quad", 0.2, true)
-            end
-        end)
-        return DropdownFrame
-    end
-    
-    -- 优化后的颜色选择器
-    function Window:AddColorPicker(callback)
-        local PickerFrame = Instance.new("Frame")
-        PickerFrame.Size = UDim2.new(0, 100, 0, 25)
-        PickerFrame.Position = UDim2.new(0, 10, 0, #MainFrame:GetChildren() * 35 - 30)
-        PickerFrame.BackgroundTransparency = 1
-        PickerFrame.Parent = MainFrame
-        
-        local ColorDisplay = Instance.new("Frame")
-        ColorDisplay.Size = UDim2.new(0, 25, 0, 25)
-        ColorDisplay.Position = UDim2.new(0, 75, 0, 0)
-        ColorDisplay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ColorDisplay.Parent = PickerFrame
-        local Corner = Instance.new("UICorner")
-        Corner.CornerRadius = UDim.new(0, 4)
-        Corner.Parent = ColorDisplay
-        
-        local Label = Instance.new("TextLabel")
-        Label.Size = UDim2.new(0, 60, 0, 25)
-        Label.BackgroundTransparency = 1
-        Label.Text = "Color"
-        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Label.TextSize = 14
-        Label.TextXAlignment = Enum.TextXAlignment.Left
-        Label.Parent = PickerFrame
-        
-        ColorDisplay.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                local r = math.random(0, 255)
-                local g = math.random(0, 255)
-                local b = math.random(0, 255)
-                local newColor = Color3.fromRGB(r, g, b)
-                ColorDisplay:TweenSizeAndPosition(
-                    UDim2.new(0, 30, 0, 30), UDim2.new(0, 70, 0, -2),
-                    "Out", "Quad", 0.1, true,
-                    function()
-                        ColorDisplay:TweenSizeAndPosition(
-                            UDim2.new(0, 25, 0, 25), UDim2.new(0, 75, 0, 0),
-                            "Out", "Quad", 0.1, true
-                        )
-                    end
-                )
-                ColorDisplay.BackgroundColor3 = newColor
-                if callback then callback(newColor) end
-            end
-        end)
-        return PickerFrame
-    end
-    
-    return Window
-end
+local UI = UILibrary:CreateWindow("自定义UI示例")
+UI:AddButton("点击我", function() print("按钮被点击!") end)
+UI:AddToggle("开关", false, function(state) print("开关状态: " .. tostring(state)) end)
+UI:AddDropdown("选择", {"选项1", "选项2", "选项3"}, function(option) print("选择了: " .. option) end)
+UI:AddSlider("速度", 0, 100, 50, function(value) print("滑块值: " .. value) end)
+UI:AddColorPicker("颜色", Color3.fromRGB(255, 0, 0), function(color) print("颜色: " .. tostring(color)) end)
 
 return UILibrary
