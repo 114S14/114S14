@@ -1,537 +1,445 @@
-local UILibrary = {}
-UILibrary.__index = UILibrary
-
 -- 服务
-local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
+local players = game:GetService("Players")
+local tweenService = game:GetService("TweenService")
+local input = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+local coreGui = game:GetService("CoreGui")
+local uis = game:GetService("UserInputService")
 
--- 创建主UI
-function UILibrary.new(title)
-    local self = setmetatable({}, UILibrary)
-    
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = "CustomUI"
-    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    
-    local MainFrame = Instance.new("Frame")
-    MainFrame.Size = UDim2.new(0, 600, 0, 400)
-    MainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
-    MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    MainFrame.BorderSizePixel = 0
-    MainFrame.Parent = ScreenGui
-    
-    local dragging, dragInput, dragStart, startPos
-    MainFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = MainFrame.Position
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-    
-    MainFrame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
-            local delta = input.Position - dragStart
-            MainFrame.Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
-        end
-    end)
-    
-    local TitleBar = Instance.new("Frame")
-    TitleBar.Size = UDim2.new(1, 0, 0, 30)
-    TitleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    TitleBar.Parent = MainFrame
-    
-    local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Size = UDim2.new(1, -60, 1, 0)
-    TitleLabel.Position = UDim2.new(0, 10, 0, 0)
-    TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Text = title
-    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.TextSize = 16
-    TitleLabel.Parent = TitleBar
-    
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Size = UDim2.new(0, 30, 0, 30)
-    CloseButton.Position = UDim2.new(1, -30, 0, 0)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.Parent = TitleBar
-    
-    local TabFrame = Instance.new("Frame")
-    TabFrame.Size = UDim2.new(0, 150, 1, -30)
-    TabFrame.Position = UDim2.new(0, 0, 0, 30)
-    TabFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    TabFrame.Parent = MainFrame
-    
-    local TabList = Instance.new("UIListLayout")
-    TabList.Parent = TabFrame
-    
-    local ContentFrame = Instance.new("Frame")
-    ContentFrame.Size = UDim2.new(1, -150, 1, -30)
-    ContentFrame.Position = UDim2.new(0, 150, 0, 30)
-    ContentFrame.BackgroundTransparency = 1
-    ContentFrame.Parent = MainFrame
-    
-    self.ScreenGui = ScreenGui
-    self.MainFrame = MainFrame
-    self.CloseButton = CloseButton
-    self.TabFrame = TabFrame
-    self.ContentFrame = ContentFrame
-    self.Tabs = {}
-    self.CurrentTab = nil
-    
-    CloseButton.MouseButton1Click:Connect(function()
-        ScreenGui:Destroy()
-    end)
-    
-    local ToggleButton = Instance.new("TextButton")
-    ToggleButton.Size = UDim2.new(0, 50, 0, 50)
-    ToggleButton.Position = UDim2.new(0, 10, 0, 10)
-    ToggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    ToggleButton.Text = "UI"
-    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ToggleButton.Parent = ScreenGui
-    
-    ToggleButton.MouseButton1Click:Connect(function()
-        MainFrame.Visible = not MainFrame.Visible
-    end)
-    
-    return self
+-- 变量
+local lp = players.LocalPlayer
+local viewport = workspace.CurrentCamera.ViewportSize
+local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+-- 检测是否为移动设备
+local isMobile = uis.TouchEnabled and (viewport.X < 1024 or viewport.Y < 768)
+
+-- 基础尺寸
+local BASE_SIZE = isMobile and {Width = 300, Height = 400} or {Width = 525, Height = 318}
+local NAV_WIDTH = isMobile and 80 or 120
+local MIN_SIZE = {Width = 200, Height = 250}
+local MAX_SIZE = {Width = viewport.X * 0.9, Height = viewport.Y * 0.9}
+
+local Library = {}
+
+function Library:validate(defaults, brackets)
+ for i, v in pairs(defaults) do
+ if brackets[i] == nil then
+ brackets[i] = v
+ end
+ end
+ return brackets
 end
 
--- 创建Tab
-function UILibrary:AddTab(name)
-    local TabButton = Instance.new("TextButton")
-    TabButton.Size = UDim2.new(1, 0, 0, 40)
-    TabButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-    TabButton.Text = name
-    TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TabButton.Parent = self.TabFrame
-    
-    local Content = Instance.new("Frame")
-    Content.Size = UDim2.new(1, 0, 1, 0)
-    Content.BackgroundTransparency = 1
-    Content.Visible = false
-    Content.Parent = self.ContentFrame
-    
-    local ListLayout = Instance.new("UIListLayout")
-    ListLayout.Padding = UDim.new(0, 5)
-    ListLayout.Parent = Content
-    
-    self.Tabs[name] = {Button = TabButton, Content = Content}
-    
-    TabButton.MouseButton1Click:Connect(function()
-        if self.CurrentTab then
-            self.Tabs[self.CurrentTab].Content.Visible = false
-            self.Tabs[self.CurrentTab].Button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-        end
-        self.CurrentTab = name
-        Content.Visible = true
-        TabButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    end)
-    
-    if not self.CurrentTab then
-        self.CurrentTab = name
-        Content.Visible = true
-        TabButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    end
+function Library:tween(object, goal, callback)
+ local tween = tweenService:Create(object, tweenInfo, goal)
+ tween.Completed:Connect(callback or function() end)
+ tween:Play()
 end
 
--- 创建带悬浮按钮的控件
-local function CreateHoverButton(parent, textLabel)
-    local HoverButton = Instance.new("TextButton")
-    HoverButton.Size = UDim2.new(0, 20, 0, 20)
-    HoverButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-    HoverButton.Text = "?"
-    HoverButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    HoverButton.Parent = parent
-    
-    local textSize = game:GetService("TextService"):GetTextSize(
-        textLabel.Text,
-        textLabel.TextSize,
-        textLabel.Font,
-        Vector2.new(1000, 1000)
-    )
-    HoverButton.Position = UDim2.new(0, textSize.X + 10, 0, 0)
-    
-    return HoverButton
+function Library:CreateLib(brackets)
+ brackets = Library:validate({
+ name = "PeaCOCK UI Library"
+ }, brackets or {})
+
+ local GUI = {
+ CurrentTab = nil,
+ Tabs = {},
+ CurrentSize = {Width = BASE_SIZE.Width, Height = BASE_SIZE.Height},
+ TouchData = {
+ Dragging = false,
+ Resizing = false,
+ LongPress = false,
+ StartTime = 0,
+ LastPos = nil,
+ InitialPos = nil
+ }
+ }
+
+ -- 主框架/顶部栏
+ do
+ GUI["1"] = Instance.new("ScreenGui", runService:IsStudio() and players.LocalPlayer:WaitForChild("PlayerGui") or coreGui)
+ GUI["1"]["IgnoreGuiInset"] = true
+ GUI["1"]["ResetOnSpawn"] = true
+ GUI["1"]["Name"] = [[Peacock]]
+
+ GUI["6g"] = Instance.new("Frame", GUI["1"])
+ GUI["6g"]["ZIndex"] = 500
+ GUI["6g"]["BorderSizePixel"] = 0
+ GUI["6g"]["BackgroundTransparency"] = 1
+ GUI["6g"]["Size"] = UDim2.new(0, BASE_SIZE.Width, 0, 30)
+ GUI["6g"]["Position"] = UDim2.new(0.5, -BASE_SIZE.Width/2, 0.5, -BASE_SIZE.Height/2)
+ GUI["6g"]["Name"] = [[Drag]]
+ GUI["6g"]["Active"] = true
+
+ -- 调整大小函数
+ local function updateSize(newWidth, newHeight)
+ GUI.CurrentSize.Width = math.clamp(newWidth, MIN_SIZE.Width, MAX_SIZE.Width)
+ GUI.CurrentSize.Height = math.clamp(newHeight, MIN_SIZE.Height, MAX_SIZE.Height)
+ GUI["2"].Size = UDim2.new(0, GUI.CurrentSize.Width, 0, GUI.CurrentSize.Height)
+ GUI["6g"].Size = UDim2.new(0, GUI.CurrentSize.Width, 0, 30)
+ GUI["5"].Size = UDim2.new(0, GUI.CurrentSize.Width, 0, 30)
+ GUI["resizeHandle"].Position = UDim2.new(1, -20, 1, -20)
+ end
+
+ -- 拖拽和缩放处理
+ GUI["6g"].InputBegan:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+ GUI.TouchData.StartTime = tick()
+ GUI.TouchData.LastPos = input.Position
+ GUI.TouchData.InitialPos = GUI["6g"].Position
+ GUI.TouchData.Dragging = true
+ end
+ end)
+
+ GUI["6g"].InputChanged:Connect(function(input)
+ if (input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement) and GUI.TouchData.Dragging then
+ local delta = input.Position - GUI.TouchData.LastPos
+ local newPos = UDim2.new(
+ 0, math.clamp(GUI.TouchData.InitialPos.X.Offset + delta.X, 0, viewport.X - GUI.CurrentSize.Width),
+ 0, math.clamp(GUI.TouchData.InitialPos.Y.Offset + delta.Y, 0, viewport.Y - GUI.CurrentSize.Height)
+ )
+ GUI["6g"].Position = newPos
+ end
+ end)
+
+ GUI["6g"].InputEnded:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+ GUI.TouchData.Dragging = false
+ if tick() - GUI.TouchData.StartTime > 0.5 and not GUI.TouchData.LongPress then
+ GUI.TouchData.LongPress = true
+ print("长按检测到")
+ end
+ GUI.TouchData.LongPress = false
+ end
+ end)
+
+ -- 右下角缩放手柄
+ GUI["resizeHandle"] = Instance.new("Frame", GUI["6g"])
+ GUI["resizeHandle"]["BackgroundColor3"] = Color3.fromRGB(101, 49, 6)
+ GUI["resizeHandle"]["Size"] = UDim2.new(0, 20, 0, 20)
+ GUI["resizeHandle"]["Position"] = UDim2.new(1, -20, 1, -20)
+ GUI["resizeHandle"]["ZIndex"] = 501
+ GUI["resizeHandle"]["Name"] = "ResizeHandle"
+ local corner = Instance.new("UICorner", GUI["resizeHandle"])
+ corner.CornerRadius = UDim.new(0, 4)
+
+ GUI["resizeHandle"].InputBegan:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+ GUI.TouchData.Resizing = true
+ GUI.TouchData.LastPos = input.Position
+ end
+ end)
+
+ GUI["resizeHandle"].InputChanged:Connect(function(input)
+ if (input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement) and GUI.TouchData.Resizing then
+ local delta = input.Position - GUI.TouchData.LastPos
+ updateSize(GUI.CurrentSize.Width + delta.X, GUI.CurrentSize.Height + delta.Y)
+ GUI.TouchData.LastPos = input.Position
+ end
+ end)
+
+ GUI["resizeHandle"].InputEnded:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+ GUI.TouchData.Resizing = false
+ end
+ end)
+
+ -- 隐藏/显示按钮
+ GUI["5e"] = Instance.new("TextButton", GUI["1"])
+ GUI["5e"]["TextSize"] = isMobile and 18 or 15
+ GUI["5e"]["BackgroundColor3"] = Color3.fromRGB(101, 49, 6)
+ GUI["5e"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+ GUI["5e"]["Size"] = isMobile and UDim2.new(0.2, 0, 0.06, 0) or UDim2.new(0.134, 0, 0.034, 0)
+ GUI["5e"]["Name"] = [[HideFrames]]
+ GUI["5e"]["Text"] = [[隐藏/显示]]
+ GUI["5e"]["Font"] = Enum.Font.Ubuntu
+ GUI["5e"]["Position"] = UDim2.new(0.4, 0, 0.02, 0)
+ GUI["5e"].MouseButton1Click:Connect(function()
+ GUI["2"]["Visible"] = not GUI["2"]["Visible"]
+ end)
+ GUI["5e"].TouchTap:Connect(function()
+ GUI["2"]["Visible"] = not GUI["2"]["Visible"]
+ end)
+
+ GUI["5f"] = Instance.new("UICorner", GUI["5e"])
+ GUI["5f"]["CornerRadius"] = UDim.new(0, 4)
+
+ -- 主框架
+ GUI["2"] = Instance.new("Frame", GUI["6g"])
+ GUI["2"]["BackgroundColor3"] = Color3.fromRGB(255, 127, 15)
+ GUI["2"]["Size"] = UDim2.new(0, BASE_SIZE.Width, 0, BASE_SIZE.Height)
+ GUI["2"]["Name"] = [[Main]]
+
+ GUI["3"] = Instance.new("UICorner", GUI["2"])
+ GUI["3"]["CornerRadius"] = UDim.new(0, 6)
+
+ -- 内容容器
+ GUI["1b"] = Instance.new("Frame", GUI["2"])
+ GUI["1b"]["BorderSizePixel"] = 0
+ GUI["1b"]["BackgroundTransparency"] = 1
+ GUI["1b"]["Size"] = UDim2.new(1, -NAV_WIDTH-6, 1, -42)
+ GUI["1b"]["Position"] = UDim2.new(0, NAV_WIDTH+6, 0, 36)
+ GUI["1b"]["Name"] = [[ContentContainer]]
+
+ GUI["4"] = Instance.new("UIPadding", GUI["1b"])
+ GUI["4"]["Padding"] = UDim.new(0, 1)
+
+ -- 顶部栏
+ GUI["5"] = Instance.new("Frame", GUI["2"])
+ GUI["5"]["BackgroundColor3"] = Color3.fromRGB(101, 49, 6)
+ GUI["5"]["Size"] = UDim2.new(0, BASE_SIZE.Width, 0, 30)
+ GUI["5"]["Name"] = [[TopBar]]
+
+ GUI["6"] = Instance.new("UICorner", GUI["5"])
+
+ GUI["8"] = Instance.new("TextLabel", GUI["5"])
+ GUI["8"]["TextXAlignment"] = Enum.TextXAlignment.Left
+ GUI["8"]["BackgroundTransparency"] = 1
+ GUI["8"][" TextSize"] = isMobile and 14 or 17
+ GUI["8"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+ GUI["8"]["Size"] = UDim2.new(0.5, 0, 1, 0)
+ GUI["8"]["Text"] = brackets["name"]
+ GUI["8"]["Font"] = Enum.Font.Gotham
+ GUI["9"] = Instance.new("UIPadding", GUI["8"])
+ GUI["9"]["PaddingLeft"] = UDim.new(0, 8)
+
+ GUI["a"] = Instance.new("ImageButton", GUI["5"])
+ GUI["a"]["Image"] = "rbxassetid://3926305904"
+ GUI["a"]["ImageRectSize"] = Vector2.new(36, 36)
+ GUI["a"]["Size"] = isMobile and UDim2.new(0, 35, 0, 35) or UDim2.new(0, 27, 0, 27)
+ GUI["a"]["Name"] = "Close"
+ GUI["a"]["ImageRectOffset"] = Vector2.new(924, 724)
+ GUI["a"]["BackgroundTransparency"] = 1
+ GUI["a"]["Position"] = UDim2.new(0.95, 0, 0, 0)
+ GUI["a"].MouseButton1Click:Connect(function()
+ GUI["1"]:Destroy()
+ end)
+ GUI["a"].TouchTap:Connect(function()
+ GUI["1"]:Destroy()
+ end)
+ end
+
+ -- 导航栏
+ do
+ GUI["d"] = Instance.new("Frame", GUI["2"])
+ GUI["d"]["BackgroundColor3"] = Color3.fromRGB(137, 66, 9)
+ GUI["d"]["Size"] = UDim2.new(0, NAV_WIDTH, 1, -30)
+ GUI["d"]["Position"] = UDim2.new(0, 0, 0, 30)
+ GUI["d"]["Name"] = [[Navigation]]
+
+ GUI["e"] = Instance.new("UICorner", GUI["d"])
+ GUI["e"]["CornerRadius"] = UDim.new(0, 6)
+
+ GUI["f"] = Instance.new("Frame", GUI["d"])
+ GUI["f"]["BackgroundTransparency"] = 1
+ GUI["f"]["Size"] = UDim2.new(1, 0, 1, 0)
+ GUI["f"]["Name"] = [[ButtonHolder]]
+
+ GUI["h"] = Instance.new("UIListLayout", GUI["f"])
+ GUI["h"]["Padding"] = UDim.new(0, 1)
+ GUI["h"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+
+ GUI["g"] = Instance.new("UIPadding", GUI["f"])
+ GUI["g"]["PaddingTop"] = UDim.new(0, 8)
+ end
+
+ function GUI:NewTab(brackets)
+ brackets = Library:validate({
+ name = "预览标签",
+ icon = "rbxassetid://3926305904"
+ }, brackets or {})
+
+ local Tab = {
+ Hover = false,
+ Active = false,
+ Index = #GUI.Tabs + 1
+ }
+ table.insert(GUI.Tabs, Tab)
+
+ -- 渲染
+ do
+ Tab["11"] = Instance.new("TextLabel", GUI["f"])
+ Tab["11"]["TextXAlignment"] = Enum.TextXAlignment.Left
+ Tab["11"]["BackgroundTransparency"] = 1
+ Tab["11"]["TextSize"] = isMobile and 10 or 12
+ Tab["11"]["TextColor3"] = Color3.fromRGB(200, 200, 200)
+ Tab["11"]["Size"] = UDim2.new(1, 0, 0, isMobile and 30 or 24)
+ Tab["11"]["Text"] = brackets.name
+ Tab["11"]["Font"] = Enum.Font.Ubuntu
+
+ Tab["12"] = Instance.new("UIPadding", Tab["11"])
+ Tab["12"]["PaddingLeft"] = UDim.new(0, isMobile and 22 or 28)
+
+ Tab["13"] = Instance.new("ImageLabel", Tab["11"])
+ Tab["13"]["ImageColor3"] = Color3.fromRGB(200, 200, 200)
+ Tab["13"]["Image"] = brackets.icon
+ Tab["13"]["ImageRectSize"] = Vector2.new(36, 36)
+ Tab["13"]["Size"] = UDim2.new(0, isMobile and 20 or 25, 0, isMobile and 20 or 25)
+ Tab["13"]["BackgroundTransparency"] = 1
+ Tab["13"]["Position"] = UDim2.new(0, - (isMobile and 20 or 24), 0, isMobile and 5 or 0)
+
+ Tab["1c"] = Instance.new("ScrollingFrame", GUI["1b"])
+ Tab["1c"]["BackgroundTransparency"] = 1
+ Tab["1c"]["Size"] = UDim2.new(1, 0, 1, 0)
+ Tab["1c"]["ScrollBarThickness"] = isMobile and 4 or 0
+ Tab["1c"]["Name"] = brackets.name
+ Tab["1c"]["Visible"] = false
+ Tab["1c"]["CanvasSize"] = UDim2.new(0, 0, 0, 0)
+ Tab["1c"]["AutomaticCanvasSize"] = Enum.AutomaticSize.Y
+
+ Tab["24"] = Instance.new("UIListLayout", Tab["1c"])
+ Tab["24"]["Padding"] = UDim.new(0, 6)
+
+ Tab[" 15"] = Instance.new("UIPadding", Tab["1c"])
+ Tab["15"]["Padding"] = UDim.new(0, 1)
+ end
+
+ function Tab:Activate()
+ if not Tab.Active then
+ if GUI.CurrentTab then
+ GUI.CurrentTab:Deactivate()
+ end
+ Tab.Active = true
+ Library:tween(Tab["11"], {TextColor3 = Color3.fromRGB(255, 255, 255)})
+ Library:tween(Tab["13"], {ImageColor3 = Color3.fromRGB(255, 255, 255)})
+ Tab["1c"].Visible = true
+ GUI.CurrentTab = Tab
+ end
+ end
+
+ function Tab:Deactivate()
+ if Tab.Active then
+ Tab.Active = false
+ Tab.Hover = false
+ Library:tween(Tab["11"], {TextColor3 = Color3.fromRGB(200, 200, 200)})
+ Library:tween(Tab["13"], {ImageColor3 = Color3.fromRGB(200, 200, 200)})
+ Tab["1c"].Visible = false
+ end
+ end
+
+ -- 滑动切换标签页
+ local swipeStartX
+ Tab["1c"].InputBegan:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.Touch then
+ swipeStartX = input.Position.X
+ end
+ end)
+
+ Tab["1c"].InputEnded:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.Touch and swipeStartX then
+ local deltaX = input.Position.X - swipeStartX
+ if math.abs(deltaX) > 50 then
+ local newIndex = deltaX > 0 and Tab.Index - 1 or Tab.Index + 1
+ newIndex = math.clamp(newIndex, 1, #GUI.Tabs)
+ GUI.Tabs[newIndex]:Activate()
+ end
+ swipeStartX = nil
+ end
+ end)
+
+ Tab["11"].MouseEnter:Connect(function()
+ Tab.Hover = true
+ if not Tab.Active then
+ Library:tween(Tab["11"], {TextColor3 = Color3.fromRGB(255, 255, 255)})
+ Library:tween(Tab["13"], {ImageColor3 = Color3.fromRGB(255, 255, 255)})
+ end
+ end)
+
+ Tab["11"].MouseLeave:Connect(function()
+ Tab.Hover = false
+ if not Tab.Active then
+ Library:tween(Tab["11"], {TextColor3 = Color3.fromRGB(200, 200, 200)})
+ Library:tween(Tab["13"], {ImageColor3 = Color3.fromRGB(200, 200, 200)})
+ end
+ end)
+
+ Tab["11"].InputBegan:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+ Tab:Activate()
+ end
+ end)
+
+ if not GUI.CurrentTab then
+ Tab:Activate()
+ end
+
+ function Tab:NewButton(brackets)
+ brackets = Library:validate({
+ name = "新按钮",
+ callback = function() end
+ }, brackets or {})
+
+ local Button = {
+ Hover = false,
+ MouseDown = false
+ }
+
+ Button["1d"] = Instance.new("Frame", Tab["1c"])
+ Button["1d"]["BackgroundColor3"] = Color3.fromRGB(137, 66, 9)
+ Button["1d"]["Size"] = UDim2.new(1, 0, 0, isMobile and 40 or 32)
+ Button["1d"]["Name"] = [[Button]]
+
+ Button["1e"] = Instance.new("UICorner", Button["1d"])
+ Button["1e"]["CornerRadius"] = UDim.new(0, 4)
+
+ Button["16"] = Instance.new("UIPadding", Button["1d"])
+ Button["16"]["Padding"] = UDim.new(0, 6)
+
+ Button["1f"] = Instance.new("UIStroke", Button["1d"])
+ Button["1f"]["Color"] = Color3.fromRGB(82, 82, 82)
+ Button["1f"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+
+ Button["18"] = Instance.new("TextLabel", Button["1d"])
+ Button["18"]["TextXAlignment"] = Enum.TextXAlignment.Center
+ Button["18"]["BackgroundTransparency"] = 1
+ Button["18"]["TextSize"] = isMobile and 16 or 14
+ Button["18"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+ Button["18"]["Size"] = UDim2.new(1, 0, 1, 0)
+ Button["18"]["Text"] = brackets.name
+ Button["18"]["Font"] = Enum.Font.Ubuntu
+
+ Button["1d"].MouseEnter:Connect(function()
+ Button.Hover = true
+ Library:tween(Button["1f"], {Color = Color3.fromRGB(102, 102, 102)})
+ end)
+
+ Button["1d"].MouseLeave:Connect(function()
+ Button.Hover = false
+ if not Button.MouseDown then
+ Library:tween(Button["1f"], {Color = Color3.fromRGB(82, 82, 82)})
+ end
+ end)
+
+ Button["1d"].InputBegan:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+ Button.MouseDown = true
+ Library:tween(Button["1d"], {BackgroundColor3 = Color3.fromRGB(100, 48, 5)})
+ Library:tween(Button["1f"], {Color = Color3.fromRGB(200, 200, 200)})
+ brackets.callback()
+ end
+ end)
+
+ Button["1d"].InputEnded:Connect(function(input)
+ if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+ Button.MouseDown = false
+ Library:tween(Button["1d"], {BackgroundColor3 = Color3.fromRGB(137, 66, 9)})
+ Library:tween(Button["1f"], {Color = Button.Hover and Color3.fromRGB(102, 102, 102) or Color3.fromRGB(82, 82, 82)})
+ end
+ end)
+
+ function Button:SetText(text)
+ brackets.name = text
+ Button["18"].Text = text
+ end
+
+ return Button
+ end
+
+ return Tab
+ end
+
+ return GUI
 end
 
--- 按钮
-function UILibrary:AddButton(tabName, text, callback)
-    local Container = self.Tabs[tabName].Content
-    local Button = Instance.new("TextButton")
-    Button.Size = UDim2.new(1, 0, 0, 30)
-    Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    Button.Text = text
-    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Button.Parent = Container
-    
-    local Hover = CreateHoverButton(Button, Button)
-    Button.MouseButton1Click:Connect(callback)
-end
-
--- 开关
-function UILibrary:AddToggle(tabName, text, default, callback)
-    local Container = self.Tabs[tabName].Content
-    local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(1, 0, 0, 30)
-    Frame.BackgroundTransparency = 1
-    Frame.Parent = Container
-    
-    local Label = Instance.new("TextLabel")
-    Label.Size = UDim2.new(0, 200, 1, 0)
-    Label.BackgroundTransparency = 1
-    Label.Text = text
-    Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Label.Parent = Frame
-    
-    local Toggle = Instance.new("TextButton")
-    Toggle.Size = UDim2.new(0, 40, 0, 20)
-    Toggle.Position = UDim2.new(1, -40, 0, 5)
-    Toggle.BackgroundColor3 = default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-    Toggle.Text = ""
-    Toggle.Parent = Frame
-    
-    local Hover = CreateHoverButton(Frame, Label)
-    local state = default
-    
-    Toggle.MouseButton1Click:Connect(function()
-        state = not state
-        Toggle.BackgroundColor3 = state and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-        callback(state)
-    end)
-end
-
--- 滑块
-function UILibrary:AddSlider(tabName, text, min, max, default, callback)
-    local Container = self.Tabs[tabName].Content
-    local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(1, 0, 0, 50)
-    Frame.BackgroundTransparency = 1
-    Frame.Parent = Container
-    
-    local Label = Instance.new("TextLabel")
-    Label.Size = UDim2.new(0, 200, 0, 20)
-    Label.BackgroundTransparency = 1
-    Label.Text = text .. ": " .. default
-    Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Label.Parent = Frame
-    
-    local Slider = Instance.new("Frame")
-    Slider.Size = UDim2.new(1, 0, 0, 10)
-    Slider.Position = UDim2.new(0, 0, 0, 25)
-    Slider.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    Slider.Parent = Frame
-    
-    local Fill = Instance.new("Frame")
-    Fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-    Fill.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    Fill.Parent = Slider
-    
-    local Hover = CreateHoverButton(Frame, Label)
-    
-    Slider.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local mouseMove
-            mouseMove = UserInputService.InputChanged:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseMovement then
-                    local value = min + (max - min) * math.clamp((input.Position.X - Slider.AbsolutePosition.X) / Slider.AbsoluteSize.X, 0, 1)
-                    Fill.Size = UDim2.new((value - min) / (max - min), 0, 1, 0)
-                    Label.Text = text .. ": " .. math.floor(value)
-                    callback(math.floor(value))
-                end
-            end)
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    mouseMove:Disconnect()
-                end
-            end)
-        end
-    end)
-end
-
--- 下拉菜单
-function UILibrary:AddDropdown(tabName, text, options, callback)
-    local Container = self.Tabs[tabName].Content
-    local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(1, 0, 0, 30)
-    Frame.BackgroundTransparency = 1
-    Frame.Parent = Container
-    
-    local Label = Instance.new("TextLabel")
-    Label.Size = UDim2.new(0, 200, 1, 0)
-    Label.BackgroundTransparency = 1
-    Label.Text = text .. ": " .. options[1]
-    Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Label.Parent = Frame
-    
-    local Dropdown = Instance.new("TextButton")
-    Dropdown.Size = UDim2.new(0, 100, 1, 0)
-    Dropdown.Position = UDim2.new(1, -100, 0, 0)
-    Dropdown.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    Dropdown.Text = "▼"
-    Dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Dropdown.Parent = Frame
-    
-    local Hover = CreateHoverButton(Frame, Label)
-    local List = Instance.new("Frame")
-    List.Size = UDim2.new(0, 100, 0, #options * 25)
-    List.Position = UDim2.new(1, -100, 0, 30)
-    List.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    List.Visible = false
-    List.Parent = Frame
-    
-    local ListLayout = Instance.new("UIListLayout")
-    ListLayout.Parent = List
-    
-    for i, option in ipairs(options) do
-        local OptionButton = Instance.new("TextButton")
-        OptionButton.Size = UDim2.new(1, 0, 0, 25)
-        OptionButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        OptionButton.Text = option
-        OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        OptionButton.Parent = List
-        
-        OptionButton.MouseButton1Click:Connect(function()
-            Label.Text = text .. ": " .. option
-            List.Visible = false
-            callback(option)
-        end
-    end
-    
-    Dropdown.MouseButton1Click:Connect(function()
-        List.Visible = not List.Visible
-    end)
-end
-
--- 颜色选择器
-function UILibrary:AddColorPicker(tabName, text, default, callback)
-    local Container = self.Tabs[tabName].Content
-    local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(1, 0, 0, 30)
-    Frame.BackgroundTransparency = 1
-    Frame.Parent = Container
-    
-    local Label = Instance.new("TextLabel")
-    Label.Size = UDim2.new(0, 200, 1, 0)
-    Label.BackgroundTransparency = 1
-    Label.Text = text
-    Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Label.Parent = Frame
-    
-    local ColorButton = Instance.new("TextButton")
-    ColorButton.Size = UDim2.new(0, 30, 0, 30)
-    ColorButton.Position = UDim2.new(1, -30, 0, 0)
-    ColorButton.BackgroundColor3 = default
-    ColorButton.Text = ""
-    ColorButton.Parent = Frame
-    
-    local Hover = CreateHoverButton(Frame, Label)
-    
-    local PickerFrame = Instance.new("Frame")
-    PickerFrame.Size = UDim2.new(0, 200, 0, 230)
-    PickerFrame.Position = UDim2.new(1, -230, 0, 35)
-    PickerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    PickerFrame.Visible = false
-    PickerFrame.Parent = Frame
-    
-    local SatVibMap = Instance.new("Frame")
-    SatVibMap.Size = UDim2.new(0, 160, 0, 160)
-    SatVibMap.Position = UDim2.new(0, 10, 0, 10)
-    SatVibMap.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    SatVibMap.Parent = PickerFrame
-    
-    local SatGradient = Instance.new("UIGradient")
-    SatGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-        ColorSequenceKeypoint.new(1, Color3.new(1, 0, 0))
-    }
-    SatGradient.Rotation = 0
-    SatGradient.Parent = SatVibMap
-    
-    local VibGradient = Instance.new("UIGradient")
-    VibGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),
-        ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
-    }
-    VibGradient.Rotation = 90
-    VibGradient.Transparency = NumberSequence.new{
-        NumberSequenceKeypoint.new(0, 0),
-        NumberSequenceKeypoint.new(1, 1)
-    }
-    VibGradient.Parent = SatVibMap
-    
-    local Selector = Instance.new("Frame")
-    Selector.Size = UDim2.new(0, 6, 0, 6)
-    Selector.BackgroundColor3 = Color3.new(1, 1, 1)
-    Selector.BorderColor3 = Color3.new(0, 0, 0)
-    Selector.Parent = SatVibMap
-    
-    local HueBar = Instance.new("Frame")
-    HueBar.Size = UDim2.new(0, 20, 0, 160)
-    HueBar.Position = UDim2.new(0, 175, 0, 10)
-    HueBar.Parent = PickerFrame
-    
-    local HueGradient = Instance.new("UIGradient")
-    HueGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-        ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
-        ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-        ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 0, 255)),
-        ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
-    }
-    HueGradient.Rotation = 90
-    HueGradient.Parent = HueBar
-    
-    local HueSelector = Instance.new("Frame")
-    HueSelector.Size = UDim2.new(1, 0, 0, 2)
-    HueSelector.BackgroundColor3 = Color3.new(1, 1, 1)
-    HueSelector.Parent = HueBar
-    
-    local RGBFrame = Instance.new("Frame")
-    RGBFrame.Size = UDim2.new(1, -20, 0, 50)
-    RGBFrame.Position = UDim2.new(0, 10, 0, 175)
-    RGBFrame.BackgroundTransparency = 1
-    RGBFrame.Parent = PickerFrame
-    
-    local RLabel = Instance.new("TextLabel")
-    RLabel.Size = UDim2.new(0, 50, 0, 20)
-    RLabel.BackgroundTransparency = 1
-    RLabel.Text = "R: " .. math.floor(default.R * 255)
-    RLabel.TextColor3 = Color3.new(1, 1, 1)
-    RLabel.Parent = RGBFrame
-    
-    local GLabel = Instance.new("TextLabel")
-    GLabel.Size = UDim2.new(0, 50, 0, 20)
-    GLabel.Position = UDim2.new(0, 60, 0, 0)
-    GLabel.BackgroundTransparency = 1
-    GLabel.Text = "G: " .. math.floor(default.G * 255)
-    GLabel.TextColor3 = Color3.new(1, 1, 1)
-    GLabel.Parent = RGBFrame
-    
-    local BLabel = Instance.new("TextLabel")
-    BLabel.Size = UDim2.new(0, 50, 0, 20)
-    BLabel.Position = UDim2.new(0, 120, 0, 0)
-    BLabel.BackgroundTransparency = 1
-    BLabel.Text = "B: " .. math.floor(default.B * 255)
-    BLabel.TextColor3 = Color3.new(1, 1, 1)
-    BLabel.Parent = RGBFrame
-    
-    local h, s, v = Color3.toHSV(default)
-    
-    local function UpdateColor()
-        local newColor = Color3.fromHSV(h, s, v)
-        ColorButton.BackgroundColor3 = newColor
-        SatVibMap.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
-        Selector.Position = UDim2.new(s, -3, 1-v, -3)
-        HueSelector.Position = UDim2.new(0, 0, h, -1)
-        RLabel.Text = "R: " .. math.floor(newColor.R * 255)
-        GLabel.Text = "G: " .. math.floor(newColor.G * 255)
-        BLabel.Text = "B: " .. math.floor(newColor.B * 255)
-        callback(newColor)
-    end
-    
-    SatVibMap.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local connection
-            connection = UserInputService.InputChanged:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseMovement then
-                    s = math.clamp((input.Position.X - SatVibMap.AbsolutePosition.X) / SatVibMap.AbsoluteSize.X, 0, 1)
-                    v = math.clamp(1 - (input.Position.Y - SatVibMap.AbsolutePosition.Y) / SatVibMap.AbsoluteSize.Y, 0, 1)
-                    UpdateColor()
-                end
-            end)
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    connection:Disconnect()
-                end
-            end)
-        end
-    end)
-    
-    HueBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local connection
-            connection = UserInputService.InputChanged:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseMovement then
-                    h = math.clamp((input.Position.Y - HueBar.AbsolutePosition.Y) / HueBar.AbsoluteSize.Y, 0, 1)
-                    UpdateColor()
-                end
-            end)
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    connection:Disconnect()
-                end
-            end)
-        end
-    end)
-    
-    Selector.Position = UDim2.new(s, -3, 1-v, -3)
-    HueSelector.Position = UDim2.new(0, 0, h, -1)
-    
-    ColorButton.MouseButton1Click:Connect(function()
-        PickerFrame.Visible = not PickerFrame.Visible
-    end)
-    
-    -- 添加点击外部关闭的功能
-    UserInputService.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and PickerFrame.Visible then
-            local pos = input.Position
-            local pickerPos = PickerFrame.AbsolutePosition
-            local pickerSize = PickerFrame.AbsoluteSize
-            local buttonPos = ColorButton.AbsolutePosition
-            local buttonSize = ColorButton.AbsoluteSize
-            
-            local inPicker = pos.X >= pickerPos.X and pos.X <= pickerPos.X + pickerSize.X and
-                           pos.Y >= pickerPos.Y and pos.Y <= pickerPos.Y + pickerSize.Y
-            local inButton = pos.X >= buttonPos.X and pos.X <= buttonPos.X + buttonSize.X and
-                           pos.Y >= buttonPos.Y and pos.Y <= buttonPos.Y + buttonSize.Y
-            
-            if not inPicker and not inButton then
-                PickerFrame.Visible = false
-            end
-        end
-    end)
-end
-
--- 示例使用
-local UI = UILibrary.new("My Custom UI")
-UI:AddTab("Tab1")
-UI:AddTab("Tab2")
-
-UI:AddButton("Tab1", "Click Me", function()
-    print("Button clicked!")
-end)
-
-UI:AddToggle("Tab1", "Toggle Me", true, function(state)
-    print("Toggle state:", state)
-end)
-
-UI:AddSlider("Tab1", "Slide Me", 0, 100, 50, function(value)
-    print("Slider value:", value)
-end)
-
-UI:AddDropdown("Tab1", "Select Me", {"Option1", "Option2", "Option3"}, function(option)
-    print("Selected:", option)
-end)
-
-UI:AddColorPicker("Tab1", "Pick Color", Color3.fromRGB(255, 0, 0), function(color)
-    print("Color picked: R=" .. math.floor(color.R*255) .. ", G=" .. math.floor(color.G*255) .. ", B=" .. math.floor(color.B*255))
-end)
-
-return UILibrary
+return Library
