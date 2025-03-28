@@ -2,20 +2,19 @@ local UILibrary = {}
 
 function UILibrary:CreateWindow(title)
     local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = "UILibraryGui"
     ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     ScreenGui.ResetOnSpawn = false
     
     local MainFrame = Instance.new("Frame")
     MainFrame.Size = UDim2.new(0, 300, 0, 400)
     MainFrame.Position = UDim2.new(0.5, -150, 0.5, -200)
-    MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     MainFrame.BorderSizePixel = 0
     MainFrame.Parent = ScreenGui
     
     local TitleBar = Instance.new("Frame")
     TitleBar.Size = UDim2.new(1, 0, 0, 30)
-    TitleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    TitleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = MainFrame
     
@@ -25,45 +24,36 @@ function UILibrary:CreateWindow(title)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.TextSize = 16
+    TitleLabel.TextSize = 14
     TitleLabel.Font = Enum.Font.SourceSansBold
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Parent = TitleBar
     
-    -- 搜索按钮
-    local SearchButton = Instance.new("TextButton")
-    SearchButton.Size = UDim2.new(0, 30, 0, 30)
-    SearchButton.Position = UDim2.new(1, -90, 0, 0)
-    SearchButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
-    SearchButton.Text = "🔍"
-    SearchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SearchButton.TextSize = 14
-    SearchButton.Font = Enum.Font.SourceSans
+    -- 搜索按钮 (使用 Roblox 内置资产)
+    local SearchButton = Instance.new("ImageButton")
+    SearchButton.Size = UDim2.new(0, 25, 0, 25)
+    SearchButton.Position = UDim2.new(1, -85, 0, 2.5)
+    SearchButton.BackgroundTransparency = 1
+    SearchButton.Image = "rbxassetid://10734949809" -- Roblox 内置搜索图标
     SearchButton.Parent = TitleBar
     SearchButton.MouseButton1Click:Connect(function()
         print("搜索功能待实现")
     end)
     
-    -- 缩小按钮
-    local MinimizeButton = Instance.new("TextButton")
-    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(1, -60, 0, 0)
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(200, 200, 50)
-    MinimizeButton.Text = "-"
-    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    MinimizeButton.TextSize = 14
-    MinimizeButton.Font = Enum.Font.SourceSans
+    -- 缩小按钮 (使用 Roblox 内置资产)
+    local MinimizeButton = Instance.new("ImageButton")
+    MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
+    MinimizeButton.Position = UDim2.new(1, -55, 0, 2.5)
+    MinimizeButton.BackgroundTransparency = 1
+    MinimizeButton.Image = "rbxassetid://10734950239" -- Roblox 内置最小化图标
     MinimizeButton.Parent = TitleBar
     
-    -- 关闭按钮
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Size = UDim2.new(0, 30, 0, 30)
-    CloseButton.Position = UDim2.new(1, -30, 0, 0)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextSize = 14
-    CloseButton.Font = Enum.Font.SourceSans
+    -- 关闭按钮 (使用 Roblox 内置资产)
+    local CloseButton = Instance.new("ImageButton")
+    CloseButton.Size = UDim2.new(0, 25, 0, 25)
+    CloseButton.Position = UDim2.new(1, -25, 0, 2.5)
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.Image = "rbxassetid://10734949488" -- Roblox 内置关闭图标
     CloseButton.Parent = TitleBar
     CloseButton.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
@@ -103,32 +93,35 @@ function UILibrary:CreateWindow(title)
         end
     end)
     
-    -- 缩小功能与渐变边框
+    -- 缩小功能及渐变边框
     local isMinimized = false
+    local originalSize = MainFrame.Size
     MinimizeButton.MouseButton1Click:Connect(function()
-        isMinimized = not isMinimized
-        if isMinimized then
-            ContentFrame.Visible = false
+        if not isMinimized then
             MainFrame.Size = UDim2.new(0, 300, 0, 30)
-            MainFrame.BorderSizePixel = 2
-            MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 255) -- 渐变起始颜色
-            -- 简单模拟渐变效果
-            spawn(function()
-                while isMinimized do
-                    for i = 0, 255, 5 do
-                        MainFrame.BorderColor3 = Color3.fromRGB(i, 255 - i, 255)
-                        wait(0.05)
-                    end
-                end
-            end)
+            ContentFrame.Visible = false
+            local Gradient = Instance.new("UIGradient")
+            Gradient.Color = ColorSequence.new{
+                ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))
+            }
+            Gradient.Parent = MainFrame
+            isMinimized = true
         else
+            MainFrame.Size = originalSize
             ContentFrame.Visible = true
-            MainFrame.Size = UDim2.new(0, 300, 0, 400)
-            MainFrame.BorderSizePixel = 0
+            if MainFrame:FindFirstChild("UIGradient") then
+                MainFrame.UIGradient:Destroy()
+            end
+            isMinimized = false
         end
     end)
     
-    local window = { Frame = MainFrame, Content = ContentFrame, Elements = {} }
+    local window = {
+        Frame = MainFrame,
+        Content = ContentFrame,
+        Elements = {}
+    }
     
     -- 添加按钮
     function window:AddButton(text, callback)
@@ -153,33 +146,32 @@ function UILibrary:CreateWindow(title)
         ToggleFrame.BackgroundTransparency = 1
         ToggleFrame.Parent = ContentFrame
         
-        local ToggleLabel = Instance.new("TextLabel")
-        ToggleLabel.Size = UDim2.new(1, -40, 1, 0)
-        ToggleLabel.BackgroundTransparency = 1
-        ToggleLabel.Text = text
-        ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ToggleLabel.TextSize = 14
-        ToggleLabel.Font = Enum.Font.SourceSans
-        ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-        ToggleLabel.Parent = ToggleFrame
+        local Label = Instance.new("TextLabel")
+        Label.Size = UDim2.new(1, -40, 1, 0)
+        Label.BackgroundTransparency = 1
+        Label.Text = text
+        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Label.TextSize = 14
+        Label.Font = Enum.Font.SourceSans
+        Label.Parent = ToggleFrame
         
-        local ToggleButton = Instance.new("TextButton")
-        ToggleButton.Size = UDim2.new(0, 30, 0, 20)
-        ToggleButton.Position = UDim2.new(1, -30, 0, 5)
-        ToggleButton.BackgroundColor3 = default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-        ToggleButton.Text = ""
-        ToggleButton.Parent = ToggleFrame
+        local Toggle = Instance.new("TextButton")
+        Toggle.Size = UDim2.new(0, 30, 0, 20)
+        Toggle.Position = UDim2.new(1, -30, 0, 5)
+        Toggle.BackgroundColor3 = default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        Toggle.Text = ""
+        Toggle.Parent = ToggleFrame
         
         local state = default
-        ToggleButton.MouseButton1Click:Connect(function()
+        Toggle.MouseButton1Click:Connect(function()
             state = not state
-            ToggleButton.BackgroundColor3 = state and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+            Toggle.BackgroundColor3 = state and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
             callback(state)
         end)
         table.insert(window.Elements, ToggleFrame)
     end
     
-    -- 添加下拉菜单（使用 Roblox 内置资产）
+    -- 添加下拉菜单 (使用 Roblox 内置资产)
     function window:AddDropdown(text, options, callback)
         local DropdownFrame = Instance.new("Frame")
         DropdownFrame.Size = UDim2.new(1, -10, 0, 30)
@@ -187,34 +179,33 @@ function UILibrary:CreateWindow(title)
         DropdownFrame.BackgroundTransparency = 1
         DropdownFrame.Parent = ContentFrame
         
-        local DropdownButton = Instance.new("TextButton")
-        DropdownButton.Size = UDim2.new(1, 0, 0, 30)
-        DropdownButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        DropdownButton.Text = text .. ": " .. options[1]
-        DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        DropdownButton.TextSize = 14
-        DropdownButton.Font = Enum.Font.SourceSans
+        local Label = Instance.new("TextLabel")
+        Label.Size = UDim2.new(1, -40, 1, 0)
+        Label.BackgroundTransparency = 1
+        Label.Text = text .. ": " .. options[1]
+        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Label.TextSize = 14
+        Label.Font = Enum.Font.SourceSans
+        Label.Parent = DropdownFrame
+        
+        local DropdownButton = Instance.new("ImageButton")
+        DropdownButton.Size = UDim2.new(0, 30, 0, 30)
+        DropdownButton.Position = UDim2.new(1, -30, 0, 0)
+        DropdownButton.BackgroundTransparency = 1
+        DropdownButton.Image = "rbxassetid://10734950027" -- Roblox 内置下拉箭头
         DropdownButton.Parent = DropdownFrame
         
-        local DropdownList = Instance.new("ScrollingFrame")
-        DropdownList.Size = UDim2.new(1, 0, 0, 100)
+        local DropdownList = Instance.new("Frame")
+        DropdownList.Size = UDim2.new(1, 0, 0, #options * 30)
         DropdownList.Position = UDim2.new(0, 0, 1, 0)
         DropdownList.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        DropdownList.BorderSizePixel = 0
         DropdownList.Visible = false
-        DropdownList.CanvasSize = UDim2.new(0, 0, 0, #options * 30)
         DropdownList.Parent = DropdownFrame
-        
-        local isOpen = false
-        DropdownButton.MouseButton1Click:Connect(function()
-            isOpen = not isOpen
-            DropdownList.Visible = isOpen
-        end)
         
         for i, option in ipairs(options) do
             local OptionButton = Instance.new("TextButton")
             OptionButton.Size = UDim2.new(1, 0, 0, 30)
-            OptionButton.Position = UDim2.new(0, 0, 0, (i - 1) * 30)
+            OptionButton.Position = UDim2.new(0, 0, 0, (i-1) * 30)
             OptionButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
             OptionButton.Text = option
             OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -222,12 +213,15 @@ function UILibrary:CreateWindow(title)
             OptionButton.Font = Enum.Font.SourceSans
             OptionButton.Parent = DropdownList
             OptionButton.MouseButton1Click:Connect(function()
-                DropdownButton.Text = text .. ": " .. option
+                Label.Text = text .. ": " .. option
                 DropdownList.Visible = false
-                isOpen = false
                 callback(option)
             end)
         end
+        
+        DropdownButton.MouseButton1Click:Connect(function()
+            DropdownList.Visible = not DropdownList.Visible
+        end)
         table.insert(window.Elements, DropdownFrame)
     end
     
@@ -239,36 +233,35 @@ function UILibrary:CreateWindow(title)
         SliderFrame.BackgroundTransparency = 1
         SliderFrame.Parent = ContentFrame
         
-        local SliderLabel = Instance.new("TextLabel")
-        SliderLabel.Size = UDim2.new(0, 100, 1, 0)
-        SliderLabel.BackgroundTransparency = 1
-        SliderLabel.Text = text .. ": " .. default
-        SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        SliderLabel.TextSize = 14
-        SliderLabel.Font = Enum.Font.SourceSans
-        SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
-        SliderLabel.Parent = SliderFrame
+        local Label = Instance.new("TextLabel")
+        Label.Size = UDim2.new(1, -150, 1, 0)
+        Label.BackgroundTransparency = 1
+        Label.Text = text .. ": " .. default
+        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Label.TextSize = 14
+        Label.Font = Enum.Font.SourceSans
+        Label.Parent = SliderFrame
         
         local SliderBar = Instance.new("Frame")
-        SliderBar.Size = UDim2.new(0, 150, 0, 10)
-        SliderBar.Position = UDim2.new(1, -150, 0, 10)
+        SliderBar.Size = UDim2.new(0, 140, 0, 10)
+        SliderBar.Position = UDim2.new(1, -140, 0, 10)
         SliderBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
         SliderBar.Parent = SliderFrame
         
-        local SliderKnob = Instance.new("Frame")
-        SliderKnob.Size = UDim2.new(0, 10, 0, 20)
-        SliderKnob.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-        SliderKnob.Position = UDim2.new((default - min) / (max - min), 0, -0.5, 0)
-        SliderKnob.Parent = SliderBar
+        local Knob = Instance.new("Frame")
+        Knob.Size = UDim2.new(0, 10, 0, 20)
+        Knob.Position = UDim2.new((default - min) / (max - min), -5, -0.5, 0)
+        Knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Knob.Parent = SliderBar
         
         local draggingSlider
-        SliderKnob.InputBegan:Connect(function(input)
+        Knob.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 draggingSlider = true
             end
         end)
         
-        SliderKnob.InputEnded:Connect(function(input)
+        Knob.InputEnded:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 draggingSlider = false
             end
@@ -277,9 +270,9 @@ function UILibrary:CreateWindow(title)
         game:GetService("UserInputService").InputChanged:Connect(function(input)
             if draggingSlider and input.UserInputType == Enum.UserInputType.MouseMovement then
                 local relativeX = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
-                SliderKnob.Position = UDim2.new(relativeX, 0, -0.5, 0)
+                Knob.Position = UDim2.new(relativeX, -5, -0.5, 0)
                 local value = math.floor(min + (max - min) * relativeX)
-                SliderLabel.Text = text .. ": " .. value
+                Label.Text = text .. ": " .. value
                 callback(value)
             end
         end)
@@ -287,48 +280,68 @@ function UILibrary:CreateWindow(title)
     end
     
     -- 添加颜色选择器
-    function window:AddColorPicker(text, defaultColor, callback)
-        local ColorFrame = Instance.new("Frame")
-        ColorFrame.Size = UDim2.new(1, -10, 0, 30)
-        ColorFrame.Position = UDim2.new(0, 5, 0, #window.Elements * 35 + 5)
-        ColorFrame.BackgroundTransparency = 1
-        ColorFrame.Parent = ContentFrame
+    function window:AddColorPicker(text, default, callback)
+        local PickerFrame = Instance.new("Frame")
+        PickerFrame.Size = UDim2.new(1, -10, 0, 30)
+        PickerFrame.Position = UDim2.new(0, 5, 0, #window.Elements * 35 + 5)
+        PickerFrame.BackgroundTransparency = 1
+        PickerFrame.Parent = ContentFrame
         
-        local ColorLabel = Instance.new("TextLabel")
-        ColorLabel.Size = UDim2.new(1, -40, 1, 0)
-        ColorLabel.BackgroundTransparency = 1
-        ColorLabel.Text = text
-        ColorLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ColorLabel.TextSize = 14
-        ColorLabel.Font = Enum.Font.SourceSans
-        ColorLabel.TextXAlignment = Enum.TextXAlignment.Left
-        ColorLabel.Parent = ColorFrame
+        local Label = Instance.new("TextLabel")
+        Label.Size = UDim2.new(1, -40, 1, 0)
+        Label.BackgroundTransparency = 1
+        Label.Text = text
+        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Label.TextSize = 14
+        Label.Font = Enum.Font.SourceSans
+        Label.Parent = PickerFrame
         
-        local ColorButton = Instance.new("TextButton")
-        ColorButton.Size = UDim2.new(0, 30, 0, 30)
-        ColorButton.Position = UDim2.new(1, -30, 0, 0)
-        ColorButton.BackgroundColor3 = defaultColor
-        ColorButton.Text = ""
-        ColorButton.Parent = ColorFrame
+        local ColorPreview = Instance.new("Frame")
+        ColorPreview.Size = UDim2.new(0, 30, 0, 20)
+        ColorPreview.Position = UDim2.new(1, -30, 0, 5)
+        ColorPreview.BackgroundColor3 = default
+        ColorPreview.Parent = PickerFrame
         
-        ColorButton.MouseButton1Click:Connect(function()
-            -- 简单颜色选择（这里仅模拟，实际需要更复杂的颜色选择器UI）
-            local newColor = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-            ColorButton.BackgroundColor3 = newColor
-            callback(newColor)
+        local PickerGui = Instance.new("Frame")
+        PickerGui.Size = UDim2.new(0, 150, 0, 150)
+        PickerGui.Position = UDim2.new(1, 0, 1, 0)
+        PickerGui.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        PickerGui.Visible = false
+        PickerGui.Parent = PickerFrame
+        
+        local ColorCanvas = Instance.new("ImageLabel")
+        ColorCanvas.Size = UDim2.new(1, -10, 1, -10)
+        ColorCanvas.Position = UDim2.new(0, 5, 0, 5)
+        ColorCanvas.Image = "rbxassetid://698052001" -- Roblox 内置颜色选择器图片
+        ColorCanvas.Parent = PickerGui
+        
+        ColorPreview.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                PickerGui.Visible = not PickerGui.Visible
+            end
         end)
-        table.insert(window.Elements, ColorFrame)
+        
+        ColorCanvas.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                local relativeX = (input.Position.X - ColorCanvas.AbsolutePosition.X) / ColorCanvas.AbsoluteSize.X
+                local relativeY = (input.Position.Y - ColorCanvas.AbsolutePosition.Y) / ColorCanvas.AbsoluteSize.Y
+                local color = Color3.fromHSV(relativeX, relativeY, 1)
+                ColorPreview.BackgroundColor3 = color
+                callback(color)
+            end
+        end)
+        table.insert(window.Elements, PickerFrame)
     end
     
     return window
 end
 
 -- 示例使用
-local UI = UILibrary:CreateWindow("自定义UI示例")
-UI:AddButton("点击我", function() print("按钮被点击!") end)
-UI:AddToggle("开关", false, function(state) print("开关状态: " .. tostring(state)) end)
-UI:AddDropdown("选择", {"选项1", "选项2", "选项3"}, function(option) print("选择了: " .. option) end)
-UI:AddSlider("速度", 0, 100, 50, function(value) print("滑块值: " .. value) end)
-UI:AddColorPicker("颜色", Color3.fromRGB(255, 0, 0), function(color) print("颜色: " .. tostring(color)) end)
+local UI = UILibrary:CreateWindow("完整UI示例")
+UI:AddButton("测试按钮", function() print("按钮点击!") end)
+UI:AddToggle("测试开关", false, function(state) print("开关: " .. tostring(state)) end)
+UI:AddDropdown("测试下拉", {"选项1", "选项2", "选项3"}, function(option) print("选择了: " .. option) end)
+UI:AddSlider("测试滑块", 0, 100, 50, function(value) print("滑块值: " .. value) end)
+UI:AddColorPicker("测试颜色", Color3.fromRGB(255, 0, 0), function(color) print("颜色: " .. color.r .. ", " .. color.g .. ", " .. color.b) end)
 
 return UILibrary
