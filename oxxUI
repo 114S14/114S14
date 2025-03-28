@@ -1,26 +1,74 @@
 local Oxx = {}
-_G.Oxx = Oxx
-local a = game:GetService("UserInputService")
-local b = game:GetService("TweenService")
-local c = game:GetService("RunService")
-local d = game:GetService("TextService")
-local e = game:GetService("Players").LocalPlayer
-local f = e:GetMouse()
-local g = game:GetService("StarterGui")
-local h = false
-local i = game:GetService("HttpService")
-local j = "https://raw.githubusercontent.com/NTDCore/OxxAssets/main/"
-local k = "rbxassetid://13391416647"
+Oxx.__index = Oxx
+local a = {}
+a.__index = a
+local b = game:GetService("UserInputService")
+local c = game:GetService("TweenService")
+local d = game:GetService("RunService")
+local e = game:GetService("TextService")
+local f = game:GetService("ContentProvider")
+local g = game.Players.LocalPlayer
+local h = g:GetMouse()
+local i = {}
+i.__index = i
+local j = {}
+j.__index = j
+local k = {}
+k.__index = k
 local l = {}
 l.__index = l
-Oxx.Flags = {}
-Oxx.Keysys = {}
+local m = {}
+m.__index = m
+local n = {}
+n.__index = n
+local o = {}
+o.__index = o
+local p = {}
+p.__index = p
+local q = {}
+q.__index = q
+local r = {}
+r | _G = r
+r.b = b
+r.c = c
+r.d = d
+r.e = e
+r.f = f
+r.g = g
+r.h = h
+r.i = i
+r.j = j
+r.k = k
+r.l = l
+r.m = m
+r.n = n
+r.o = o
+r.p = p
+r.q = q
+local s = r.b
+local t = r.c
+local u = r.d
+local v = r.g
+local w = r.h
+Oxx.Icons = {
+    ["default"] = "rbxassetid://13362139152",
+    ["home"] = "rbxassetid://13362139152",
+    ["settings"] = "rbxassetid://13362139152",
+    ["info"] = "rbxassetid://13362139152",
+    ["warning"] = "rbxassetid://13362139152",
+    ["error"] = "rbxassetid://13362139152",
+    ["success"] = "rbxassetid://13362139152",
+    ["close"] = "rbxassetid://13362139152",
+    ["minimize"] = "rbxassetid://13362139152",
+    ["maximize"] = "rbxassetid://13362139152"
+}
 Oxx.Themes = {
     Dark = {
         Main = Color3.fromRGB(30, 30, 30),
         Second = Color3.fromRGB(40, 40, 40),
         Text = Color3.fromRGB(255, 255, 255),
         Stroke = Color3.fromRGB(60, 60, 60),
+        Placeholder = Color3.fromRGB(100, 100, 100),
         Accent = Color3.fromRGB(0, 120, 215)
     },
     Light = {
@@ -28,557 +76,704 @@ Oxx.Themes = {
         Second = Color3.fromRGB(220, 220, 220),
         Text = Color3.fromRGB(0, 0, 0),
         Stroke = Color3.fromRGB(180, 180, 180),
+        Placeholder = Color3.fromRGB(120, 120, 120),
         Accent = Color3.fromRGB(0, 120, 215)
     },
     Rose = {
-        Main = Color3.fromRGB(50, 35, 43),
-        Second = Color3.fromRGB(66, 46, 57),
-        Text = Color3.fromRGB(255, 255, 255),
-        Stroke = Color3.fromRGB(80, 56, 69),
-        Accent = Color3.fromRGB(235, 135, 185)
+        Main = Color3.fromRGB(40, 30, 35),
+        Second = Color3.fromRGB(50, 40, 45),
+        Text = Color3.fromRGB(255, 200, 200),
+        Stroke = Color3.fromRGB(70, 60, 65),
+        Placeholder = Color3.fromRGB(120, 100, 110),
+        Accent = Color3.fromRGB(200, 80, 100)
     },
     Aqua = {
-        Main = Color3.fromRGB(35, 50, 50),
-        Second = Color3.fromRGB(46, 66, 66),
-        Text = Color3.fromRGB(255, 255, 255),
-        Stroke = Color3.fromRGB(56, 80, 80),
-        Accent = Color3.fromRGB(135, 235, 185)
+        Main = Color3.fromRGB(30, 40, 40),
+        Second = Color3.fromRGB(40, 50, 50),
+        Text = Color3.fromRGB(200, 255, 255),
+        Stroke = Color3.fromRGB(60, 70, 70),
+        Placeholder = Color3.fromRGB(100, 120, 120),
+        Accent = Color3.fromRGB(80, 200, 200)
     },
-    Jade = {
-        Main = Color3.fromRGB(35, 50, 43),
-        Second = Color3.fromRGB(46, 66, 57),
-        Text = Color3.fromRGB(255, 255, 255),
-        Stroke = Color3.fromRGB(56, 80, 69),
-        Accent = Color3.fromRGB(135, 235, 185)
+    Amethyst = {
+        Main = Color3.fromRGB(40, 30, 50),
+        Second = Color3.fromRGB(50, 40, 60),
+        Text = Color3.fromRGB(220, 200, 255),
+        Stroke = Color3.fromRGB(70, 60, 80),
+        Placeholder = Color3.fromRGB(110, 100, 130),
+        Accent = Color3.fromRGB(140, 80, 200)
     }
 }
-Oxx.Icons = {
-    home = j .. 'Home.png',
-    sliders = j .. 'Sliders.png',
-    activity = j .. 'Activity.png',
-    alert = j .. 'Alert.png',
-    check = j .. 'Check.png',
-    chevron = j .. 'Chevron.png',
-    search = j .. 'Search.png',
-    lock = j .. 'Lock.png',
-    unlock = j .. 'Unlock.png',
-    layout = j .. 'Layout.png',
-    info = j .. 'Info.png',
-    circle = j .. 'Circle.png',
-    maximize = j .. 'Maximize.png',
-    minimize = j .. 'Minimize.png',
-    moon = j .. 'Moon.png',
-    sun = j .. 'Sun.png',
-    target = j .. 'Target.png',
-    upload = j .. 'Upload.png',
-    folder = j .. 'Folder.png',
-    file = j .. 'File.png',
-}
-function Oxx:Tween(m, n, o, p)
-    b:Create(m, TweenInfo.new(n, o or Enum.EasingStyle.Quad, p or Enum.EasingDirection.Out), p and o or n):Play()
+function a:Tween(a, b, c, d)
+    local e = t:Create(a, TweenInfo.new(c, d or Enum.EasingStyle.Quad, Enum.EasingDirection.Out), b)
+    e:Play()
+    return e
 end
-function Oxx:CreateWindow(q)
-    local r = {}
-    local s = Instance.new("ScreenGui")
-    s.Name = q.Title or "Oxx"
-    s.Parent = e.PlayerGui
-    s.IgnoreGuiInset = true
-    s.ResetOnSpawn = false
-    local t = Instance.new("Frame", s)
-    t.Size = q.Size or UDim2.new(0, 600, 0, 400)
-    t.Position = UDim2.new(0.5, -300, 0.5, -200)
-    t.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Main
-    Instance.new("UICorner", t).CornerRadius = UDim.new(0, 6)
-    local u = Instance.new("Frame", t)
-    u.Size = UDim2.new(1, 0, 0, 30)
-    u.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-    local v = Instance.new("UICorner", u)
-    v.CornerRadius = UDim.new(0, 6)
-    local w = Instance.new("TextLabel", u)
-    w.Size = UDim2.new(0.5, 0, 1, 0)
-    w.BackgroundTransparency = 1
-    w.Text = q.Title or "Oxx"
-    w.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-    w.TextSize = 16
-    w.Font = Enum.Font.SourceSansBold
-    w.TextXAlignment = Enum.TextXAlignment.Left
-    w.Position = UDim2.new(0, 10, 0, 0)
-    local x = Instance.new("ImageButton", u)
-    x.Size = UDim2.new(0, 20, 0, 20)
-    x.Position = UDim2.new(1, -50, 0, 5)
-    x.BackgroundTransparency = 1
-    x.Image = Oxx.Icons.maximize
-    local y = Instance.new("ImageButton", u)
-    y.Size = UDim2.new(0, 20, 0, 20)
-    y.Position = UDim2.new(1, -25, 0, 5)
-    y.BackgroundTransparency = 1
-    y.Image = Oxx.Icons.minimize
-    local z = Instance.new("Frame", t)
-    z.Size = UDim2.new(1, 0, 1, -30)
-    z.Position = UDim2.new(0, 0, 0, 30)
-    z.BackgroundTransparency = 1
-    local A = Instance.new("Frame", t)
-    A.Size = UDim2.new(0, 150, 1, -30)
-    A.Position = UDim2.new(0, 0, 0, 30)
-    A.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-    local B = Instance.new("UICorner", A)
-    B.CornerRadius = UDim.new(0, 6)
-    local C = Instance.new("ScrollingFrame", A)
-    C.Size = UDim2.new(1, -10, 1, -10)
-    C.Position = UDim2.new(0, 5, 0, 5)
-    C.BackgroundTransparency = 1
-    C.ScrollBarThickness = 2
-    C.CanvasSize = UDim2.new(0, 0, 0, 0)
-    C.ScrollingDirection = Enum.ScrollingDirection.Y
-    local D = Instance.new("UIListLayout", C)
-    D.Padding = UDim.new(0, 5)
-    D.SortOrder = Enum.SortOrder.LayoutOrder
-    local E = Instance.new("Frame", z)
-    E.Size = UDim2.new(1, -150, 1, 0)
-    E.Position = UDim2.new(0, 150, 0, 0)
-    E.BackgroundTransparency = 1
-    local F = false
-    local G, H, I
-    x.InputBegan:Connect(function(J)
-        if J.UserInputType == Enum.UserInputType.MouseButton1 then
-            F = true
-            G = J.Position
-            I = t.Position
+function a:Ripple(a)
+    local b = a.AbsolutePosition
+    local c = a.AbsoluteSize
+    local d = Instance.new("Frame")
+    d.Name = "Ripple"
+    d.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    d.BackgroundTransparency = 0.75
+    d.BorderSizePixel = 0
+    d.Size = UDim2.new(0, 0, 0, 0)
+    d.Position = UDim2.new(0, w.X - b.X - c.X / 2, 0, w.Y - b.Y - c.Y / 2)
+    d.ZIndex = 10
+    d.Parent = a
+    local e = Instance.new("UICorner")
+    e.CornerRadius = UDim.new(1, 0)
+    e.Parent = d
+    local f = math.max(c.X, c.Y)
+    a:Tween(d, {
+        Size = UDim2.new(0, f, 0, f),
+        Position = UDim2.new(0, w.X - b.X - f / 2, 0, w.Y - b.Y - f / 2),
+        BackgroundTransparency = 1
+    }, 0.5)
+    spawn(function()
+        wait(0.5)
+        d:Destroy()
+    end)
+end
+function a:CreateWindow(a)
+    local b = {}
+    b.Tabs = {}
+    b.ToggleKey = a.ToggleKey or Enum.KeyCode.RightShift
+    b.Visible = true
+    local c = Instance.new("ScreenGui")
+    c.Name = a.Title or "OxxUI"
+    c.ResetOnSpawn = false
+    c.Parent = v.PlayerGui
+    local d = Instance.new("Frame")
+    d.Name = "Main"
+    d.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Main
+    d.BorderSizePixel = 0
+    d.Size = a.Size or UDim2.new(0, 500, 0, 400)
+    d.Position = UDim2.new(0.5, -250, 0.5, -200)
+    d.Parent = c
+    local e = Instance.new("UICorner")
+    e.CornerRadius = UDim.new(0, 6)
+    e.Parent = d
+    local f = Instance.new("Frame")
+    f.Name = "Topbar"
+    f.BackgroundTransparency = 1
+    f.Size = UDim2.new(1, 0, 0, 30)
+    f.Parent = d
+    local g = Instance.new("TextLabel")
+    g.Name = "Title"
+    g.BackgroundTransparency = 1
+    g.Size = UDim2.new(0, 0, 1, 0)
+    g.Position = UDim2.new(0, 10, 0, 0)
+    g.Text = a.Title or "Oxx UI"
+    g.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+    g.TextSize = 16
+    g.Font = Enum.Font.SourceSansBold
+    g.TextXAlignment = Enum.TextXAlignment.Left
+    g.Parent = f
+    local h = e:Clone()
+    h.Parent = g
+    local i = Instance.new("TextLabel")
+    i.Name = "Author"
+    i.BackgroundTransparency = 1
+    i.Size = UDim2.new(0, 0, 1, 0)
+    i.Position = UDim2.new(0, 10 + g.TextBounds.X + 5, 0, 0)
+    i.Text = "by " .. (a.Author or "Unknown")
+    i.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Placeholder
+    i.TextSize = 14
+    i.Font = Enum.Font.SourceSans
+    i.TextXAlignment = Enum.TextXAlignment.Left
+    i.Parent = f
+    local j = Instance.new("ImageButton")
+    j.Name = "Close"
+    j.BackgroundTransparency = 1
+    j.Size = UDim2.new(0, 20, 0, 20)
+    j.Position = UDim2.new(1, -25, 0, 5)
+    j.Image = Oxx.Icons.close
+    j.Parent = f
+    local k = Instance.new("Frame")
+    k.Name = "TabContainer"
+    k.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+    k.BorderSizePixel = 0
+    k.Size = UDim2.new(0, 150, 1, -30)
+    k.Position = UDim2.new(0, 0, 0, 30)
+    k.Parent = d
+    local l = Instance.new("UIListLayout")
+    l.Padding = UDim.new(0, 5)
+    l.SortOrder = Enum.SortOrder.LayoutOrder
+    l.Parent = k
+    local m = Instance.new("UIPadding")
+    m.PaddingTop = UDim.new(0, 5)
+    m.PaddingLeft = UDim.new(0, 5)
+    m.PaddingRight = UDim.new(0, 5)
+    m.Parent = k
+    local n = Instance.new("Frame")
+    n.Name = "Content"
+    n.BackgroundTransparency = 1
+    n.Size = UDim2.new(1, -150, 1, -30)
+    n.Position = UDim2.new(0, 150, 0, 30)
+    n.Parent = d
+    local o = false
+    local p
+    local q
+    f.InputBegan:Connect(function(a)
+        if a.UserInputType == Enum.UserInputType.MouseButton1 then
+            o = true
+            p = a.Position
+            q = d.Position
         end
     end)
-    a.InputChanged:Connect(function(J)
-        if F and J.UserInputType == Enum.UserInputType.MouseMovement then
-            local K = J.Position - G
-            t.Position = UDim2.new(I.X.Scale, I.X.Offset + K.X, I.Y.Scale, I.Y.Offset + K.Y)
+    s.InputChanged:Connect(function(a)
+        if o and a.UserInputType == Enum.UserInputType.MouseMovement then
+            local b = a.Position - p
+            d.Position = UDim2.new(q.X.Scale, q.X.Offset + b.X, q.Y.Scale, q.Y.Offset + b.Y)
         end
     end)
-    a.InputEnded:Connect(function(J)
-        if J.UserInputType == Enum.UserInputType.MouseButton1 then
-            F = false
+    s.InputEnded:Connect(function(a)
+        if a.UserInputType == Enum.UserInputType.MouseButton1 then
+            o = false
         end
     end)
-    y.MouseButton1Click:Connect(function()
-        s.Enabled = false
+    j.MouseButton1Click:Connect(function()
+        c:Destroy()
     end)
-    x.MouseButton1Click:Connect(function()
-        if t.Size == q.Size then
-            t.Size = UDim2.new(1, 0, 1, 0)
-            t.Position = UDim2.new(0, 0, 0, 0)
-            Oxx:Tween(t, {
-                Size = UDim2.new(1, 0, 1, 0)
-            }, 0.2)
-            x.Image = Oxx.Icons.minimize
-        else
-            t.Size = q.Size or UDim2.new(0, 600, 0, 400)
-            t.Position = UDim2.new(0.5, -300, 0.5, -200)
-            Oxx:Tween(t, {
-                Size = q.Size or UDim2.new(0, 600, 0, 400)
-            }, 0.2)
-            x.Image = Oxx.Icons.maximize
+    s.InputBegan:Connect(function(a)
+        if a.KeyCode == b.ToggleKey then
+            b.Visible = not b.Visible
+            c.Enabled = b.Visible
         end
     end)
-    a.InputBegan:Connect(function(J)
-        if J.KeyCode == q.ToggleKey then
-            s.Enabled = not s.Enabled
+    function b:Tab(b)
+        local c = {}
+        local d = Instance.new("TextButton")
+        d.Name = b.Title or "Tab"
+        d.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+        d.BorderSizePixel = 0
+        d.Size = UDim2.new(1, -10, 0, 30)
+        d.Text = ""
+        d.AutoButtonColor = false
+        d.Parent = k
+        local f = e:Clone()
+        f.Parent = d
+        local g = Instance.new("ImageLabel")
+        g.Name = "Icon"
+        g.BackgroundTransparency = 1
+        g.Size = UDim2.new(0, 20, 0, 20)
+        g.Position = UDim2.new(0, 5, 0.5, -10)
+        g.Image = Oxx.Icons[b.Icon or "default"]
+        g.Parent = d
+        local h = Instance.new("TextLabel")
+        h.Name = "Title"
+        h.BackgroundTransparency = 1
+        h.Size = UDim2.new(1, -35, 1, 0)
+        h.Position = UDim2.new(0, 30, 0, 0)
+        h.Text = b.Title or "Tab"
+        h.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+        h.TextSize = 14
+        h.Font = Enum.Font.SourceSans
+        h.TextXAlignment = Enum.TextXAlignment.Left
+        h.Parent = d
+        local i = Instance.new("Frame")
+        i.Name = b.Title or "Tab"
+        i.BackgroundTransparency = 1
+        i.Size = UDim2.new(1, 0, 1, 0)
+        i.Visible = false
+        i.Parent = n
+        local j = Instance.new("UIListLayout")
+        j.Padding = UDim.new(0, 5)
+        j.SortOrder = Enum.SortOrder.LayoutOrder
+        j.Parent = i
+        local m = Instance.new("UIPadding")
+        m.PaddingTop = UDim.new(0, 5)
+        m.PaddingLeft = UDim.new(0, 5)
+        m.PaddingRight = UDim.new(0, 5)
+        m.Parent = i
+        if #b.Tabs == 0 then
+            i.Visible = true
+            a:Tween(d, {BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Accent}, 0.2)
         end
-    end)
-    local L = {}
-    function r:Tab(M)
-        local N = {}
-        local O = Instance.new("TextButton", C)
-        O.Size = UDim2.new(1, 0, 0, 30)
-        O.BackgroundTransparency = 1
-        O.Text = M.Title or "Tab"
-        O.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-        O.TextSize = 16
-        O.Font = Enum.Font.SourceSans
-        local P = Instance.new("ImageLabel", O)
-        P.Size = UDim2.new(0, 20, 0, 20)
-        P.Position = UDim2.new(0, 5, 0, 5)
-        P.BackgroundTransparency = 1
-        P.Image = M.Icon and Oxx.Icons[M.Icon] or k
-        O.TextXAlignment = Enum.TextXAlignment.Left
-        O.Text = string.rep(" ", 5) .. O.Text
-        local Q = Instance.new("Frame", E)
-        Q.Size = UDim2.new(1, 0, 1, 0)
-        Q.BackgroundTransparency = 1
-        Q.Visible = false
-        local R = Instance.new("ScrollingFrame", Q)
-        R.Size = UDim2.new(1, -10, 1, -10)
-        R.Position = UDim2.new(0, 5, 0, 5)
-        R.BackgroundTransparency = 1
-        R.ScrollBarThickness = 2
-        R.CanvasSize = UDim2.new(0, 0, 0, 0)
-        R.ScrollingDirection = Enum.ScrollingDirection.Y
-        local S = Instance.new("UIListLayout", R)
-        S.Padding = UDim.new(0, 5)
-        S.SortOrder = Enum.SortOrder.LayoutOrder
-        S:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-            R.CanvasSize = UDim2.new(0, 0, 0, S.AbsoluteContentSize.Y)
+        d.MouseButton1Click:Connect(function()
+            for e, f in pairs(b.Tabs) do
+                f.Frame.Visible = false
+                a:Tween(f.Button, {BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second}, 0.2)
+            end
+            i.Visible = true
+            a:Tween(d, {BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Accent}, 0.2)
         end)
-        table.insert(L, Q)
-        O.MouseButton1Click:Connect(function()
-            for T, U in pairs(L) do
-                U.Visible = U == Q
+        d.MouseEnter:Connect(function()
+            if not i.Visible then
+                a:Tween(d, {BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Accent}, 0.2)
             end
         end)
-        if #C:GetChildren() == 2 then
-            Q.Visible = true
-        end
-        local V = Instance.new("TextLabel", R)
-        V.Size = UDim2.new(1, 0, 0, 20)
-        V.BackgroundTransparency = 1
-        V.Text = M.Desc or ""
-        V.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-        V.TextSize = 14
-        V.Font = Enum.Font.SourceSans
-        V.TextXAlignment = Enum.TextXAlignment.Left
-        function N:Button(W)
-            local X = Instance.new("TextButton", R)
-            X.Size = UDim2.new(1, 0, 0, 30)
-            X.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            X.Text = W.Title or "Button"
-            X.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-            X.TextSize = 14
-            X.Font = Enum.Font.SourceSans
-            Instance.new("UICorner", X).CornerRadius = UDim.new(0, 4)
-            X.MouseButton1Click:Connect(W.Callback or function()
-            end)
-            Oxx:Tween(X, {
-                BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Accent
-            }, 0.2)
-            X.MouseEnter:Connect(function()
-                Oxx:Tween(X, {
-                    BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Accent
-                }, 0.2)
-            end)
-            X.MouseLeave:Connect(function()
-                Oxx:Tween(X, {
-                    BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-                }, 0.2)
-            end)
-        end
-        function N:Toggle(W)
-            local X = Instance.new("TextButton", R)
-            X.Size = UDim2.new(1, 0, 0, 30)
-            X.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            X.Text = W.Title or "Toggle"
-            X.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-            X.TextSize = 14
-            X.Font = Enum.Font.SourceSans
-            Instance.new("UICorner", X).CornerRadius = UDim.new(0, 4)
-            local Y = W.Value or false
-            local Z = Instance.new("Frame", X)
-            Z.Size = UDim2.new(0, 20, 0, 20)
-            Z.Position = UDim2.new(1, -25, 0.5, -10)
-            Z.BackgroundColor3 = Y and Oxx.Themes[q.Theme or "Dark"].Accent or Color3.fromRGB(100, 100, 100)
-            Instance.new("UICorner", Z).CornerRadius = UDim.new(0, 4)
-            X.MouseButton1Click:Connect(function()
-                Y = not Y
-                Oxx:Tween(Z, {
-                    BackgroundColor3 = Y and Oxx.Themes[q.Theme or "Dark"].Accent or Color3.fromRGB(100, 100, 100)
-                }, 0.2)
-                if W.Callback then
-                    W.Callback(Y)
+        d.MouseLeave:Connect(function()
+            if not i.Visible then
+                a:Tween(d, {BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second}, 0.2)
+            end
+        end)
+        c.Button = d
+        c.Frame = i
+        table.insert(b.Tabs, c)
+        function c:Button(b)
+            local c = Instance.new("TextButton")
+            c.Name = b.Title or "Button"
+            c.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+            c.BorderSizePixel = 0
+            c.Size = UDim2.new(1, -10, 0, 30)
+            c.Text = b.Title or "Button"
+            c.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+            c.TextSize = 14
+            c.Font = Enum.Font.SourceSans
+            c.Parent = i
+            local d = e:Clone()
+            d.Parent = c
+            c.MouseButton1Click:Connect(function()
+                a:Ripple(c)
+                if b.Callback then
+                    b.Callback()
                 end
             end)
-            Oxx.Flags[W.Flag or W.Title] = Y
+            c.MouseEnter:Connect(function()
+                a:Tween(c, {BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Accent}, 0.2)
+            end)
+            c.MouseLeave:Connect(function()
+                a:Tween(c, {BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second}, 0.2)
+            end)
         end
-        function N:Slider(W)
-            local X = Instance.new("Frame", R)
-            X.Size = UDim2.new(1, 0, 0, 50)
-            X.BackgroundTransparency = 1
-            local _ = Instance.new("TextLabel", X)
-            _.Size = UDim2.new(1, 0, 0, 20)
-            _.BackgroundTransparency = 1
-            _.Text = W.Title or "Slider"
-            _.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-            _.TextSize = 14
-            _.Font = Enum.Font.SourceSans
-            _.TextXAlignment = Enum.TextXAlignment.Left
-            local aa = Instance.new("Frame", X)
-            aa.Size = UDim2.new(1, -10, 0, 10)
-            aa.Position = UDim2.new(0, 5, 0, 25)
-            aa.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            Instance.new("UICorner", aa).CornerRadius = UDim.new(0, 4)
-            local ab = Instance.new("Frame", aa)
-            ab.Size = UDim2.new(0, 0, 1, 0)
-            ab.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Accent
-            Instance.new("UICorner", ab).CornerRadius = UDim.new(0, 4)
-            local ac = W.Min or 0
-            local ad = W.Max or 100
-            local ae = W.Value or ac
-            local af = false
-            aa.InputBegan:Connect(function(ag)
-                if ag.UserInputType == Enum.UserInputType.MouseButton1 then
-                    af = true
+        function c:Toggle(b)
+            local c = Instance.new("Frame")
+            c.Name = b.Title or "Toggle"
+            c.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+            c.BorderSizePixel = 0
+            c.Size = UDim2.new(1, -10, 0, 30)
+            c.Parent = i
+            local d = e:Clone()
+            d.Parent = c
+            local f = Instance.new("TextLabel")
+            f.Name = "Title"
+            f.BackgroundTransparency = 1
+            f.Size = UDim2.new(1, -40, 1, 0)
+            f.Position = UDim2.new(0, 5, 0, 0)
+            f.Text = b.Title or "Toggle"
+            f.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+            f.TextSize = 14
+            f.Font = Enum.Font.SourceSans
+            f.TextXAlignment = Enum.TextXAlignment.Left
+            f.Parent = c
+            local g = Instance.new("TextButton")
+            g.Name = "ToggleButton"
+            g.BackgroundColor3 = b.Value and Oxx.Themes[a.Theme or "Dark"].Accent or Oxx.Themes[a.Theme or "Dark"].Placeholder
+            g.BorderSizePixel = 0
+            g.Size = UDim2.new(0, 20, 0, 20)
+            g.Position = UDim2.new(1, -25, 0.5, -10)
+            g.Text = ""
+            g.Parent = c
+            local h = e:Clone()
+            h.Parent = g
+            local j = b.Value or false
+            g.MouseButton1Click:Connect(function()
+                j = not j
+                a:Tween(g, {BackgroundColor3 = j and Oxx.Themes[a.Theme or "Dark"].Accent or Oxx.Themes[a.Theme or "Dark"].Placeholder}, 0.2)
+                if b.Callback then
+                    b.Callback(j)
                 end
             end)
-            a.InputChanged:Connect(function(ag)
-                if af and ag.UserInputType == Enum.UserInputType.MouseMovement then
-                    local ah = math.clamp((ag.Position.X - aa.AbsolutePosition.X) / aa.AbsoluteSize.X, 0, 1)
-                    ae = ac + (ad - ac) * ah
-                    Oxx:Tween(ab, {
-                        Size = UDim2.new(ah, 0, 1, 0)
-                    }, 0.1)
-                    if W.Callback then
-                        W.Callback(ae)
+        end
+        function c:Slider(b)
+            local c = Instance.new("Frame")
+            c.Name = b.Title or "Slider"
+            c.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+            c.BorderSizePixel = 0
+            c.Size = UDim2.new(1, -10, 0, 40)
+            c.Parent = i
+            local d = e:Clone()
+            d.Parent = c
+            local f = Instance.new("TextLabel")
+            f.Name = "Title"
+            f.BackgroundTransparency = 1
+            f.Size = UDim2.new(1, 0, 0, 20)
+            f.Position = UDim2.new(0, 5, 0, 0)
+            f.Text = b.Title or "Slider"
+            f.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+            f.TextSize = 14
+            f.Font = Enum.Font.SourceSans
+            f.TextXAlignment = Enum.TextXAlignment.Left
+            f.Parent = c
+            local g = Instance.new("Frame")
+            g.Name = "SliderBar"
+            g.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Stroke
+            g.BorderSizePixel = 0
+            g.Size = UDim2.new(1, -10, 0, 5)
+            g.Position = UDim2.new(0, 5, 1, -10)
+            g.Parent = c
+            local h = e:Clone()
+            h.CornerRadius = UDim.new(0, 2)
+            h.Parent = g
+            local j = Instance.new("Frame")
+            j.Name = "Fill"
+            j.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Accent
+            j.BorderSizePixel = 0
+            j.Size = UDim2.new(0, 0, 1, 0)
+            j.Parent = g
+            local k = h:Clone()
+            k.Parent = j
+            local l = Instance.new("TextLabel")
+            l.Name = "Value"
+            l.BackgroundTransparency = 1
+            l.Size = UDim2.new(0, 0, 0, 20)
+            l.Position = UDim2.new(1, -5, 0, 0)
+            l.Text = tostring(b.Default or b.Min or 0)
+            l.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+            l.TextSize = 14
+            l.Font = Enum.Font.SourceSans
+            l.TextXAlignment = Enum.TextXAlignment.Right
+            l.Parent = c
+            local m = b.Min or 0
+            local n = b.Max or 100
+            local o = b.Default or m
+            local p = false
+            j.Size = UDim2.new((o - m) / (n - m), 0, 1, 0)
+            l.Text = tostring(o)
+            g.InputBegan:Connect(function(a)
+                if a.UserInputType == Enum.UserInputType.MouseButton1 then
+                    p = true
+                end
+            end)
+            s.InputChanged:Connect(function(a)
+                if p and a.UserInputType == Enum.UserInputType.MouseMovement then
+                    local b = math.clamp((a.Position.X - g.AbsolutePosition.X) / g.AbsoluteSize.X, 0, 1)
+                    o = m + (n - m) * b
+                    a:Tween(j, {Size = UDim2.new(b, 0, 1, 0)}, 0.1)
+                    l.Text = tostring(math.floor(o))
+                    if b.Callback then
+                        b.Callback(o)
                     end
                 end
             end)
-            a.InputEnded:Connect(function(ag)
-                if ag.UserInputType == Enum.UserInputType.MouseButton1 then
-                    af = false
+            s.InputEnded:Connect(function(a)
+                if a.UserInputType == Enum.UserInputType.MouseButton1 then
+                    p = false
                 end
             end)
-            Oxx.Flags[W.Flag or W.Title] = ae
         end
-        function N:Keybind(W)
-            local X = Instance.new("TextButton", R)
-            X.Size = UDim2.new(1, 0, 0, 30)
-            X.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            X.Text = W.Title or "Keybind"
-            X.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-            X.TextSize = 14
-            X.Font = Enum.Font.SourceSans
-            Instance.new("UICorner", X).CornerRadius = UDim.new(0, 4)
-            local ai = Instance.new("TextLabel", X)
-            ai.Size = UDim2.new(0, 50, 1, 0)
-            ai.Position = UDim2.new(1, -55, 0, 0)
-            ai.BackgroundTransparency = 1
-            ai.Text = W.Key and W.Key.Name or "None"
-            ai.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-            ai.TextSize = 14
-            ai.Font = Enum.Font.SourceSans
-            local aj = false
-            X.MouseButton1Click:Connect(function()
-                aj = true
-                ai.Text = "..."
+        function c:Keybind(b)
+            local c = Instance.new("Frame")
+            c.Name = b.Title or "Keybind"
+            c.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+            c.BorderSizePixel = 0
+            c.Size = UDim2.new(1, -10, 0, 30)
+            c.Parent = i
+            local d = e:Clone()
+            d.Parent = c
+            local f = Instance.new("TextButton")
+            f.Name = "KeybindButton"
+            f.BackgroundTransparency = 1
+            f.Size = UDim2.new(1, 0, 1, 0)
+            f.Text = b.Title or "Keybind: [None]"
+            f.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+            f.TextSize = 14
+            f.Font = Enum.Font.SourceSans
+            f.TextXAlignment = Enum.TextXAlignment.Left
+            f.Parent = c
+            local g = b.Default or Enum.KeyCode.Unknown
+            local h = false
+            f.MouseButton1Click:Connect(function()
+                f.Text = "Press a key..."
+                h = true
             end)
-            a.InputBegan:Connect(function(ag)
-                if aj and ag.KeyCode ~= Enum.KeyCode.Unknown then
-                    W.Key = ag.KeyCode
-                    ai.Text = ag.KeyCode.Name
-                    aj = false
-                    if W.Callback then
-                        W.Callback(ag.KeyCode)
+            s.InputBegan:Connect(function(a)
+                if h and a.UserInputType == Enum.UserInputType.Keyboard then
+                    g = a.KeyCode
+                    f.Text = b.Title .. ": [" .. g.Name .. "]"
+                    h = false
+                    if b.Callback then
+                        b.Callback(g)
                     end
                 end
             end)
-            Oxx.Keysys[W.Flag or W.Title] = W.Key
+            s.InputChanged:Connect(function(a)
+                if g ~= Enum.KeyCode.Unknown and a.KeyCode == g and not h then
+                    if b.Callback then
+                        b.Callback(g)
+                    end
+                end
+            end)
         end
-        function N:Dropdown(W)
-            local X = Instance.new("Frame", R)
-            X.Size = UDim2.new(1, 0, 0, 30)
-            X.BackgroundTransparency = 1
-            local ak = Instance.new("TextButton", X)
-            ak.Size = UDim2.new(1, -10, 0, 30)
-            ak.Position = UDim2.new(0, 5, 0, 0)
-            ak.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            ak.Text = W.Title or "Dropdown"
-            ak.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-            ak.TextSize = 14
-            ak.Font = Enum.Font.SourceSans
-            Instance.new("UICorner", ak).CornerRadius = UDim.new(0, 4)
-            local al = Instance.new("Frame", X)
-            al.Size = UDim2.new(1, -10, 0, 0)
-            al.Position = UDim2.new(0, 5, 0, 35)
-            al.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            al.ClipsDescendants = true
-            Instance.new("UICorner", al).CornerRadius = UDim.new(0, 4)
-            local am = Instance.new("UIListLayout", al)
-            am.Padding = UDim.new(0, 5)
-            am.SortOrder = Enum.SortOrder.LayoutOrder
-            local an = false
-            for ao, ap in pairs(W.Options or {}) do
-                local aq = Instance.new("TextButton", al)
-                aq.Size = UDim2.new(1, 0, 0, 30)
-                aq.BackgroundTransparency = 1
-                aq.Text = ap
-                aq.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-                aq.TextSize = 14
-                aq.Font = Enum.Font.SourceSans
-                aq.MouseButton1Click:Connect(function()
-                    ak.Text = W.Title .. ": " .. ap
-                    Oxx:Tween(al, {
-                        Size = UDim2.new(1, -10, 0, 0)
-                    }, 0.2)
-                    an = false
-                    if W.Callback then
-                        W.Callback(ap)
+        function c:Dropdown(b)
+            local c = Instance.new("Frame")
+            c.Name = b.Title or "Dropdown"
+            c.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+            c.BorderSizePixel = 0
+            c.Size = UDim2.new(1, -10, 0, 30)
+            c.Parent = i
+            local d = e:Clone()
+            d.Parent = c
+            local f = Instance.new("TextLabel")
+            f.Name = "Title"
+            f.BackgroundTransparency = 1
+            f.Size = UDim2.new(1, -30, 1, 0)
+            f.Position = UDim2.new(0, 5, 0, 0)
+            f.Text = b.Title or "Dropdown"
+            f.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+            f.TextSize = 14
+            f.Font = Enum.Font.SourceSans
+            f.TextXAlignment = Enum.TextXAlignment.Left
+            f.Parent = c
+            local g = Instance.new("ImageButton")
+            g.Name = "Arrow"
+            g.BackgroundTransparency = 1
+            g.Size = UDim2.new(0, 20, 0, 20)
+            g.Position = UDim2.new(1, -25, 0.5, -10)
+            g.Image = Oxx.Icons.default
+            g.Parent = c
+            local h = Instance.new("Frame")
+            h.Name = "Options"
+            h.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+            h.BorderSizePixel = 0
+            h.Size = UDim2.new(1, 0, 0, 0)
+            h.Position = UDim2.new(0, 0, 1, 0)
+            h.Visible = false
+            h.Parent = c
+            local j = e:Clone()
+            j.Parent = h
+            local k = Instance.new("UIListLayout")
+            k.Padding = UDim.new(0, 2)
+            k.SortOrder = Enum.SortOrder.LayoutOrder
+            k.Parent = h
+            local l = Instance.new("UIPadding")
+            l.PaddingTop = UDim.new(0, 2)
+            l.PaddingBottom = UDim.new(0, 2)
+            l.Parent = h
+            local m = false
+            g.MouseButton1Click:Connect(function()
+                m = not m
+                h.Visible = m
+                a:Tween(h, {Size = UDim2.new(1, 0, 0, m and #b.Options * 22 or 0)}, 0.2)
+            end)
+            for e, i in pairs(b.Options or {}) do
+                local j = Instance.new("TextButton")
+                j.Name = i
+                j.BackgroundTransparency = 1
+                j.Size = UDim2.new(1, 0, 0, 20)
+                j.Text = i
+                j.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+                j.TextSize = 14
+                j.Font = Enum.Font.SourceSans
+                j.Parent = h
+                j.MouseButton1Click:Connect(function()
+                    f.Text = b.Title .. ": " .. i
+                    m = false
+                    h.Visible = false
+                    a:Tween(h, {Size = UDim2.new(1, 0, 0, 0)}, 0.2)
+                    if b.Callback then
+                        b.Callback(i)
                     end
                 end)
+                j.MouseEnter:Connect(function()
+                    a:Tween(j, {TextColor3 = Oxx.Themes[a.Theme or "Dark"].Accent}, 0.2)
+                end)
+                j.MouseLeave:Connect(function()
+                    a:Tween(j, {TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text}, 0.2)
+                end)
             end
-            ak.MouseButton1Click:Connect(function()
-                an = not an
-                Oxx:Tween(al, {
-                    Size = UDim2.new(1, -10, 0, an and am.AbsoluteContentSize.Y or 0)
-                }, 0.2)
-            end)
-            Oxx.Flags[W.Flag or W.Title] = W.Options[1]
         end
-        function N:ColorPicker(W)
-            local X = Instance.new("Frame", R)
-            X.Size = UDim2.new(1, 0, 0, 30)
-            X.BackgroundTransparency = 1
-            local ar = Instance.new("TextButton", X)
-            ar.Size = UDim2.new(1, -10, 0, 30)
-            ar.Position = UDim2.new(0, 5, 0, 0)
-            ar.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            ar.Text = W.Title or "ColorPicker"
-            ar.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-            ar.TextSize = 14
-            ar.Font = Enum.Font.SourceSans
-            Instance.new("UICorner", ar).CornerRadius = UDim.new(0, 4)
-            local as = Instance.new("Frame", ar)
-            as.Size = UDim2.new(0, 20, 0, 20)
-            as.Position = UDim2.new(1, -25, 0.5, -10)
-            as.BackgroundColor3 = W.Value or Color3.fromRGB(255, 255, 255)
-            Instance.new("UICorner", as).CornerRadius = UDim.new(0, 4)
-            local at = Instance.new("Frame", X)
-            at.Size = UDim2.new(0, 150, 0, 0)
-            at.Position = UDim2.new(0, 5, 0, 35)
-            at.BackgroundColor3 = Oxx.Themes[q.Theme or "Dark"].Second
-            at.ClipsDescendants = true
-            Instance.new("UICorner", at).CornerRadius = UDim.new(0, 4)
-            local au = false
-            local av = Instance.new("ImageLabel", at)
-            av.Size = UDim2.new(1, -10, 0, 100)
-            av.Position = UDim2.new(0, 5, 0, 5)
-            av.BackgroundTransparency = 1
-            av.Image = "rbxassetid://4155801252"
-            local aw = Instance.new("Frame", av)
-            aw.Size = UDim2.new(0, 5, 0, 5)
-            aw.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            aw.BorderSizePixel = 0
-            local ax = Instance.new("Frame", at)
-            ax.Size = UDim2.new(0, 20, 0, 100)
-            ax.Position = UDim2.new(1, -25, 0, 5)
-            ax.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-            Instance.new("UIGradient", ax).Color = ColorSequence.new({
-                ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
-            })
-            local ay = Instance.new("Frame", ax)
-            ay.Size = UDim2.new(1, 0, 0, 5)
-            ay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-            local az = false
-            local aA = false
-            ar.MouseButton1Click:Connect(function()
-                au = not au
-                Oxx:Tween(at, {
-                    Size = UDim2.new(0, 150, 0, au and 110 or 0)
-                }, 0.2)
-            end)
-            av.InputBegan:Connect(function(ag)
-                if ag.UserInputType == Enum.UserInputType.MouseButton1 then
-                    az = true
+        function c:ColorPicker(b)
+            local c = Instance.new("Frame")
+            c.Name = b.Title or "ColorPicker"
+            c.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+            c.BorderSizePixel = 0
+            c.Size = UDim2.new(1, -10, 0, 30)
+            c.Parent = i
+            local d = e:Clone()
+            d.Parent = c
+            local f = Instance.new("TextLabel")
+            f.Name = "Title"
+            f.BackgroundTransparency = 1
+            f.Size = UDim2.new(1, -40, 1, 0)
+            f.Position = UDim2.new(0, 5, 0, 0)
+            f.Text = b.Title or "Color Picker"
+            f.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+            f.TextSize = 14
+            f.Font = Enum.Font.SourceSans
+            f.TextXAlignment = Enum.TextXAlignment.Left
+            f.Parent = c
+            local g = Instance.new("Frame")
+            g.Name = "Preview"
+            g.BackgroundColor3 = b.Default or Color3.fromRGB(255, 255, 255)
+            g.BorderSizePixel = 0
+            g.Size = UDim2.new(0, 20, 0, 20)
+            g.Position = UDim2.new(1, -25, 0.5, -10)
+            g.Parent = c
+            local h = e:Clone()
+            h.Parent = g
+            local j = Instance.new("TextButton")
+            j.Name = "PickerButton"
+            j.BackgroundTransparency = 1
+            j.Size = UDim2.new(1, 0, 1, 0)
+            j.Text = ""
+            j.Parent = c
+            local k = false
+            local l = b.Default or Color3.fromRGB(255, 255, 255)
+            j.MouseButton1Click:Connect(function()
+                if k then
+                    return
                 end
-            end)
-            a.InputChanged:Connect(function(ag)
-                if az and ag.UserInputType == Enum.UserInputType.MouseMovement then
-                    local aB = math.clamp((ag.Position.X - av.AbsolutePosition.X) / av.AbsoluteSize.X, 0, 1)
-                    local aC = math.clamp((ag.Position.Y - av.AbsolutePosition.Y) / av.AbsoluteSize.Y, 0, 1)
-                    aw.Position = UDim2.new(aB, -2, aC, -2)
-                    local aD = Color3.fromHSV(aB, aC, 1)
-                    ax.BackgroundColor3 = aD
-                    as.BackgroundColor3 = aD
-                    if W.Callback then
-                        W.Callback(aD)
+                k = true
+                local e = Instance.new("Frame")
+                e.Name = "ColorPicker"
+                e.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Second
+                e.BorderSizePixel = 0
+                e.Size = UDim2.new(0, 150, 0, 150)
+                e.Position = UDim2.new(0, w.X, 0, w.Y)
+                e.Parent = c
+                local i = d:Clone()
+                i.Parent = e
+                local m = Instance.new("Frame")
+                m.Name = "SatVal"
+                m.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+                m.BorderSizePixel = 0
+                m.Size = UDim2.new(1, -30, 1, -10)
+                m.Position = UDim2.new(0, 5, 0, 5)
+                m.Parent = e
+                local n = i:Clone()
+                n.Parent = m
+                local o = Instance.new("Frame")
+                o.Name = "Hue"
+                o.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                o.BorderSizePixel = 0
+                o.Size = UDim2.new(0, 20, 1, -10)
+                o.Position = UDim2.new(1, -25, 0, 5)
+                o.Parent = e
+                local p = i:Clone()
+                p.Parent = o
+                local q = Instance.new("UIGradient")
+                q.Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+                    ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
+                    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
+                    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
+                    ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 0, 255)),
+                    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
+                })
+                q.Parent = o
+                local r, s, t = l:ToHSV()
+                local u = Instance.new("Frame")
+                u.Name = "Cursor"
+                u.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                u.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                u.Size = UDim2.new(0, 5, 0, 5)
+                u.Position = UDim2.new(s, -2.5, 1 - t, -2.5)
+                u.Parent = m
+                local v = Instance.new("Frame")
+                v.Name = "HueCursor"
+                v.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                v.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                v.Size = UDim2.new(1, 0, 0, 2)
+                v.Position = UDim2.new(0, 0, r, -1)
+                v.Parent = o
+                local w = false
+                local x = false
+                m.InputBegan:Connect(function(a)
+                    if a.UserInputType == Enum.UserInputType.MouseButton1 then
+                        w = true
                     end
-                end
-            end)
-            a.InputEnded:Connect(function(ag)
-                if ag.UserInputType == Enum.UserInputType.MouseButton1 then
-                    az = false
-                end
-            end)
-            ax.InputBegan:Connect(function(ag)
-                if ag.UserInputType == Enum.UserInputType.MouseButton1 then
-                    aA = true
-                end
-            end)
-            a.InputChanged:Connect(function(ag)
-                if aA and ag.UserInputType == Enum.UserInputType.MouseMovement then
-                    local aC = math.clamp((ag.Position.Y - ax.AbsolutePosition.Y) / ax.AbsoluteSize.Y, 0, 1)
-                    ay.Position = UDim2.new(0, 0, aC, -2)
-                    local aD = as.BackgroundColor3
-                    local aE, aF, aG = aD:ToHSV()
-                    local aH = Color3.fromHSV(aE, aF, 1 - aC)
-                    as.BackgroundColor3 = aH
-                    if W.Callback then
-                        W.Callback(aH)
+                end)
+                o.InputBegan:Connect(function(a)
+                    if a.UserInputType == Enum.UserInputType.MouseButton1 then
+                        x = true
                     end
-                end
+                end)
+                s.InputChanged:Connect(function(b)
+                    if w then
+                        s = math.clamp((b.Position.X - m.AbsolutePosition.X) / m.AbsoluteSize.X, 0, 1)
+                        t = math.clamp(1 - (b.Position.Y - m.AbsolutePosition.Y) / m.AbsoluteSize.Y, 0, 1)
+                        u.Position = UDim2.new(s, -2.5, 1 - t, -2.5)
+                        l = Color3.fromHSV(r, s, t)
+                        g.BackgroundColor3 = l
+                        if b.Callback then
+                            b.Callback(l)
+                        end
+                    end
+                    if x then
+                        r = math.clamp((b.Position.Y - o.AbsolutePosition.Y) / o.AbsoluteSize.Y, 0, 1)
+                        v.Position = UDim2.new(0, 0, r, -1)
+                        l = Color3.fromHSV(r, s, t)
+                        g.BackgroundColor3 = l
+                        m.BackgroundColor3 = Color3.fromHSV(r, 1, 1)
+                        if b.Callback then
+                            b.Callback(l)
+                        end
+                    end
+                end)
+                s.InputEnded:Connect(function(a)
+                    if a.UserInputType == Enum.UserInputType.MouseButton1 then
+                        w = false
+                        x = false
+                    end
+                end)
+                j.MouseButton1Click:Connect(function()
+                    e:Destroy()
+                    k = false
+                end)
             end)
-            a.InputEnded:Connect(function(ag)
-                if ag.UserInputType == Enum.UserInputType.MouseButton1 then
-                    aA = false
-                end
-            end)
-            Oxx.Flags[W.Flag or W.Title] = W.Value or Color3.fromRGB(255, 255, 255)
         end
-        return N
+        return c
     end
-    if q.Folder then
-        local aI = Instance.new("TextButton", C)
-        aI.Size = UDim2.new(1, 0, 0, 30)
-        aI.BackgroundTransparency = 1
-        aI.Text = q.Folder
-        aI.TextColor3 = Oxx.Themes[q.Theme or "Dark"].Text
-        aI.TextSize = 16
-        aI.Font = Enum.Font.SourceSans
-        local aJ = Instance.new("ImageLabel", aI)
-        aJ.Size = UDim2.new(0, 20, 0, 20)
-        aJ.Position = UDim2.new(0, 5, 0, 5)
-        aJ.BackgroundTransparency = 1
-        aJ.Image = Oxx.Icons.folder
-        aI.TextXAlignment = Enum.TextXAlignment.Left
-        aI.Text = string.rep(" ", 5) .. aI.Text
+    return b
+end
+function a:Notify(a)
+    local b = Instance.new("ScreenGui")
+    b.Name = "Notification"
+    b.ResetOnSpawn = false
+    b.Parent = v.PlayerGui
+    local c = Instance.new("Frame")
+    c.Name = "Notification"
+    c.BackgroundColor3 = Oxx.Themes[a.Theme or "Dark"].Main
+    c.BorderSizePixel = 0
+    c.Size = UDim2.new(0, 200, 0, 50)
+    c.Position = UDim2.new(1, -210, 0, 10)
+    c.Parent = b
+    local d = Instance.new("UICorner")
+    d.CornerRadius = UDim.new(0, 6)
+    d.Parent = c
+    local e = Instance.new("ImageLabel")
+    e.Name = "Icon"
+    e.BackgroundTransparency = 1
+    e.Size = UDim2.new(0, 20, 0, 20)
+    e.Position = UDim2.new(0, 10, 0.5, -10)
+    e.Image = Oxx.Icons[a.Icon or "info"]
+    e.Parent = c
+    local f = Instance.new("TextLabel")
+    f.Name = "Title"
+    f.BackgroundTransparency = 1
+    f.Size = UDim2.new(1, -40, 0, 20)
+    f.Position = UDim2.new(0, 35, 0, 5)
+    f.Text = a.Title or "Notification"
+    f.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Text
+    f.TextSize = 14
+    f.Font = Enum.Font.SourceSansBold
+    f.TextXAlignment = Enum.TextXAlignment.Left
+    f.Parent = c
+    local g = Instance.new("TextLabel")
+    g.Name = "Content"
+    g.BackgroundTransparency = 1
+    g.Size = UDim2.new(1, -40, 0, 20)
+    g.Position = UDim2.new(0, 35, 0, 25)
+    g.Text = a.Content or ""
+    g.TextColor3 = Oxx.Themes[a.Theme or "Dark"].Placeholder
+    g.TextSize = 12
+    g.Font = Enum.Font.SourceSans
+    g.TextXAlignment = Enum.TextXAlignment.Left
+    g.Parent = c
+    spawn(function()
+        wait(a.Duration or 3)
+        a:Tween(c, {Position = UDim2.new(1, 0, 0, 10)}, 0.5)
+        wait(0.5)
+        b:Destroy()
+    end)
+end
+setmetatable(Oxx, {
+    __call = function(b, c)
+        return a:CreateWindow(c)
     end
-    return r
-end
-function Oxx:Notify(aK)
-    local aL = Instance.new("ScreenGui")
-    aL.Name = "OxxNotify"
-    aL.Parent = e.PlayerGui
-    local aM = Instance.new("Frame", aL)
-    aM.Size = UDim2.new(0, 300, 0, 80)
-    aM.Position = UDim2.new(1, 310, 0, 10)
-    aM.BackgroundColor3 = Oxx.Themes[aK.Theme or "Dark"].Main
-    Instance.new("UICorner", aM).CornerRadius = UDim.new(0, 6)
-    local aN = Instance.new("ImageLabel", aM)
-    aN.Size = UDim2.new(0, 40, 0, 40)
-    aN.Position = UDim2.new(0, 10, 0, 10)
-    aN.BackgroundTransparency = 1
-    aN.Image = aK.Icon and Oxx.Icons[aK.Icon] or Oxx.Icons.info
-    local aO = Instance.new("TextLabel", aM)
-    aO.Size = UDim2.new(1, -60, 0, 20)
-    aO.Position = UDim2.new(0, 50, 0, 10)
-    aO.BackgroundTransparency = 1
-    aO.Text = aK.Title or "Notification"
-    aO.TextColor3 = Oxx.Themes[aK.Theme or "Dark"].Text
-    aO.TextSize = 16
-    aO.Font = Enum.Font.SourceSansBold
-    aO.TextXAlignment = Enum.TextXAlignment.Left
-    local aP = Instance.new("TextLabel", aM)
-    aP.Size = UDim2.new(1, -60, 0, 30)
-    aP.Position = UDim2.new(0, 50, 0, 30)
-    aP.BackgroundTransparency = 1
-    aP.Text = aK.Content or ""
-    aP.TextColor3 = Oxx.Themes[aK.Theme or "Dark"].Text
-    aP.TextSize = 14
-    aP.Font = Enum.Font.SourceSans
-    aP.TextXAlignment = Enum.TextXAlignment.Left
-    aP.TextWrapped = true
-    Oxx:Tween(aM, {
-        Position = UDim2.new(1, -310, 0, 10)
-    }, 0.5)
-    wait(aK.Duration or 3)
-    Oxx:Tween(aM, {
-        Position = UDim2.new(1, 310, 0, 10)
-    }, 0.5)
-    wait(0.5)
-    aL:Destroy()
-end
+})
 return Oxx
