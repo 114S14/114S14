@@ -342,52 +342,56 @@ function UILibrary:AddColorPicker(tabName, text, default, callback)
     local Hover = CreateHoverButton(Frame, Label)
     
     local PickerFrame = Instance.new("Frame")
-    PickerFrame.Size = UDim2.new(0, 200, 0, 250)
-    PickerFrame.Position = UDim2.new(1, -200, 0, 30)
-    PickerFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    PickerFrame.Size = UDim2.new(0, 200, 0, 230)
+    PickerFrame.Position = UDim2.new(1, -230, 0, 35)
+    PickerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     PickerFrame.Visible = false
     PickerFrame.Parent = Frame
     
     local SatVibMap = Instance.new("Frame")
     SatVibMap.Size = UDim2.new(0, 160, 0, 160)
     SatVibMap.Position = UDim2.new(0, 10, 0, 10)
-    SatVibMap.BackgroundColor3 = Color3.fromHSV(0, 1, 1)
+    SatVibMap.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
     SatVibMap.Parent = PickerFrame
-    
-    local SatVibGradient = Instance.new("UIGradient")
-    SatVibGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-        ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))
-    }
-    SatVibGradient.Rotation = 90
-    SatVibGradient.Parent = SatVibMap
     
     local SatGradient = Instance.new("UIGradient")
     SatGradient.Color = ColorSequence.new{
         ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-        ColorSequenceKeypoint.new(1, default)
+        ColorSequenceKeypoint.new(1, Color3.new(1, 0, 0))
     }
+    SatGradient.Rotation = 0
     SatGradient.Parent = SatVibMap
+    
+    local VibGradient = Instance.new("UIGradient")
+    VibGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
+    }
+    VibGradient.Rotation = 90
+    VibGradient.Transparency = NumberSequence.new{
+        NumberSequenceKeypoint.new(0, 0),
+        NumberSequenceKeypoint.new(1, 1)
+    }
+    VibGradient.Parent = SatVibMap
     
     local Selector = Instance.new("Frame")
     Selector.Size = UDim2.new(0, 6, 0, 6)
     Selector.BackgroundColor3 = Color3.new(1, 1, 1)
-    Selector.BorderSizePixel = 0
+    Selector.BorderColor3 = Color3.new(0, 0, 0)
     Selector.Parent = SatVibMap
     
     local HueBar = Instance.new("Frame")
     HueBar.Size = UDim2.new(0, 20, 0, 160)
-    HueBar.Position = UDim2.new(0, 180, 0, 10)
-    HueBar.BackgroundColor3 = Color3.new(1, 1, 1)
+    HueBar.Position = UDim2.new(0, 175, 0, 10)
     HueBar.Parent = PickerFrame
     
     local HueGradient = Instance.new("UIGradient")
     HueGradient.Color = ColorSequence.new{
         ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 255, 0)),
+        ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
         ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
         ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-        ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 0, 255)),
+        ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 0, 255)),
         ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
     }
@@ -397,73 +401,64 @@ function UILibrary:AddColorPicker(tabName, text, default, callback)
     local HueSelector = Instance.new("Frame")
     HueSelector.Size = UDim2.new(1, 0, 0, 2)
     HueSelector.BackgroundColor3 = Color3.new(1, 1, 1)
-    HueSelector.BorderSizePixel = 0
     HueSelector.Parent = HueBar
     
-    local RInput = Instance.new("TextBox")
-    RInput.Size = UDim2.new(0, 50, 0, 20)
-    RInput.Position = UDim2.new(0, 10, 0, 180)
-    RInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    RInput.TextColor3 = Color3.new(1, 1, 1)
-    RInput.Text = tostring(math.floor(default.R * 255))
-    RInput.Parent = PickerFrame
+    local RGBFrame = Instance.new("Frame")
+    RGBFrame.Size = UDim2.new(1, -20, 0, 50)
+    RGBFrame.Position = UDim2.new(0, 10, 0, 175)
+    RGBFrame.BackgroundTransparency = 1
+    RGBFrame.Parent = PickerFrame
     
-    local GInput = Instance.new("TextBox")
-    GInput.Size = UDim2.new(0, 50, 0, 20)
-    GInput.Position = UDim2.new(0, 70, 0, 180)
-    GInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    GInput.TextColor3 = Color3.new(1, 1, 1)
-    GInput.Text = tostring(math.floor(default.G * 255))
-    GInput.Parent = PickerFrame
+    local RLabel = Instance.new("TextLabel")
+    RLabel.Size = UDim2.new(0, 50, 0, 20)
+    RLabel.BackgroundTransparency = 1
+    RLabel.Text = "R: " .. math.floor(default.R * 255)
+    RLabel.TextColor3 = Color3.new(1, 1, 1)
+    RLabel.Parent = RGBFrame
     
-    local BInput = Instance.new("TextBox")
-    BInput.Size = UDim2.new(0, 50, 0, 20)
-    BInput.Position = UDim2.new(0, 130, 0, 180)
-    BInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    BInput.TextColor3 = Color3.new(1, 1, 1)
-    BInput.Text = tostring(math.floor(default.B * 255))
-    BInput.Parent = PickerFrame
+    local GLabel = Instance.new("TextLabel")
+    GLabel.Size = UDim2.new(0, 50, 0, 20)
+    GLabel.Position = UDim2.new(0, 60, 0, 0)
+    GLabel.BackgroundTransparency = 1
+    GLabel.Text = "G: " .. math.floor(default.G * 255)
+    GLabel.TextColor3 = Color3.new(1, 1, 1)
+    GLabel.Parent = RGBFrame
     
-    local Preview = Instance.new("Frame")
-    Preview.Size = UDim2.new(0, 180, 0, 20)
-    Preview.Position = UDim2.new(0, 10, 0, 210)
-    Preview.BackgroundColor3 = default
-    Preview.Parent = PickerFrame
+    local BLabel = Instance.new("TextLabel")
+    BLabel.Size = UDim2.new(0, 50, 0, 20)
+    BLabel.Position = UDim2.new(0, 120, 0, 0)
+    BLabel.BackgroundTransparency = 1
+    BLabel.Text = "B: " .. math.floor(default.B * 255)
+    BLabel.TextColor3 = Color3.new(1, 1, 1)
+    BLabel.Parent = RGBFrame
     
-    local hue, sat, vib = Color3.toHSV(default)
+    local h, s, v = Color3.toHSV(default)
     
     local function UpdateColor()
-        local newColor = Color3.fromHSV(hue, sat, vib)
+        local newColor = Color3.fromHSV(h, s, v)
         ColorButton.BackgroundColor3 = newColor
-        Preview.BackgroundColor3 = newColor
-        SatVibMap.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
-        SatGradient.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-            ColorSequenceKeypoint.new(1, Color3.fromHSV(hue, 1, 1))
-        }
-        RInput.Text = tostring(math.floor(newColor.R * 255))
-        GInput.Text = tostring(math.floor(newColor.G * 255))
-        BInput.Text = tostring(math.floor(newColor.B * 255))
+        SatVibMap.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
+        Selector.Position = UDim2.new(s, -3, 1-v, -3)
+        HueSelector.Position = UDim2.new(0, 0, h, -1)
+        RLabel.Text = "R: " .. math.floor(newColor.R * 255)
+        GLabel.Text = "G: " .. math.floor(newColor.G * 255)
+        BLabel.Text = "B: " .. math.floor(newColor.B * 255)
         callback(newColor)
     end
     
-    Selector.Position = UDim2.new(sat, 0, 1 - vib, 0)
-    HueSelector.Position = UDim2.new(0, 0, hue, 0)
-    
     SatVibMap.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local mouseMove
-            mouseMove = UserInputService.InputChanged:Connect(function(input)
+            local connection
+            connection = UserInputService.InputChanged:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseMovement then
-                    sat = math.clamp((input.Position.X - SatVibMap.AbsolutePosition.X) / SatVibMap.AbsoluteSize.X, 0, 1)
-                    vib = 1 - math.clamp((input.Position.Y - SatVibMap.AbsolutePosition.Y) / SatVibMap.AbsoluteSize.Y, 0, 1)
-                    Selector.Position = UDim2.new(sat, 0, 1 - vib, 0)
+                    s = math.clamp((input.Position.X - SatVibMap.AbsolutePosition.X) / SatVibMap.AbsoluteSize.X, 0, 1)
+                    v = math.clamp(1 - (input.Position.Y - SatVibMap.AbsolutePosition.Y) / SatVibMap.AbsoluteSize.Y, 0, 1)
                     UpdateColor()
                 end
             end)
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
-                    mouseMove:Disconnect()
+                    connection:Disconnect()
                 end
             end)
         end
@@ -471,51 +466,46 @@ function UILibrary:AddColorPicker(tabName, text, default, callback)
     
     HueBar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local mouseMove
-            mouseMove = UserInputService.InputChanged:Connect(function(input)
+            local connection
+            connection = UserInputService.InputChanged:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseMovement then
-                    hue = math.clamp((input.Position.Y - HueBar.AbsolutePosition.Y) / HueBar.AbsoluteSize.Y, 0, 1)
-                    HueSelector.Position = UDim2.new(0, 0, hue, 0)
+                    h = math.clamp((input.Position.Y - HueBar.AbsolutePosition.Y) / HueBar.AbsoluteSize.Y, 0, 1)
                     UpdateColor()
                 end
             end)
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
-                    mouseMove:Disconnect()
+                    connection:Disconnect()
                 end
             end)
         end
     end)
     
-    RInput.FocusLost:Connect(function()
-        local value = tonumber(RInput.Text) or 0
-        local newColor = Color3.fromRGB(math.clamp(value, 0, 255), default.G * 255, default.B * 255)
-        hue, sat, vib = Color3.toHSV(newColor)
-        Selector.Position = UDim2.new(sat, 0, 1 - vib, 0)
-        HueSelector.Position = UDim2.new(0, 0, hue, 0)
-        UpdateColor()
-    end)
-    
-    GInput.FocusLost:Connect(function()
-        local value = tonumber(GInput.Text) or 0
-        local newColor = Color3.fromRGB(default.R * 255, math.clamp(value, 0, 255), default.B * 255)
-        hue, sat, vib = Color3.toHSV(newColor)
-        Selector.Position = UDim2.new(sat, 0, 1 - vib, 0)
-        HueSelector.Position = UDim2.new(0, 0, hue, 0)
-        UpdateColor()
-    end)
-    
-    BInput.FocusLost:Connect(function()
-        local value = tonumber(BInput.Text) or 0
-        local newColor = Color3.fromRGB(default.R * 255, default.G * 255, math.clamp(value, 0, 255))
-        hue, sat, vib = Color3.toHSV(newColor)
-        Selector.Position = UDim2.new(sat, 0, 1 - vib, 0)
-        HueSelector.Position = UDim2.new(0, 0, hue, 0)
-        UpdateColor()
-    end)
+    Selector.Position = UDim2.new(s, -3, 1-v, -3)
+    HueSelector.Position = UDim2.new(0, 0, h, -1)
     
     ColorButton.MouseButton1Click:Connect(function()
         PickerFrame.Visible = not PickerFrame.Visible
+    end)
+    
+    -- 添加点击外部关闭的功能
+    UserInputService.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and PickerFrame.Visible then
+            local pos = input.Position
+            local pickerPos = PickerFrame.AbsolutePosition
+            local pickerSize = PickerFrame.AbsoluteSize
+            local buttonPos = ColorButton.AbsolutePosition
+            local buttonSize = ColorButton.AbsoluteSize
+            
+            local inPicker = pos.X >= pickerPos.X and pos.X <= pickerPos.X + pickerSize.X and
+                           pos.Y >= pickerPos.Y and pos.Y <= pickerPos.Y + pickerSize.Y
+            local inButton = pos.X >= buttonPos.X and pos.X <= buttonPos.X + buttonSize.X and
+                           pos.Y >= buttonPos.Y and pos.Y <= buttonPos.Y + buttonSize.Y
+            
+            if not inPicker and not inButton then
+                PickerFrame.Visible = false
+            end
+        end
     end)
 end
 
@@ -541,7 +531,7 @@ UI:AddDropdown("Tab1", "Select Me", {"Option1", "Option2", "Option3"}, function(
 end)
 
 UI:AddColorPicker("Tab1", "Pick Color", Color3.fromRGB(255, 0, 0), function(color)
-    print("Color picked:", color.R * 255, color.G * 255, color.B * 255)
+    print("Color picked: R=" .. math.floor(color.R*255) .. ", G=" .. math.floor(color.G*255) .. ", B=" .. math.floor(color.B*255))
 end)
 
 return UILibrary
