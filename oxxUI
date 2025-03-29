@@ -72,7 +72,7 @@ function lib:Window(text, preset, closebind)
     LogoImage.BackgroundTransparency = 1
     LogoImage.Position = UDim2.new(0, 5, 0.5, -12)
     LogoImage.Size = UDim2.new(0, 24, 0, 24)
-    LogoImage.Image = "rbxassetid://YOUR_ASSET_ID_HERE" -- 替换为你的图片资产ID
+    LogoImage.Image = "rbxassetid://101255187899751" -- 替换为你的图片资产ID
 
     local Title = Instance.new("TextLabel", TitleBar)
     Title.Name = "Title"
@@ -91,7 +91,7 @@ function lib:Window(text, preset, closebind)
     Subtitle.Position = UDim2.new(0, 34, 0, 22)
     Subtitle.Size = UDim2.new(0, 200, 0, 14)
     Subtitle.Font = Enum.Font.Gotham
-    Subtitle.Text = "GUI Description"
+    Subtitle.Text = "by 114S14"
     Subtitle.TextColor3 = Color3.fromRGB(150, 150, 150)
     Subtitle.TextSize = 10
     Subtitle.TextXAlignment = Enum.TextXAlignment.Left
