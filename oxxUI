@@ -12,29 +12,16 @@ ui.Name = "ui"
 ui.Parent = game.CoreGui
 ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- 添加外部开启按钮
-local OpenButton = Instance.new("TextButton")
-OpenButton.Name = "OpenButton"
-OpenButton.Parent = ui
-OpenButton.BackgroundColor3 = Color3—fromRGB(50, 50, 50)
-OpenButton.Position = UDim2.new(0, 10, 0, 10) -- 左上角位置
-OpenButton.Size = UDim2.new(0, 100, 0, 40)
-OpenButton.Font = Enum.Font.Gotham
-OpenButton.Text = "Open UI"
-OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-OpenButton.TextSize = 14
-OpenButton.Visible = true -- 默认可见
-local OpenButtonCorner = Instance.new("UICorner", OpenButton)
-OpenButtonCorner.CornerRadius = UDim.new(0, 5)
-
-coroutine.wrap(function()
-    while wait() do
-        lib.RainbowColorValue = lib.RainbowColorValue + 1 / 255
-        lib.HueSelectionPosition = lib.HueSelectionPosition + 1
-        if lib.RainbowColorValue >= 1 then lib.RainbowColorValue = 0 end
-        if lib.HueSelectionPosition == 80 then lib.HueSelectionPosition = 0 end
+coroutine.wrap(
+    function()
+        while wait() do
+            lib.RainbowColorValue = lib.RainbowColorValue + 1 / 255
+            lib.HueSelectionPosition = lib.HueSelectionPosition + 1
+            if lib.RainbowColorValue >= 1 then lib.RainbowColorValue = 0 end
+            if lib.HueSelectionPosition == 80 then lib.HueSelectionPosition = 0 end
+        end
     end
-end)()
+)()
 
 local function MakeDraggable(topbarobject, object)
     local Dragging, DragInput, DragStart, StartPosition
@@ -142,21 +129,18 @@ function lib:Window(text, preset, closebind)
     local uitoggled = false
     local isAnimating = false
 
-    -- 修改开关逻辑，只控制 Main 的可见性
     local function toggleUI()
         if isAnimating then return end
         isAnimating = true
         uitoggled = not uitoggled
         if uitoggled then
             Main:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true, function()
-                Main.Visible = false
-                OpenButton.Visible = true -- 关闭时显示外部按钮
+                ui.Enabled = false
                 isAnimating = false
             end)
         else
-            Main.Visible = true
+            ui.Enabled = true
             Main:TweenSize(UDim2.new(0, 560, 0, 319), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true, function()
-                OpenButton.Visible = false -- 开启时隐藏外部按钮
                 isAnimating = false
             end)
         end
@@ -167,8 +151,6 @@ function lib:Window(text, preset, closebind)
     end)
 
     CloseButton.MouseButton1Click:Connect(toggleUI)
-    OpenButton.MouseButton1Click:Connect(toggleUI) -- 绑定外部按钮到 toggleUI
-
     CloseButton.MouseEnter:Connect(function()
         TweenService:Create(CloseButton, TweenInfo.new(.2), {ImageColor3 = Color3.fromRGB(255, 50, 50)}):Play()
     end)
@@ -361,11 +343,12 @@ function lib:Window(text, preset, closebind)
             ButtonTitle.TextSize = 14
             ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
 
+            -- 添加悬浮窗按钮
             local HoverButton = Instance.new("TextButton", Button)
             HoverButton.Name = "HoverButton"
             HoverButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
             HoverButton.Size = UDim2.new(0, 30, 0, 30)
-            HoverButton.Position = UDim2.new(-0.1, 0, 0.5, -15)
+            HoverButton.Position = UDim2.new(-0.1, 0, 0.5, -15) -- 左侧位置
             HoverButton.Text = "▶"
             HoverButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             HoverButton.TextSize = 14
@@ -382,7 +365,7 @@ function lib:Window(text, preset, closebind)
                 HoverButton.Visible = false
             end)
             Button.MouseButton1Click:Connect(function() pcall(callback) end)
-            HoverButton.MouseButton1Click:Connect(function() pcall(callback) end)
+            HoverButton.MouseButton1Click:Connect(function() pcall(callback) end) -- 悬浮窗点击触发回调
 
             Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
         end
@@ -446,11 +429,12 @@ function lib:Window(text, preset, closebind)
 
             local FrameToggleCircleCorner = Instance.new("UICorner", FrameToggleCircle)
 
+            -- 添加悬浮窗按钮
             local HoverButton = Instance.new("TextButton", Toggle)
             HoverButton.Name = "HoverButton"
             HoverButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
             HoverButton.Size = UDim2.new(0, 30, 0, 30)
-            HoverButton.Position = UDim2.new(-0.1, 0, 0.5, -15)
+            HoverButton.Position = UDim2.new(-0.1, 0, 0.5, -15) -- 左侧位置
             HoverButton.Text = "▶"
             HoverButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             HoverButton.TextSize = 14
@@ -467,24 +451,28 @@ function lib:Window(text, preset, closebind)
                     TweenService:Create(FrameToggle2, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
                     TweenService:Create(FrameToggle3, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
                     TweenService:Create(FrameToggleCircle, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
-                    FrameToggleCircle:TweenPosition(UDim2.new(0.587, 0, 0.222, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
+                    FrameToggleCircle:TweenPosition(UDim2.new(0.587, 0, 0.222000003, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
                 else
                     TweenService:Create(Toggle, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(34, 34, 34)}):Play()
                     TweenService:Create(FrameToggle1, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
                     TweenService:Create(FrameToggle2, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
                     TweenService:Create(FrameToggle3, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
                     TweenService:Create(FrameToggleCircle, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(50, 50, 50)}):Play()
-                    FrameToggleCircle:TweenPosition(UDim2.new(0.127, 0, 0.222, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
+                    FrameToggleCircle:TweenPosition(UDim2.new(0.127000004, 0, 0.222000003, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
                 end
                 toggled = not toggled
                 pcall(callback, toggled)
             end
 
             Toggle.MouseButton1Click:Connect(toggleState)
-            HoverButton.MouseButton1Click:Connect(toggleState)
+            HoverButton.MouseButton1Click:Connect(toggleState) -- 悬浮窗点击触发切换
 
-            Toggle.MouseEnter:Connect(function() HoverButton.Visible = true end)
-            Toggle.MouseLeave:Connect(function() HoverButton.Visible = false end)
+            Toggle.MouseEnter:Connect(function()
+                HoverButton.Visible = true
+            end)
+            Toggle.MouseLeave:Connect(function()
+                HoverButton.Visible = false
+            end)
 
             if default then toggleState() end
 
