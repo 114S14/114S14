@@ -90,11 +90,11 @@ function lib:Window(text, preset, closebind)
     local Main = Instance.new("Frame")
     local TabHold = Instance.new("Frame")
     local TabHoldLayout = Instance.new("UIListLayout")
-    local TitleBar = Instance.new("Frame")  -- 新的标题栏框架
-    local LogoImage = Instance.new("ImageLabel")  -- 图片资产显示
+    local TitleBar = Instance.new("Frame")
+    local LogoImage = Instance.new("ImageLabel")
     local Title = Instance.new("TextLabel")
-    local CloseButton = Instance.new("TextButton")  -- 关闭按钮
-    local CloseButtonCorner = Instance.new("UICorner")
+    local Subtitle = Instance.new("TextLabel")  -- 新增的小字描述
+    local CloseButton = Instance.new("ImageButton")  -- 改为ImageButton
     local TabFolder = Instance.new("Folder")
     local DragFrame = Instance.new("Frame")
 
@@ -127,7 +127,7 @@ function lib:Window(text, preset, closebind)
     Title.Name = "Title"
     Title.Parent = TitleBar
     Title.BackgroundTransparency = 1
-    Title.Position = UDim2.new(0, 34, 0.5, -10)
+    Title.Position = UDim2.new(0, 34, 0, 2)
     Title.Size = UDim2.new(0, 200, 0, 20)
     Title.Font = Enum.Font.GothamSemibold
     Title.Text = text
@@ -135,19 +135,26 @@ function lib:Window(text, preset, closebind)
     Title.TextSize = 14
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- 关闭按钮
+    -- 小字描述
+    Subtitle.Name = "Subtitle"
+    Subtitle.Parent = TitleBar
+    Subtitle.BackgroundTransparency = 1
+    Subtitle.Position = UDim2.new(0, 34, 0, 22)
+    Subtitle.Size = UDim2.new(0, 200, 0, 14)
+    Subtitle.Font = Enum.Font.Gotham
+    Subtitle.Text = "GUI Description" -- 可自定义描述文字
+    Subtitle.TextColor3 = Color3.fromRGB(150, 150, 150) -- 灰色
+    Subtitle.TextSize = 10
+    Subtitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- 关闭按钮 (改为图片)
     CloseButton.Name = "CloseButton"
     CloseButton.Parent = TitleBar
-    CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    CloseButton.BackgroundTransparency = 1
     CloseButton.Position = UDim2.new(1, -35, 0.5, -12)
     CloseButton.Size = UDim2.new(0, 24, 0, 24)
-    CloseButton.Font = Enum.Font.Gotham
-    CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextSize = 14
-
-    CloseButtonCorner.CornerRadius = UDim.new(0, 4)
-    CloseButtonCorner.Parent = CloseButton
+    CloseButton.Image = "rbxassetid://6035047409" -- 使用Roblox默认关闭图标，可替换
+    CloseButton.ImageColor3 = Color3.fromRGB(200, 50, 50)
 
     TabHold.Name = "TabHold"
     TabHold.Parent = Main
@@ -191,10 +198,10 @@ function lib:Window(text, preset, closebind)
     end)
 
     CloseButton.MouseEnter:Connect(function()
-        TweenService:Create(CloseButton, TweenInfo.new(.2), {BackgroundColor3 = Color3.fromRGB(255, 50, 50)}):Play()
+        TweenService:Create(CloseButton, TweenInfo.new(.2), {ImageColor3 = Color3.fromRGB(255, 50, 50)}):Play()
     end)
     CloseButton.MouseLeave:Connect(function()
-        TweenService:Create(CloseButton, TweenInfo.new(.2), {BackgroundColor3 = Color3.fromRGB(200, 50, 50)}):Play()
+        TweenService:Create(CloseButton, TweenInfo.new(.2), {ImageColor3 = Color3.fromRGB(200, 50, 50)}):Play()
     end)
 
     TabFolder.Name = "TabFolder"
@@ -1648,7 +1655,6 @@ function lib:Window(text, preset, closebind)
                     BindText.Text = "..."
                     binding = true
                     local inputwait = game:GetService("UserInputService").InputBegan:wait()
- Hidalgo = false
                     if inputwait.KeyCode.Name ~= "Unknown" then
                         BindText.Text = inputwait.KeyCode.Name
                         Key = inputwait.KeyCode.Name
