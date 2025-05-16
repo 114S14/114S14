@@ -27,8 +27,6 @@ local Mouse = Player:GetMouse()
 local IsOnMobile = table.find({ Enum.Platform.IOS, Enum.Platform.Android }, Services.UserInputService:GetPlatform())
 local IsOnEmulator = IsOnMobile and Services.UserInputService.KeyboardEnabled
 local Profile = Services.Players:GetUserThumbnailAsync(Player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
-local ScreenSize = Services.GuiService:GetScreenResolution()
-local ScaleFactor = math.min(ScreenSize.X / 1920, ScreenSize.Y / 1080) -- 以 1080p 为基准
 
 -- 文件路径
 local Paths = {
@@ -191,12 +189,6 @@ UIInstance.Name = GenerateString()
 UIInstance.Enabled = false
 UIInstance.IgnoreGuiInset = false
 UIInstance.Parent = gethui and gethui() or Services.CoreGui:FindFirstChild("RobloxGui") or Services.CoreGui
-
--- 应用缩放
-local MainScale = Instance.new("UIScale", UIInstance.Main)
-MainScale.Scale = math.clamp(ScaleFactor, 0.7, 1.2)
-local MobileCircleScale = Instance.new("UIScale", UIInstance.MobileCircle)
-MobileCircleScale.Scale = math.clamp(ScaleFactor * 1.2, 0.8, 1.5)
 
 -- 动画工具
 local function Animate(instance, properties, tweenInfo)
@@ -498,8 +490,7 @@ function UILibrary:CreateLibrary(config)
 
             local function UpdateSize()
                 local contentSize = sectionInstance.UIListLayout.AbsoluteContentSize
-                local sf = sectionInstance:FindFirstChild("UIScale") and sectionInstance.UIScale.Scale or 1
-                sectionInstance.Size = UDim2.new(1, 0, 0, contentSize.Y * sf)
+                sectionInstance.Size = UDim2.new(1, 0, 0, contentSize.Y)
             end
 
             if type == "Foldable" then
@@ -525,6 +516,7 @@ function UILibrary:CreateLibrary(config)
                 buttonInstance.Icon.Image = config.Icon or "rbxassetid://3944703587"
                 buttonInstance.Visible = true
                 buttonInstance.Parent = sectionInstance
+                buttonInstance.Size = UDim2.new(0.975, -10, 0, IsOnMobile and 40 or 30) -- 移动端增大按钮高度
                 UpdateSize()
 
                 buttonInstance.Interact.InputBegan:Connect(function(input)
@@ -542,15 +534,15 @@ function UILibrary:CreateLibrary(config)
                 buttonInstance.Interact.MouseButton1Click:Connect(function()
                     local success, err = pcall(button.Callback)
                     if not success then
-                        Animate(buttonInstance, { BackgroundColor3 = Color3.fromRGB(103, 0, 0), Size = UDim2.new(0.992, -10, 0, 35) })
+                        Animate(buttonInstance, { BackgroundColor3 = Color3.fromRGB(103, 0, 0), Size = UDim2.new(0.992, -10, 0, IsOnMobile and 45 or 35) })
                         buttonInstance.Title.Text = "Something failed"
                         warn(string.format("[Button %s] Error: %s", config.Name, tostring(err)))
                         task.wait(0.5)
                         buttonInstance.Title.Text = config.Name
-                        Animate(buttonInstance, { BackgroundColor3 = UILibrary.Theme.Dark.SecondaryColor, Size = UDim2.new(0.975, -10, 0, 30) })
+                        Animate(buttonInstance, { BackgroundColor3 = UILibrary.Theme.Dark.SecondaryColor, Size = UDim2.new(0.975, -10, 0, IsOnMobile and 40 or 30) })
                     else
                         local originalSize = buttonInstance.Size
-                        Animate(buttonInstance, { Size = UDim2.new(0.992, -10, 0, 35) })
+                        Animate(buttonInstance, { Size = UDim2.new(0.992, -10, 0, IsOnMobile and 45 or 35) })
                         task.wait(0.2)
                         Animate(buttonInstance, { Size = originalSize })
                     end
