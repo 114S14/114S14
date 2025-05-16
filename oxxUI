@@ -1,1 +1,644 @@
+--!native
+--!optimize 2
 
+local UILibrary = {}
+
+-- Roblox 服务
+local Services = {
+    UserInputService = game:GetService("UserInputService"),
+    TweenService = game:GetService("TweenService"),
+    HttpService = game:GetService("HttpService"),
+    RunService = game:GetService("RunService"),
+    Players = game:GetService("Players"),
+    CoreGui = cloneref(game:GetService("CoreGui")),
+    InsertService = game:GetService("InsertService"),
+    TextChatService = game:GetService("TextChatService"),
+    GuiService = game:GetService("GuiService")
+}
+
+-- 模拟缺失函数
+cloneref = cloneref or function(...) return ... end
+isfile = isfile or function() return true end
+isfolder = isfolder or function() return true end
+
+-- 玩家和设备信息
+local Player = Services.Players.LocalPlayer
+local Mouse = Player:GetMouse()
+local IsOnMobile = table.find({ Enum.Platform.IOS, Enum.Platform.Android }, Services.UserInputService:GetPlatform())
+local IsOnEmulator = IsOnMobile and Services.UserInputService.KeyboardEnabled
+local Profile = Services.Players:GetUserThumbnailAsync(Player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+local ScreenSize = Services.GuiService:GetScreenResolution()
+local ScaleFactor = math.min(ScreenSize.X / 1920, ScreenSize.Y / 1080) -- 以 1080p 为基准
+
+-- 文件路径
+local Paths = {
+    Base = "BetterBypasser/",
+    Configurations = "BetterBypasser/Configurations/",
+    Assets = "BetterBypasser/Assets/",
+    ChatLogs = "BetterBypasser/Chat Logs/"
+}
+
+-- 主题配置
+UILibrary.Theme = {
+    Dark = {
+        TextColor = Color3.fromRGB(240, 240, 240),
+        MainColor = Color3.fromRGB(16, 16, 16),
+        SecondaryColor = Color3.fromRGB(22, 22, 22),
+        NotificationActionsBackground = Color3.fromRGB(230, 230, 230),
+        ImageColor = Color3.fromRGB(255, 255, 255),
+        TabBackground = Color3.fromRGB(80, 80, 80),
+        TabStroke = Color3.fromRGB(85, 85, 85),
+        TabBackgroundSelected = Color3.fromRGB(210, 210, 210),
+        TabTextColor = Color3.fromRGB(240, 240, 240),
+        SelectedTabTextColor = Color3.fromRGB(50, 50, 50),
+        SliderColor = Color3.fromRGB(255, 255, 255),
+        ToggleEnabled = Color3.fromRGB(255, 255, 255),
+        ToggleDisabled = Color3.fromRGB(139, 139, 139),
+        CardButton = Color3.fromRGB(230, 230, 230),
+        TweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint) -- 延长动画时间，优化性能
+    }
+}
+
+-- 文件操作工具
+local FileUtil = {}
+function FileUtil:EnsureFolder(path)
+    if not isfolder(path) then
+        local success, err = pcall(makefolder, path)
+        if not success then
+            warn(string.format("[FileUtil] Failed to create folder %s: %s", path, tostring(err)))
+        end
+    end
+end
+
+function FileUtil:Write(path, content)
+    local success, err = pcall(writefile, path, content)
+    if not success then
+        warn(string.format("[FileUtil] Failed to write file %s: %s", path, tostring(err)))
+        return false
+    end
+    return true
+end
+
+function FileUtil:Read(path)
+    if not isfile(path) then
+        warn(string.format("[FileUtil] File does not exist: %s", path))
+        return nil
+    end
+    local success, content = pcall(readfile, path)
+    if not success then
+        warn(string.format("[FileUtil] Failed to read file %s: %s", path, tostring(content)))
+        return nil
+    end
+    return content
+end
+
+-- 初始化文件夹
+for _, path in pairs(Paths) do
+    FileUtil:EnsureFolder(path)
+end
+
+-- 配置管理
+local ConfigManager = {
+    Version = "1.0.0",
+    Data = {
+        Toggles = {},
+        Dropdowns = {},
+        Sliders = {},
+        Inputs = {},
+        Keybinds = {}
+    },
+    SaveDelay = 5,
+    LastSave = 0
+}
+
+function ConfigManager:Load()
+    local content = FileUtil:Read(Paths.Configurations .. "UI.json")
+    if content then
+        local success, decoded = pcall(Services.HttpService.JSONDecode, Services.HttpService, content)
+        if success and decoded.Version == self.Version then
+            self.Data = decoded.Data
+        else
+            warn("[ConfigManager] Invalid or outdated config, using defaults")
+        end
+    end
+end
+
+function ConfigManager:Save()
+    local data = {
+        Version = self.Version,
+        Data = self.Data
+    }
+    FileUtil:Write(Paths.Configurations .. "UI.json", Services.HttpService:JSONEncode(data))
+end
+
+function ConfigManager:Update(key, category, value)
+    self.Data[category][key] = value
+    if tick() - self.LastSave > self.SaveDelay then
+        self:Save()
+        self.LastSave = tick()
+    end
+end
+
+ConfigManager:Load()
+
+-- HTTP 请求缓存
+local assetCache = {}
+local function SafeHttpGet(url)
+    if assetCache[url] then
+        return assetCache[url]
+    end
+    local success, content = pcall(game.HttpGetAsync, game, url)
+    if success then
+        assetCache[url] = content
+        return content
+    else
+        warn("Failed to fetch URL: " .. url .. " | Error: " .. tostring(content))
+    end
+    return nil
+end
+
+-- 加载资产
+task.spawn(function()
+    if not isfile(Paths.Assets .. "Welcome.mp4") then
+        local data = SafeHttpGet("https://r2.e-z.host/758bfc8b-9659-4f8e-9a2c-379ff7f2f32c/5ikh2nf1.mp3")
+        if data then FileUtil:Write(Paths.Assets .. "Welcome.mp4", data) end
+    end
+    if not isfile(Paths.Assets .. "Tutorial.mp4") then
+        local data = SafeHttpGet("https://r2.e-z.host/758bfc8b-9659-4f8e-9a2c-379ff7f2f32c/7huvb4h9.mp4")
+        if data then FileUtil:Write(Paths.Assets .. "Tutorial.mp4", data) end
+    end
+end)
+
+-- 随机字符串生成
+local function GenerateString()
+    local charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    local result = ""
+    for _ = 1, 12 do
+        result = result .. charset:sub(math.random(1, #charset), 1)
+    end
+    return result
+end
+
+-- 初始化 UI
+local UIInstance
+if Services.RunService:IsStudio() then
+    UIInstance = Services.Players.LocalPlayer.PlayerGui:WaitForChild("UI_Library")
+else
+    UIInstance = game:GetObjects("rbxassetid://129033108166316")[1]
+end
+
+UIInstance.Name = GenerateString()
+UIInstance.Enabled = false
+UIInstance.IgnoreGuiInset = false
+UIInstance.Parent = gethui and gethui() or Services.CoreGui:FindFirstChild("RobloxGui") or Services.CoreGui
+
+-- 应用缩放
+local MainScale = Instance.new("UIScale", UIInstance.Main)
+MainScale.Scale = math.clamp(ScaleFactor, 0.7, 1.2)
+local MobileCircleScale = Instance.new("UIScale", UIInstance.MobileCircle)
+MobileCircleScale.Scale = math.clamp(ScaleFactor * 1.2, 0.8, 1.5)
+
+-- 动画工具
+local function Animate(instance, properties, tweenInfo)
+    Services.TweenService:Create(instance, tweenInfo or UILibrary.Theme.Dark.TweenInfo, properties):Play()
+end
+
+-- 拖动功能
+function UILibrary:MakeDraggable(frame, target)
+    target = target or frame
+    local dragging, dragInput, dragStart, startPos
+
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = target.Position
+        end
+    end)
+
+    frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+
+    Services.UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            local newPos = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y
+            )
+            -- 边界检查
+            local screenSize = Services.GuiService:GetScreenResolution()
+            local frameSize = target.AbsoluteSize
+            newPos = UDim2.new(
+                0, math.clamp(newPos.X.Offset, 0, screenSize.X - frameSize.X),
+                0, math.clamp(newPos.Y.Offset, 0, screenSize.Y - frameSize.Y)
+            )
+            target.Position = newPos
+        end
+    end)
+
+    frame.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+end
+
+-- 切换 UI 可见性
+function UILibrary:ToggleUI(state)
+    UIInstance.Main.Visible = state or not UIInstance.Main.Visible
+end
+
+-- 获取 UI 实例
+function UILibrary:GetUIInstance()
+    return UIInstance
+end
+
+-- 移动按钮
+function UILibrary:CreateMobileButton()
+    local Circle = UIInstance.MobileCircle
+    Circle.Visible = IsOnMobile
+    Circle.Size = UDim2.new(0, 60, 0, 60)
+    Circle.BackgroundTransparency = 0.3
+
+    Circle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            Animate(Circle, { BackgroundTransparency = 0, Size = UDim2.new(0, 65, 0, 65) })
+        end
+    end)
+
+    Circle.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            Animate(Circle, { BackgroundTransparency = 0.3, Size = UDim2.new(0, 60, 0, 60) })
+        end
+    end)
+
+    Circle.MouseButton1Click:Connect(function()
+        self:ToggleUI()
+    end)
+
+    local dragging, dragInput, dragStart, startPos
+    Circle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = Circle.Position
+        end
+    end)
+
+    Circle.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+
+    Services.UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            Circle.Position = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+
+    Services.UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch and dragging then
+            dragging = false
+            local pos = Circle.Position
+            local screenSize = Services.GuiService:GetScreenResolution()
+            local snapThreshold = 50
+            local newX = pos.X.Offset
+            local newY = pos.Y.Offset
+
+            if pos.X.Offset < snapThreshold then
+                newX = 10
+            elseif pos.X.Offset > screenSize.X - snapThreshold - Circle.Size.X.Offset then
+                newX = screenSize.X - Circle.Size.X.Offset - 10
+            end
+
+            if pos.Y.Offset < snapThreshold then
+                newY = 10
+            elseif pos.Y.Offset > screenSize.Y - snapThreshold - Circle.Size.Y.Offset then
+                newY = screenSize.Y - Circle.Size.Y.Offset - 10
+            end
+
+            Animate(Circle, { Position = UDim2.new(0, newX, 0, newY) })
+        end
+    end)
+end
+
+-- 通知系统
+local NotificationPool = {}
+local ActiveNotifications = {}
+local NotificationQueue = {}
+
+function UILibrary:Notify(title, content, options)
+    options = options or {}
+    local duration = options.Duration or 5
+    local actions = options.Actions or {}
+
+    local notification = table.remove(NotificationPool) or UIInstance.Notifications.Template:Clone()
+    notification.Name = title or "Unknown"
+    notification.Title.Text = title or "Unknown"
+    notification.Description.Text = content or "Unknown"
+    notification.Duration.Text = duration
+    notification.Visible = true
+    notification.Parent = UIInstance.Notifications
+
+    for _, child in ipairs(notification.Actions:GetChildren()) do
+        if child.Name ~= "ButtonTemplate" and not child:IsA("UIListLayout") then
+            child:Destroy()
+        end
+    end
+    notification.Actions.ButtonTemplate.Visible = false
+    for _, action in pairs(actions) do
+        local button = notification.Actions.ButtonTemplate:Clone()
+        button.Name = action.Name
+        button.Text = action.Name
+        button.Visible = true
+        button.Size = UDim2.new(0, button.TextBounds.X + 27, 1, 0)
+        button.Parent = notification.Actions
+        button.MouseButton1Click:Connect(function()
+            pcall(action.Callback)
+            duration = 0
+        end)
+    end
+
+    table.insert(NotificationQueue, notification)
+    if #ActiveNotifications < 3 then
+        self:ShowNotification(notification, duration)
+    end
+end
+
+function UILibrary:ShowNotification(notification, duration)
+    table.insert(ActiveNotifications, notification)
+    Animate(notification, { BackgroundTransparency = 0 })
+    Animate(notification.Title, { TextTransparency = 0 })
+
+    task.spawn(function()
+        while duration > 0 do
+            notification.Duration.Text = duration
+            task.wait(1)
+            duration -= 1
+        end
+        Animate(notification, { BackgroundTransparency = 1 })
+        Animate(notification.Title, { TextTransparency = 1 })
+        task.wait(0.3)
+        notification.Visible = false
+        table.remove(ActiveNotifications, table.find(ActiveNotifications, notification))
+        table.insert(NotificationPool, notification)
+
+        if #NotificationQueue > 0 and #ActiveNotifications < 3 then
+            local nextNotification = table.remove(NotificationQueue, 1)
+            self:ShowNotification(nextNotification, tonumber(nextNotification.Duration.Text))
+        end
+    end)
+end
+
+-- 创建 UI 库
+function UILibrary:CreateLibrary(config)
+    local library = {
+        Name = typeof(config) == "table" and config.Name or config or "Unnamed",
+        Icon = typeof(config) == "table" and config.Icon or nil
+    }
+    local sidebar = UIInstance.Main.SideBar
+    local buttons = sidebar.Buttons
+    local tabContainer = UIInstance.Main.TabContainer
+    sidebar.NameText.Text = library.Name
+    UIInstance.Main.Profile.Image = Profile
+    buttons.Template.Visible = false
+    self:MakeDraggable(sidebar, UIInstance.Main)
+    self:MakeDraggable(UIInstance.Main.Title, UIInstance.Main)
+    UIInstance.Enabled = true
+
+    function library:SwitchTo(tabName)
+        if tabContainer:FindFirstChild(tabName) then
+            tabContainer.UIPageLayout:JumpTo(tabContainer:FindFirstChild(tabName))
+        end
+    end
+
+    buttons.Parent.Minimize.MouseButton1Click:Connect(function()
+        if tabContainer:FindFirstChild("Settings") then
+            tabContainer.UIPageLayout:JumpTo(tabContainer:FindFirstChild("Settings"))
+        end
+    end)
+
+    if IsOnMobile then
+        self:CreateMobileButton()
+    end
+
+    function library:CreateTab(name, icon)
+        local tab = {}
+        local tabButton = buttons.Template:Clone()
+        tabButton.ImageLabel.Image = icon or "rbxassetid://11432859220"
+        tabButton.ImageLabel.BackgroundTransparency = 1
+        tabButton.BackgroundTransparency = 1
+        tabButton.TextLabel.Text = name or "Unknown"
+        tabButton.Visible = true
+        tabButton.Parent = buttons
+        tabButton.Size = UDim2.new(1, 0, 0, IsOnMobile and 60 or 50)
+
+        local tabInstance = tabContainer.Template:Clone()
+        tabContainer.Template.Visible = false
+        tabInstance.Parent = tabContainer
+        tabInstance.Name = name or "Unknown"
+        tabInstance.Visible = true
+        tabInstance.LayoutOrder = #tabContainer:GetChildren()
+
+        if IsOnMobile then
+            local scrollingFrame = Instance.new("ScrollingFrame", tabInstance)
+            scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+            scrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
+            scrollingFrame.ScrollBarThickness = 8
+            scrollingFrame.BackgroundTransparency = 1
+            for _, child in pairs(tabInstance:GetChildren()) do
+                if child:IsA("GuiObject") and child ~= scrollingFrame then
+                    child.Parent = scrollingFrame
+                end
+            end
+        end
+
+        for _, child in ipairs(tabInstance:GetChildren()) do
+            if child.ClassName == "Frame" and not child:IsA("ScrollingFrame") then
+                child:Destroy()
+            end
+        end
+
+        tabButton.MouseButton1Click:Connect(function()
+            if tabContainer.UIPageLayout.CurrentPage ~= tabInstance then
+                tabContainer.UIPageLayout:JumpTo(tabInstance)
+            end
+        end)
+
+        if name == "Main" then
+            tabContainer.UIPageLayout:JumpTo(tabInstance)
+        end
+
+        function tab:CreateSection(title, type)
+            local section = {}
+            local sectionInstance
+            if type == "Foldable" then
+                sectionInstance = tabContainer.Template.FoldableSectionTitle:Clone()
+            else
+                sectionInstance = tabContainer.Template.SectionTitle:Clone()
+            end
+            sectionInstance.Name = title
+            sectionInstance.Title.Text = title
+            sectionInstance.Visible = true
+            sectionInstance.Parent = tabInstance
+            Animate(sectionInstance.Title, { TextTransparency = 0 })
+
+            local function UpdateSize()
+                local contentSize = sectionInstance.UIListLayout.AbsoluteContentSize
+                local sf = sectionInstance:FindFirstChild("UIScale") and sectionInstance.UIScale.Scale or 1
+                sectionInstance.Size = UDim2.new(1, 0, 0, contentSize.Y * sf)
+            end
+
+            if type == "Foldable" then
+                local isExpanded = true
+                sectionInstance.Title.TextButton.MouseButton1Click:Connect(function()
+                    isExpanded = not isExpanded
+                    for _, child in ipairs(sectionInstance:GetChildren()) do
+                        if child.Name ~= "UIListLayout" and child.Name ~= "UIPadding" and not child:IsA("TextLabel") then
+                            child.Visible = isExpanded
+                        end
+                    end
+                    UpdateSize()
+                end)
+            end
+
+            function section:CreateButton(config)
+                local button = {
+                    Callback = config.Callback or function() end
+                }
+                local buttonInstance = tabContainer.Template.Button:Clone()
+                buttonInstance.Name = config.Name or "Unnamed"
+                buttonInstance.Title.Text = config.Name or "Unnamed"
+                buttonInstance.Icon.Image = config.Icon or "rbxassetid://3944703587"
+                buttonInstance.Visible = true
+                buttonInstance.Parent = sectionInstance
+                UpdateSize()
+
+                buttonInstance.Interact.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.Touch then
+                        Animate(buttonInstance.Interact, { Size = UDim2.new(0, 40, 0, 40) })
+                    end
+                end)
+
+                buttonInstance.Interact.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.Touch then
+                        Animate(buttonInstance.Interact, { Size = UDim2.new(0, 35, 0, 35) })
+                    end
+                end)
+
+                buttonInstance.Interact.MouseButton1Click:Connect(function()
+                    local success, err = pcall(button.Callback)
+                    if not success then
+                        Animate(buttonInstance, { BackgroundColor3 = Color3.fromRGB(103, 0, 0), Size = UDim2.new(0.992, -10, 0, 35) })
+                        buttonInstance.Title.Text = "Something failed"
+                        warn(string.format("[Button %s] Error: %s", config.Name, tostring(err)))
+                        task.wait(0.5)
+                        buttonInstance.Title.Text = config.Name
+                        Animate(buttonInstance, { BackgroundColor3 = UILibrary.Theme.Dark.SecondaryColor, Size = UDim2.new(0.975, -10, 0, 30) })
+                    else
+                        local originalSize = buttonInstance.Size
+                        Animate(buttonInstance, { Size = UDim2.new(0.992, -10, 0, 35) })
+                        task.wait(0.2)
+                        Animate(buttonInstance, { Size = originalSize })
+                    end
+                end)
+
+                function button:SetCallback(newCallback)
+                    button.Callback = newCallback
+                end
+
+                function button:Remove()
+                    buttonInstance:Destroy()
+                    UpdateSize()
+                end
+
+                function button:SetName(newName)
+                    buttonInstance.Title.Text = newName
+                    buttonInstance.Name = newName
+                end
+                return button
+            end
+
+            function section:CreateTextbox(config)
+                local textbox = {}
+                local inputInstance = tabContainer.Template.Input:Clone()
+                inputInstance.Name = config.Name
+                inputInstance.Title.Text = config.Name
+                inputInstance.Visible = true
+                inputInstance.Parent = sectionInstance
+
+                local flag = config.Flag
+                local currentValue = flag and ConfigManager.Data.Inputs[flag]
+
+                if flag and currentValue then
+                    inputInstance.InputFrame.InputBox.Text = currentValue
+                end
+
+                inputInstance.InputFrame.InputBox.PlaceholderText = config.PlaceholderText
+                inputInstance.InputFrame.Size = UDim2.new(0, math.max(inputInstance.InputFrame.InputBox.TextBounds.X + 24, 150), 0, 40)
+
+                if IsOnMobile then
+                    inputInstance.InputFrame.InputBox.TextSize = 20
+                    inputInstance.InputFrame.InputBox.Size = UDim2.new(0, 150, 0, 40)
+                    inputInstance.InputFrame.InputBox.Focused:Connect(function()
+                        Animate(UIInstance.Main, { Position = UDim2.new(UIInstance.Main.Position.X.Scale, UIInstance.Main.Position.X.Offset, 0, 100) })
+                    end)
+                    inputInstance.InputFrame.InputBox.FocusLost:Connect(function()
+                        Animate(UIInstance.Main, { Position = UDim2.new(UIInstance.Main.Position.X.Scale, UIInstance.Main.Position.X.Offset, 0, 300) })
+                    end)
+                end
+
+                inputInstance.InputFrame.InputBox.FocusLost:Connect(function()
+                    local success, err = pcall(function()
+                        config.Callback(inputInstance.InputFrame.InputBox.Text)
+                    end)
+
+                    local inputText = inputInstance.InputFrame.InputBox.Text:gsub("%s+", "")
+                    if inputText == "" then
+                        return
+                    end
+
+                    if flag then
+                        ConfigManager:Update(flag, "Inputs", inputInstance.InputFrame.InputBox.Text)
+                    end
+
+                    inputInstance.InputFrame.Size = UDim2.new(0, math.max(inputInstance.InputFrame.InputBox.TextBounds.X + 24, 150), 0, 40)
+                end)
+
+                inputInstance.InputFrame.InputBox:GetPropertyChangedSignal("Text"):Connect(function()
+                    Animate(inputInstance.InputFrame, {
+                        Size = UDim2.new(0, math.max(inputInstance.InputFrame.InputBox.TextBounds.X + 24, 150), 0, 40)
+                    }, TweenInfo.new(0.55, Enum.EasingStyle.Quint))
+                end)
+
+                function textbox:Set(value)
+                    inputInstance.InputFrame.InputBox.Text = value
+                    if flag then
+                        ConfigManager:Update(flag, "Inputs", value)
+                    end
+                end
+                return textbox
+            end
+
+            -- 其他控件（开关、滑块等）可按需添加，保持类似结构
+            return section
+        end
+        return tab
+    end
+    return library
+end
+
+return UILibrary
