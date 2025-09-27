@@ -1,0 +1,301 @@
+-- SimpleUILib: 更新版，模仿 LineFlow 风格
+local UILib = {}
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- 创建 ScreenGui
+function UILib:CreateScreenGui()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "SimpleUILib"
+    screenGui.Parent = playerGui
+    screenGui.ResetOnSpawn = false
+    return screenGui
+end
+
+-- 创建主窗口
+function UILib:CreateWindow(title)
+    local screenGui = self:CreateScreenGui()
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainWindow"
+    mainFrame.Size = UDim2.new(0, 600, 0, 400)
+    mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(20, 25, 40)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.Parent = screenGui
+
+    -- 圆角
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = mainFrame
+
+    -- 标题栏
+    local titleBar = Instance.new("Frame")
+    titleBar.Name = "TitleBar"
+    titleBar.Size = UDim2.new(1, 0, 0, 40)
+    titleBar.BackgroundColor3 = Color3.fromRGB(15, 20, 30)
+    titleBar.BorderSizePixel = 0
+    titleBar.Parent = mainFrame
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, -10, 1, 0)
+    titleLabel.Position = UDim2.new(0, 5, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title or "Simple UI"
+    titleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    titleLabel.TextScaled = true
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.Parent = titleBar
+
+    -- 左侧导航
+    local navFrame = Instance.new("Frame")
+    navFrame.Name = "Navigation"
+    navFrame.Size = UDim2.new(0, 200, 1, -40)
+    navFrame.Position = UDim2.new(0, 0, 0, 40)
+    navFrame.BackgroundColor3 = Color3.fromRGB(25, 30, 50)
+    navFrame.BorderSizePixel = 0
+    navFrame.Parent = mainFrame
+
+    local contentFrame = Instance.new("Frame")
+    contentFrame.Name = "Content"
+    contentFrame.Size = UDim2.new(1, -200, 1, -40)
+    contentFrame.Position = UDim2.new(0, 200, 0, 40)
+    contentFrame.BackgroundColor3 = Color3.fromRGB(20, 25, 40)
+    contentFrame.BorderSizePixel = 0
+    contentFrame.Parent = mainFrame
+
+    local cornerContent = Instance.new("UICorner")
+    cornerContent.CornerRadius = UDim.new(0, 10)
+    cornerContent.Parent = contentFrame
+
+    local navItems = {}
+    local contentPages = {}
+    local currentPage = nil
+
+    -- 添加导航项和内容页
+    local function addNavItem(name)
+        local navItem = Instance.new("TextButton")
+        navItem.Name = name
+        navItem.Size = UDim2.new(1, -10, 0, 40)
+        navItem.Position = UDim2.new(0, 5, 0, #navItems * 45)
+        navItem.BackgroundColor3 = Color3.fromRGB(30, 35, 60)
+        navItem.BorderSizePixel = 0
+        navItem.Text = name
+        navItem.TextColor3 = Color3.fromRGB(150, 150, 150)
+        navItem.TextScaled = true
+        navItem.Font = Enum.Font.Gotham
+        navItem.Parent = navFrame
+
+        local cornerNav = Instance.new("UICorner")
+        cornerNav.CornerRadius = UDim.new(0, 5)
+        cornerNav.Parent = navItem
+
+        local contentPage = Instance.new("ScrollingFrame")
+        contentPage.Name = name .. "Page"
+        contentPage.Size = UDim2.new(1, -10, 1, -10)
+        contentPage.Position = UDim2.new(0, 5, 0, 5)
+        contentPage.BackgroundTransparency = 1
+        contentPage.BorderSizePixel = 0
+        contentPage.ScrollBarThickness = 6
+        contentPage.Visible = false
+        contentPage.Parent = contentFrame
+
+        navItem.MouseButton1Click:Connect(function()
+            if currentPage then
+                currentPage.Visible = false
+                navItems[currentPage.Name].BackgroundColor3 = Color3.fromRGB(30, 35, 60)
+            end
+            currentPage = contentPage
+            contentPage.Visible = true
+            navItem.BackgroundColor3 = Color3.fromRGB(40, 45, 70)
+        end)
+
+        if #navItems == 0 then
+            navItem.MouseButton1Click:Connect(navItem.MouseButton1Click)
+            currentPage = contentPage
+            contentPage.Visible = true
+            navItem.BackgroundColor3 = Color3.fromRGB(40, 45, 70)
+        end
+
+        table.insert(navItems, navItem)
+        contentPages[name] = contentPage
+        return contentPage
+    end
+
+    -- 创建复选框
+    local function createCheckbox(parent, text, default, callback)
+        local checkboxFrame = Instance.new("Frame")
+        checkboxFrame.Size = UDim2.new(1, -20, 0, 30)
+        checkboxFrame.BackgroundTransparency = 1
+        checkboxFrame.Parent = parent
+
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, -40, 1, 0)
+        label.BackgroundTransparency = 1
+        label.Text = text
+        label.TextColor3 = Color3.fromRGB(200, 200, 200)
+        label.TextScaled = true
+        label.Font = Enum.Font.Gotham
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Parent = checkboxFrame
+
+        local checkbox = Instance.new("TextButton")
+        checkbox.Size = UDim2.new(0, 20, 0, 20)
+        checkbox.Position = UDim2.new(1, -30, 0.5, -10)
+        checkbox.BackgroundColor3 = default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(100, 100, 100)
+        checkbox.BorderSizePixel = 0
+        checkbox.Text = ""
+        checkbox.Parent = checkboxFrame
+
+        local cornerCheck = Instance.new("UICorner")
+        cornerCheck.CornerRadius = UDim.new(0, 3)
+        cornerCheck.Parent = checkbox
+
+        local state = default
+        checkbox.MouseButton1Click:Connect(function()
+            state = not state
+            checkbox.BackgroundColor3 = state and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(100, 100, 100)
+            if callback then callback(state) end
+        end)
+
+        return checkbox
+    end
+
+    -- 创建滑块
+    local function createSlider(parent, text, min, max, default, callback)
+        local sliderFrame = Instance.new("Frame")
+        sliderFrame.Size = UDim2.new(1, -20, 0, 50)
+        sliderFrame.BackgroundTransparency = 1
+        sliderFrame.Parent = parent
+
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, 0, 0, 20)
+        label.BackgroundTransparency = 1
+        label.Text = text .. ": " .. default
+        label.TextColor3 = Color3.fromRGB(200, 200, 200)
+        label.TextScaled = true
+        label.Font = Enum.Font.Gotham
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Parent = sliderFrame
+
+        local slider = Instance.new("Frame")
+        slider.Size = UDim2.new(1, 0, 0, 10)
+        slider.Position = UDim2.new(0, 0, 1, -15)
+        slider.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        slider.BorderSizePixel = 0
+        slider.Parent = sliderFrame
+
+        local fill = Instance.new("Frame")
+        fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+        fill.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+        fill.BorderSizePixel = 0
+        fill.Parent = slider
+
+        local dragging = false
+        slider.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = true
+            end
+        end)
+        UserInputService.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = false
+            end
+        end)
+        UserInputService.InputChanged:Connect(function(input)
+            if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                local percent = math.clamp((input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X, 0, 1)
+                local value = math.floor(min + (max - min) * percent)
+                fill.Size = UDim2.new(percent, 0, 1, 0)
+                label.Text = text .. ": " .. value
+                if callback then callback(value) end
+            end
+        end)
+
+        return slider
+    </code>
+    -- 创建下拉菜单
+    local function createDropdown(parent, text, options, default, callback)
+        local dropdownFrame = Instance.new("Frame")
+        dropdownFrame.Size = UDim2.new(1, -20, 0, 40)
+        dropdownFrame.BackgroundTransparency = 1
+        dropdownFrame.Parent = parent
+
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, -40, 0, 20)
+        label.BackgroundTransparency = 1
+        label.Text = text
+        label.TextColor3 = Color3.fromRGB(200, 200, 200)
+        label.TextScaled = true
+        label.Font = Enum.Font.Gotham
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Parent = dropdownFrame
+
+        local dropdown = Instance.new("TextButton")
+        dropdown.Size = UDim2.new(1, -20, 0, 20)
+        dropdown.Position = UDim2.new(0, 0, 0, 20)
+        dropdown.BackgroundColor3 = Color3.fromRGB(30, 35, 60)
+        dropdown.BorderSizePixel = 0
+        dropdown.Text = default or options[1]
+        dropdown.TextColor3 = Color3.fromRGB(200, 200, 200)
+        dropdown.TextScaled = true
+        dropdown.Font = Enum.Font.Gotham
+        dropdown.Parent = dropdownFrame
+
+        local cornerDrop = Instance.new("UICorner")
+        cornerDrop.CornerRadius = UDim.new(0, 5)
+        cornerDrop.Parent = dropdown
+
+        local isOpen = false
+        local optionFrame = Instance.new("Frame")
+        optionFrame.Size = UDim2.new(1, -20, 0, 0)
+        optionFrame.Position = UDim2.new(0, 0, 1, 0)
+        optionFrame.BackgroundColor3 = Color3.fromRGB(25, 30, 50)
+        optionFrame.BorderSizePixel = 0
+        optionFrame.Visible = false
+        optionFrame.Parent = dropdown
+
+        dropdown.MouseButton1Click:Connect(function()
+            isOpen = not isOpen
+            optionFrame.Visible = isOpen
+            optionFrame.Size = isOpen and UDim2.new(1, -20, 0, #options * 20) or UDim2.new(1, -20, 0, 0)
+        end)
+
+        for i, option in pairs(options) do
+            local optionButton = Instance.new("TextButton")
+            optionButton.Size = UDim2.new(1, -10, 0, 20)
+            optionButton.Position = UDim2.new(0, 5, 0, (i - 1) * 20)
+            optionButton.BackgroundColor3 = Color3.fromRGB(35, 40, 65)
+            optionButton.BorderSizePixel = 0
+            optionButton.Text = option
+            optionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+            optionButton.TextScaled = true
+            optionButton.Font = Enum.Font.Gotham
+            optionButton.Parent = optionFrame
+
+            optionButton.MouseButton1Click:Connect(function()
+                dropdown.Text = option
+                isOpen = false
+                optionFrame.Visible = false
+                if callback then callback(option) end
+            end)
+        end
+
+        return dropdown
+    end
+
+    local window = {
+        MainFrame = mainFrame,
+        AddNavItem = addNavItem,
+        CreateCheckbox = createCheckbox,
+        CreateSlider = createSlider,
+        CreateDropdown = createDropdown
+    }
+
+    return window
+end
+
+return UILib
